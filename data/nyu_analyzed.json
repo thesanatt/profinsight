@@ -1,0 +1,1438 @@
+{
+  "metadata": {
+    "school_name": "NYU Wagner",
+    "school_id": "U2Nob29sLTEyMDYw",
+    "city": "New York",
+    "state": "NY",
+    "scraped_at": "2026-03-27T08:25:16.710801+00:00",
+    "total_professors": 4,
+    "total_reviews": 23,
+    "analyzed_at": "2026-03-27T04:25:16.867833"
+  },
+  "analysis": [
+    {
+      "professor_id": "VGVhY2hlci0yODk4MzIx",
+      "legacy_id": 2898321,
+      "name": "Prince Amegbor",
+      "department": "Public Health",
+      "summary": {
+        "avg_rating": 3.3,
+        "avg_difficulty": 3.3,
+        "num_ratings": 3,
+        "would_take_again_pct": 66.6667
+      },
+      "verdict": "Mixed reviews — experiences vary a lot between students",
+      "verdict_emoji": "mixed",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 3 reviews — take these numbers with a grain of salt",
+      "trend_summary": "Trending downward recently",
+      "grade_probabilities": {
+        "A range": 100.0,
+        "B range": 0.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "comment": "Overall, he's a bore with weekly PAPERS and an even more complex and pointless final project! Repeatedly submitting something is simply pointless, he is very untimely in giving out grades and only follows the grading rubric form without any useful comments, take his class ready for inexplicable colloquialisms and a lot of pointless work, run!!!!!!",
+          "class_name": "UGPH-50",
+          "grade": "Not sure yet",
+          "date": "2025-05-04",
+          "clarity": 2,
+          "helpful": 2,
+          "difficulty": 5,
+          "score": 3.8491095890410962
+        },
+        {
+          "comment": "Professor Amegbor was understanding and informative. He does read from slides which can be monotonous. But he does try to make it engaging and funny at some moments. The course assignments and grading policy are clear. There are 2 reflection papers due every week on various environmental health topics, like built environment and noise pollution.",
+          "class_name": "UGPH-50",
+          "grade": "A-",
+          "date": "2024-08-08",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 3,
+          "score": 3.1021232876712332
+        },
+        {
+          "comment": "Professor Amegbor is very knowledgable and put a lot of work in to make sure the content in our class had a wide range of perspectives, which was appreciated. The class was mostly lectures which got a little bit boring but occasionally there would be group activities during class. He is a kind person though and wants to get to know his students",
+          "class_name": "UGPH-50",
+          "grade": "A",
+          "date": "2023-04-19",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 2,
+          "score": 1.7902739726027397
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "UGPH-50",
+          "num_reviews": 3,
+          "avg_rating": 3.3,
+          "grades": {
+            "Not sure yet": 1,
+            "A-": 1,
+            "A": 1
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 2.0,
+            "beta": 5.0,
+            "mean": 0.2857,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.0,
+            "ci_upper": 0.5988,
+            "n_ratings": 3,
+            "n_above_threshold": 0,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2285,
+            "ci_upper": 0.9144,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2285,
+            "ci_upper": 0.9144,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2285,
+            "ci_upper": 0.9144,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5,
+            "raw_mean": 3.33
+          },
+          "helpfulness": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2285,
+            "ci_upper": 0.9144,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5,
+            "raw_mean": 3.33
+          },
+          "difficulty": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2285,
+            "ci_upper": 0.9144,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 1.5,
+            "raw_mean": 3.33
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 4.0,
+          "beta": 2.0,
+          "mean": 0.6667,
+          "variance": 0.031746,
+          "std": 0.1782,
+          "ci_lower": 0.3174,
+          "ci_upper": 1.0,
+          "n_ratings": 2,
+          "n_above_threshold": 2,
+          "threshold": 3.0
+        }
+      },
+      "category_sentiment": {
+        "workload": {
+          "mean_sentiment": 2.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        },
+        "lectures": {
+          "mean_sentiment": 4.0,
+          "n_reviews": 2,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2023-04",
+          "2024-08",
+          "2025-05"
+        ],
+        "train_ratings": [
+          4.0,
+          4.0,
+          2.0
+        ],
+        "pred_dates": [
+          "2023-04",
+          "2023-05",
+          "2023-07",
+          "2023-08",
+          "2023-09",
+          "2023-11",
+          "2023-12",
+          "2024-01",
+          "2024-02",
+          "2024-04",
+          "2024-05",
+          "2024-06",
+          "2024-08",
+          "2024-09",
+          "2024-10",
+          "2024-11",
+          "2025-01",
+          "2025-02",
+          "2025-03",
+          "2025-05"
+        ],
+        "pred_mean": [
+          2.253,
+          2.252,
+          2.184,
+          2.075,
+          1.959,
+          1.867,
+          1.825,
+          1.845,
+          1.922,
+          2.04,
+          2.171,
+          2.285,
+          2.358,
+          2.372,
+          2.321,
+          2.209,
+          2.047,
+          1.852,
+          1.638,
+          1.419
+        ],
+        "pred_std": [
+          0.667,
+          0.685,
+          0.731,
+          0.789,
+          0.843,
+          0.88,
+          0.894,
+          0.882,
+          0.848,
+          0.797,
+          0.739,
+          0.689,
+          0.659,
+          0.653,
+          0.663,
+          0.673,
+          0.674,
+          0.665,
+          0.654,
+          0.657
+        ],
+        "pred_ci_lower": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.066,
+          1.092,
+          1.022,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "pred_ci_upper": [
+          3.56,
+          3.595,
+          3.617,
+          3.621,
+          3.611,
+          3.592,
+          3.577,
+          3.574,
+          3.584,
+          3.602,
+          3.619,
+          3.635,
+          3.65,
+          3.652,
+          3.62,
+          3.528,
+          3.368,
+          3.155,
+          2.92,
+          2.707
+        ],
+        "n_data_points": 3,
+        "date_range": "2023-04 to 2025-05"
+      },
+      "grade_distribution": {
+        "A-": 1,
+        "A": 1
+      },
+      "top_tags": [
+        {
+          "tag": "Get ready to read",
+          "count": 2
+        },
+        {
+          "tag": "Group projects",
+          "count": 2
+        },
+        {
+          "tag": "So many papers",
+          "count": 1
+        },
+        {
+          "tag": "Lecture heavy",
+          "count": 2
+        },
+        {
+          "tag": "Accessible outside class",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "professor_id": "VGVhY2hlci0xOTkzNjc3",
+      "legacy_id": 1993677,
+      "name": "Andrew Sinclair",
+      "department": "Research",
+      "summary": {
+        "avg_rating": 3.2,
+        "avg_difficulty": 4,
+        "num_ratings": 8,
+        "would_take_again_pct": 80
+      },
+      "verdict": "Mixed reviews — experiences vary a lot between students. But trending upward recently",
+      "verdict_emoji": "mixed",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 8 reviews — take these numbers with a grain of salt",
+      "trend_summary": "Significantly improving over time",
+      "grade_probabilities": {
+        "A range": 80.0,
+        "B range": 20.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "comment": "Fall 2015 was Andys first semester at NYU, he is very young and comes across as super excited and wanting to share absolutely everything he knows. This desire to share leads to many tangents and for the student, much confusion. Also, has a bad habit of using American football to illustrate examples.",
+          "class_name": "STATS101",
+          "grade": "",
+          "date": "2015-03-24",
+          "clarity": 1,
+          "helpful": 2,
+          "difficulty": 5,
+          "score": 6.5
+        },
+        {
+          "comment": "I would not take this professor ever again. For example, there were questions on the exam from optional readings; optional readings! Oh, and there were 2 midterms. Takes himself way too seriously and grades like you're his own kid. This is a graduate course, where assignments aren't supposed to be graded as harshly.",
+          "class_name": "101",
+          "grade": "B",
+          "date": "2015-05-29",
+          "clarity": 1,
+          "helpful": 3,
+          "difficulty": 5,
+          "score": 5.585
+        },
+        {
+          "comment": "Andy's class is tough in some ways: the midterm is long, the homework is nearly incomprehensible if you skip lab, and the final project is pretty serious for an undergraduate course. However, he's a super fair grader and extraordinarily kind, patient person who does his best to make stats accessible and interesting. One of the best at NYU!",
+          "class_name": "UPADMGP111",
+          "grade": "A",
+          "date": "2018-02-11",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.705
+        },
+        {
+          "comment": "Took him for Politics of PP. Super nice and knowledgeable guy but class can drag on sometimes since it's almost 3 hours long. I didn't really read toward the end of the semester and still did well on the exam/assignments. My recommendation is go over the slides and pay attention to the real-world examples he gives for the material.",
+          "class_name": "UPADMGP101",
+          "grade": "A",
+          "date": "2017-04-12",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 3,
+          "score": 1.665
+        },
+        {
+          "comment": "His class was pretty tough considering that it's stat 1&2 material in one semester but prof Sinclair really does want you to do well in class and is very accessible and fair. Once you dig through all the information he gives you (which is a LOT, relevant or not) the class is really interesting. Plus his TA Brett is really helpful.",
+          "class_name": "UPADMGP111",
+          "grade": "",
+          "date": "2016-11-13",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 4,
+          "score": 1.66
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "UPADMGP111",
+          "num_reviews": 2,
+          "avg_rating": 4.5,
+          "grades": {
+            "A": 1
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 4.0,
+            "beta": 8.0,
+            "mean": 0.3333,
+            "variance": 0.017094,
+            "std": 0.1307,
+            "ci_lower": 0.0771,
+            "ci_upper": 0.5896,
+            "n_ratings": 8,
+            "n_above_threshold": 2,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 6.0,
+            "beta": 6.0,
+            "mean": 0.5,
+            "variance": 0.019231,
+            "std": 0.1387,
+            "ci_lower": 0.2282,
+            "ci_upper": 0.7718,
+            "n_ratings": 8,
+            "n_above_threshold": 4,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 7.0,
+            "beta": 5.0,
+            "mean": 0.5833,
+            "variance": 0.018697,
+            "std": 0.1367,
+            "ci_lower": 0.3153,
+            "ci_upper": 0.8513,
+            "n_ratings": 8,
+            "n_above_threshold": 5,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 6.0,
+            "beta": 6.0,
+            "mean": 0.5,
+            "variance": 0.019231,
+            "std": 0.1387,
+            "ci_lower": 0.2282,
+            "ci_upper": 0.7718,
+            "n_ratings": 8,
+            "n_above_threshold": 4,
+            "threshold": 3.5,
+            "raw_mean": 3.0
+          },
+          "helpfulness": {
+            "alpha": 6.0,
+            "beta": 6.0,
+            "mean": 0.5,
+            "variance": 0.019231,
+            "std": 0.1387,
+            "ci_lower": 0.2282,
+            "ci_upper": 0.7718,
+            "n_ratings": 8,
+            "n_above_threshold": 4,
+            "threshold": 3.5,
+            "raw_mean": 3.38
+          },
+          "difficulty": {
+            "alpha": 5.0,
+            "beta": 7.0,
+            "mean": 0.4167,
+            "variance": 0.018697,
+            "std": 0.1367,
+            "ci_lower": 0.1487,
+            "ci_upper": 0.6847,
+            "n_ratings": 8,
+            "n_above_threshold": 3,
+            "threshold": 1.5,
+            "raw_mean": 4.0
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 6.0,
+          "beta": 3.0,
+          "mean": 0.6667,
+          "variance": 0.022222,
+          "std": 0.1491,
+          "ci_lower": 0.3745,
+          "ci_upper": 0.9588,
+          "n_ratings": 5,
+          "n_above_threshold": 4,
+          "threshold": 3.0
+        }
+      },
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 4.2,
+          "n_reviews": 5,
+          "pct_positive": 80.0
+        },
+        "workload": {
+          "mean_sentiment": 1.5,
+          "n_reviews": 2,
+          "pct_positive": 0.0
+        },
+        "approachability": {
+          "mean_sentiment": 1.5,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        },
+        "exams": {
+          "mean_sentiment": 1.5,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2015-03",
+          "2015-05",
+          "2015-05",
+          "2016-11",
+          "2017-04",
+          "2017-05",
+          "2018-02",
+          "2018-05"
+        ],
+        "train_ratings": [
+          1.5,
+          1.0,
+          2.0,
+          4.0,
+          4.0,
+          5.0,
+          5.0,
+          3.0
+        ],
+        "pred_dates": [
+          "2015-03",
+          "2015-05",
+          "2015-07",
+          "2015-09",
+          "2015-11",
+          "2016-01",
+          "2016-03",
+          "2016-05",
+          "2016-07",
+          "2016-09",
+          "2016-11",
+          "2017-01",
+          "2017-03",
+          "2017-05",
+          "2017-07",
+          "2017-09",
+          "2017-11",
+          "2018-01",
+          "2018-03",
+          "2018-05"
+        ],
+        "pred_mean": [
+          1.157,
+          1.194,
+          1.128,
+          1.005,
+          0.901,
+          0.898,
+          1.053,
+          1.384,
+          1.856,
+          2.398,
+          2.914,
+          3.325,
+          3.587,
+          3.704,
+          3.718,
+          3.67,
+          3.567,
+          3.381,
+          3.071,
+          2.623
+        ],
+        "pred_std": [
+          0.503,
+          0.47,
+          0.572,
+          0.72,
+          0.842,
+          0.909,
+          0.917,
+          0.873,
+          0.788,
+          0.688,
+          0.595,
+          0.527,
+          0.497,
+          0.526,
+          0.595,
+          0.646,
+          0.641,
+          0.589,
+          0.548,
+          0.579
+        ],
+        "pred_ci_lower": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.05,
+          1.748,
+          2.292,
+          2.613,
+          2.673,
+          2.552,
+          2.404,
+          2.311,
+          2.227,
+          1.997,
+          1.488
+        ],
+        "pred_ci_upper": [
+          2.143,
+          2.115,
+          2.249,
+          2.416,
+          2.551,
+          2.68,
+          2.85,
+          3.095,
+          3.4,
+          3.746,
+          4.08,
+          4.358,
+          4.561,
+          4.735,
+          4.884,
+          4.936,
+          4.823,
+          4.535,
+          4.145,
+          3.758
+        ],
+        "n_data_points": 8,
+        "date_range": "2015-03 to 2018-05"
+      },
+      "grade_distribution": {
+        "A": 2,
+        "A-": 2,
+        "B": 1
+      },
+      "top_tags": [
+        {
+          "tag": "Tough grader",
+          "count": 1
+        },
+        {
+          "tag": "Get ready to read",
+          "count": 2
+        },
+        {
+          "tag": "Skip class? You won't pass.",
+          "count": 1
+        },
+        {
+          "tag": "Tests are tough",
+          "count": 1
+        },
+        {
+          "tag": "Gives good feedback",
+          "count": 1
+        },
+        {
+          "tag": "Inspirational",
+          "count": 2
+        },
+        {
+          "tag": "Lots of homework",
+          "count": 1
+        },
+        {
+          "tag": "Caring",
+          "count": 1
+        },
+        {
+          "tag": "Lecture heavy",
+          "count": 1
+        },
+        {
+          "tag": "Graded by few things",
+          "count": 1
+        },
+        {
+          "tag": "Accessible outside class",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "professor_id": "VGVhY2hlci0yNTA1MTg4",
+      "legacy_id": 2505188,
+      "name": "David Quirk",
+      "department": "Public Health",
+      "summary": {
+        "avg_rating": 4.8,
+        "avg_difficulty": 3,
+        "num_ratings": 5,
+        "would_take_again_pct": 100
+      },
+      "verdict": "Solid pick — well-liked with reasonable difficulty",
+      "verdict_emoji": "good",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 5 reviews — take these numbers with a grain of salt",
+      "trend_summary": "Consistently highly rated",
+      "grade_probabilities": {
+        "A range": 100.0,
+        "B range": 0.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "comment": "One of the most practical and useful classes I took for my MHA degree. He gave real world examples of how the info/topics in the weekly readings and lectures applied to the different types of healthcare professions of students in the class. He explained how it all connects, making it relevant and interesting. Very interactive, takes attendance.",
+          "class_name": "HPAMGP4848",
+          "grade": "A",
+          "date": "2019-07-11",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.73
+        },
+        {
+          "comment": "David Quirk personifies all you hope to find in a professional graduate program professor. His class delved into timely topics that other courses did not touch. His demeanor allows for difficult concepts to be understood and he's very receptive to questions. His professional career is so impressive, and is a real benefit to graduate students!",
+          "class_name": "GP4848",
+          "grade": "",
+          "date": "2019-09-13",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.72
+        },
+        {
+          "comment": "David was a great professor. Learned a lot in his class - very lecture heavy. But he is super helpful if you have any questions. The class tends to go over but that is because he is really passionate about the topic on hand, which is a great thing. I wish there were more papers in this class because he gives really good feedback on them.",
+          "class_name": "HPAM4848",
+          "grade": "",
+          "date": "2019-07-12",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.695
+        },
+        {
+          "comment": "Initially took this class to fill grade requirements, I was pleasantly surprised by the professor and the material. It was only a 7 week class so there is a lot of information to get through but he made it interesting. Besides schooling you on the content at hand, he offered up some great overall life advice.",
+          "class_name": "HPAMGP4848",
+          "grade": "A",
+          "date": "2019-07-17",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.55
+        },
+        {
+          "comment": "Extremely responsive and accessible outside class. The course was heavy on PowerPoints, but it's excellent information and he's always willing to clarify.",
+          "class_name": "HPAM4848",
+          "grade": "A",
+          "date": "2019-07-24",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 3,
+          "score": 0.77
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "HPAM4848",
+          "num_reviews": 2,
+          "avg_rating": 4.5,
+          "grades": {
+            "A": 1
+          }
+        },
+        {
+          "class_name": "HPAMGP4848",
+          "num_reviews": 2,
+          "avg_rating": 5.0,
+          "grades": {
+            "A": 2
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 6.0,
+            "beta": 3.0,
+            "mean": 0.6667,
+            "variance": 0.022222,
+            "std": 0.1491,
+            "ci_lower": 0.3745,
+            "ci_upper": 0.9588,
+            "n_ratings": 5,
+            "n_above_threshold": 4,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 7.0,
+            "beta": 2.0,
+            "mean": 0.7778,
+            "variance": 0.017284,
+            "std": 0.1315,
+            "ci_lower": 0.5201,
+            "ci_upper": 1.0,
+            "n_ratings": 5,
+            "n_above_threshold": 5,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 7.0,
+            "beta": 2.0,
+            "mean": 0.7778,
+            "variance": 0.017284,
+            "std": 0.1315,
+            "ci_lower": 0.5201,
+            "ci_upper": 1.0,
+            "n_ratings": 5,
+            "n_above_threshold": 5,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 7.0,
+            "beta": 2.0,
+            "mean": 0.7778,
+            "variance": 0.017284,
+            "std": 0.1315,
+            "ci_lower": 0.5201,
+            "ci_upper": 1.0,
+            "n_ratings": 5,
+            "n_above_threshold": 5,
+            "threshold": 3.5,
+            "raw_mean": 4.8
+          },
+          "helpfulness": {
+            "alpha": 7.0,
+            "beta": 2.0,
+            "mean": 0.7778,
+            "variance": 0.017284,
+            "std": 0.1315,
+            "ci_lower": 0.5201,
+            "ci_upper": 1.0,
+            "n_ratings": 5,
+            "n_above_threshold": 5,
+            "threshold": 3.5,
+            "raw_mean": 4.8
+          },
+          "difficulty": {
+            "alpha": 7.0,
+            "beta": 2.0,
+            "mean": 0.7778,
+            "variance": 0.017284,
+            "std": 0.1315,
+            "ci_lower": 0.5201,
+            "ci_upper": 1.0,
+            "n_ratings": 5,
+            "n_above_threshold": 5,
+            "threshold": 1.5,
+            "raw_mean": 3.0
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 7.0,
+          "beta": 2.0,
+          "mean": 0.7778,
+          "variance": 0.017284,
+          "std": 0.1315,
+          "ci_lower": 0.5201,
+          "ci_upper": 1.0,
+          "n_ratings": 5,
+          "n_above_threshold": 5,
+          "threshold": 3.0
+        }
+      },
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 4.8,
+          "n_reviews": 5,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-09"
+        ],
+        "train_ratings": [
+          5.0,
+          5.0,
+          5.0,
+          4.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-07",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-08",
+          "2019-09",
+          "2019-09",
+          "2019-09",
+          "2019-09"
+        ],
+        "pred_mean": [
+          4.139,
+          4.147,
+          4.152,
+          4.157,
+          4.16,
+          4.161,
+          4.161,
+          4.16,
+          4.158,
+          4.154,
+          4.149,
+          4.142,
+          4.134,
+          4.125,
+          4.114,
+          4.102,
+          4.089,
+          4.074,
+          4.058,
+          4.041
+        ],
+        "pred_std": [
+          0.382,
+          0.379,
+          0.377,
+          0.375,
+          0.374,
+          0.374,
+          0.375,
+          0.376,
+          0.378,
+          0.38,
+          0.384,
+          0.387,
+          0.392,
+          0.397,
+          0.402,
+          0.408,
+          0.414,
+          0.421,
+          0.429,
+          0.436
+        ],
+        "pred_ci_lower": [
+          3.39,
+          3.404,
+          3.413,
+          3.422,
+          3.427,
+          3.428,
+          3.426,
+          3.423,
+          3.417,
+          3.409,
+          3.396,
+          3.383,
+          3.366,
+          3.347,
+          3.326,
+          3.302,
+          3.278,
+          3.249,
+          3.217,
+          3.186
+        ],
+        "pred_ci_upper": [
+          4.888,
+          4.89,
+          4.891,
+          4.892,
+          4.893,
+          4.894,
+          4.896,
+          4.897,
+          4.899,
+          4.899,
+          4.902,
+          4.901,
+          4.902,
+          4.903,
+          4.902,
+          4.902,
+          4.9,
+          4.899,
+          4.899,
+          4.896
+        ],
+        "n_data_points": 5,
+        "date_range": "2019-07 to 2019-09"
+      },
+      "grade_distribution": {
+        "A": 3
+      },
+      "top_tags": [
+        {
+          "tag": "Participation matters",
+          "count": 1
+        },
+        {
+          "tag": "Group projects",
+          "count": 2
+        },
+        {
+          "tag": "Amazing lectures ",
+          "count": 1
+        },
+        {
+          "tag": "Gives good feedback",
+          "count": 3
+        },
+        {
+          "tag": "Hilarious",
+          "count": 1
+        },
+        {
+          "tag": "Caring",
+          "count": 1
+        },
+        {
+          "tag": "Respected",
+          "count": 1
+        },
+        {
+          "tag": "Lecture heavy",
+          "count": 1
+        },
+        {
+          "tag": "Accessible outside class",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "professor_id": "VGVhY2hlci0yNjAzODQ4",
+      "legacy_id": 2603848,
+      "name": "JT Thazhathel",
+      "department": "Public Health",
+      "summary": {
+        "avg_rating": 4.7,
+        "avg_difficulty": 3.4,
+        "num_ratings": 7,
+        "would_take_again_pct": 100
+      },
+      "verdict": "Good teacher but expect a challenge. And trending downward",
+      "verdict_emoji": "good",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 7 reviews — take these numbers with a grain of salt",
+      "trend_summary": "Declining over time",
+      "grade_probabilities": {
+        "A range": 50.0,
+        "B range": 50.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "comment": "HELPED ME BETTER UNDERSTAND ACCOUNTING, THE FIRST ACCOUNTING CLASS WAS TOUGH AND I STRUGGLED BUT I ENJOYED THIS CLASS BECAUSE THE PROFESSOR ACTUALLY EXPLAINED CONCEPTS IN SIMPLE TERMS AND DIDN'T JUST READ OFF THE TEXTBOOK LIKE OTHER INSTRUCTORS, CREATED EXCEL PROBLEMS FOR US TO PRACTICE WITH AS WELL",
+          "class_name": "MAHO1841",
+          "grade": "B+",
+          "date": "2021-01-06",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 4,
+          "score": 1.5
+        },
+        {
+          "comment": "Professor Thazhathel is great. He is organized and ensures we have everything we need to complete assignments, HWs and exams. He always made time for us outside of class as well. He makes learning accounting interesting.",
+          "class_name": "ACHM1822",
+          "grade": "A-",
+          "date": "2020-09-05",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 1.1
+        },
+        {
+          "comment": "Excellent professor, very patient and goes the extra mile to provide extra notes and application tips to better understand the case studies.",
+          "class_name": "MAHO1841",
+          "grade": "",
+          "date": "2020-12-02",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 0.7
+        },
+        {
+          "comment": "Younger professor, great experience in his course. He gives lots of practice problems and is available outside of class and office hours.",
+          "class_name": "ACHM1822",
+          "grade": "",
+          "date": "2020-08-12",
+          "clarity": 4,
+          "helpful": 4,
+          "difficulty": 3,
+          "score": 0.685
+        },
+        {
+          "comment": "Awesome instructor, makes best use of class time and breaks down materials well and brings tons of energy to our evening class",
+          "class_name": "MAHO1841",
+          "grade": "",
+          "date": "2021-07-28",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 2,
+          "score": 0.63
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "ACHM1822",
+          "num_reviews": 4,
+          "avg_rating": 4.8,
+          "grades": {
+            "A-": 1
+          }
+        },
+        {
+          "class_name": "MAHO1841",
+          "num_reviews": 3,
+          "avg_rating": 4.7,
+          "grades": {
+            "B+": 1
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 7.0,
+            "beta": 4.0,
+            "mean": 0.6364,
+            "variance": 0.019284,
+            "std": 0.1389,
+            "ci_lower": 0.3642,
+            "ci_upper": 0.9085,
+            "n_ratings": 7,
+            "n_above_threshold": 5,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 9.0,
+            "beta": 2.0,
+            "mean": 0.8182,
+            "variance": 0.012397,
+            "std": 0.1113,
+            "ci_lower": 0.6,
+            "ci_upper": 1.0,
+            "n_ratings": 7,
+            "n_above_threshold": 7,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 9.0,
+            "beta": 2.0,
+            "mean": 0.8182,
+            "variance": 0.012397,
+            "std": 0.1113,
+            "ci_lower": 0.6,
+            "ci_upper": 1.0,
+            "n_ratings": 7,
+            "n_above_threshold": 7,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 9.0,
+            "beta": 2.0,
+            "mean": 0.8182,
+            "variance": 0.012397,
+            "std": 0.1113,
+            "ci_lower": 0.6,
+            "ci_upper": 1.0,
+            "n_ratings": 7,
+            "n_above_threshold": 7,
+            "threshold": 3.5,
+            "raw_mean": 4.71
+          },
+          "helpfulness": {
+            "alpha": 9.0,
+            "beta": 2.0,
+            "mean": 0.8182,
+            "variance": 0.012397,
+            "std": 0.1113,
+            "ci_lower": 0.6,
+            "ci_upper": 1.0,
+            "n_ratings": 7,
+            "n_above_threshold": 7,
+            "threshold": 3.5,
+            "raw_mean": 4.71
+          },
+          "difficulty": {
+            "alpha": 5.0,
+            "beta": 6.0,
+            "mean": 0.4545,
+            "variance": 0.020661,
+            "std": 0.1437,
+            "ci_lower": 0.1728,
+            "ci_upper": 0.7363,
+            "n_ratings": 7,
+            "n_above_threshold": 3,
+            "threshold": 1.5,
+            "raw_mean": 3.43
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 9.0,
+          "beta": 2.0,
+          "mean": 0.8182,
+          "variance": 0.012397,
+          "std": 0.1113,
+          "ci_lower": 0.6,
+          "ci_upper": 1.0,
+          "n_ratings": 7,
+          "n_above_threshold": 7,
+          "threshold": 3.0
+        }
+      },
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 4.71,
+          "n_reviews": 7,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2020-06",
+          "2020-08",
+          "2020-08",
+          "2020-09",
+          "2020-12",
+          "2021-01",
+          "2021-07"
+        ],
+        "train_ratings": [
+          5.0,
+          4.0,
+          5.0,
+          5.0,
+          5.0,
+          4.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2020-06",
+          "2020-06",
+          "2020-07",
+          "2020-08",
+          "2020-08",
+          "2020-09",
+          "2020-10",
+          "2020-11",
+          "2020-11",
+          "2020-12",
+          "2021-01",
+          "2021-02",
+          "2021-02",
+          "2021-03",
+          "2021-04",
+          "2021-04",
+          "2021-05",
+          "2021-06",
+          "2021-07",
+          "2021-07"
+        ],
+        "pred_mean": [
+          3.738,
+          3.914,
+          4.059,
+          4.168,
+          4.244,
+          4.287,
+          4.299,
+          4.285,
+          4.247,
+          4.192,
+          4.122,
+          4.041,
+          3.951,
+          3.855,
+          3.752,
+          3.643,
+          3.525,
+          3.399,
+          3.263,
+          3.114
+        ],
+        "pred_std": [
+          0.492,
+          0.448,
+          0.413,
+          0.388,
+          0.376,
+          0.375,
+          0.384,
+          0.401,
+          0.423,
+          0.449,
+          0.475,
+          0.5,
+          0.524,
+          0.544,
+          0.562,
+          0.576,
+          0.589,
+          0.602,
+          0.617,
+          0.634
+        ],
+        "pred_ci_lower": [
+          2.774,
+          3.036,
+          3.25,
+          3.408,
+          3.507,
+          3.552,
+          3.546,
+          3.499,
+          3.418,
+          3.312,
+          3.191,
+          3.061,
+          2.924,
+          2.789,
+          2.65,
+          2.514,
+          2.371,
+          2.219,
+          2.054,
+          1.871
+        ],
+        "pred_ci_upper": [
+          4.702,
+          4.792,
+          4.868,
+          4.928,
+          4.981,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          4.978,
+          4.921,
+          4.854,
+          4.772,
+          4.679,
+          4.579,
+          4.472,
+          4.357
+        ],
+        "n_data_points": 7,
+        "date_range": "2020-06 to 2021-07"
+      },
+      "grade_distribution": {
+        "B+": 1,
+        "A-": 1
+      },
+      "top_tags": [
+        {
+          "tag": "Amazing lectures ",
+          "count": 1
+        },
+        {
+          "tag": "Clear grading criteria",
+          "count": 1
+        },
+        {
+          "tag": "Gives good feedback",
+          "count": 5
+        },
+        {
+          "tag": "Hilarious",
+          "count": 5
+        },
+        {
+          "tag": "Accessible outside class",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

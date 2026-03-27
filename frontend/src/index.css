@@ -4,55 +4,56 @@
 
 @layer base {
   :root {
-    --bg-primary: #0f1117;
-    --bg-secondary: #161822;
-    --bg-tertiary: #1c1f2e;
-    --bg-card: #1a1d2b;
-    --bg-card-hover: #1f2335;
-    --bg-elevated: #232738;
-    --border: #2a2e3f;
-    --border-hover: #363b50;
-    --text-primary: #e4e5ea;
-    --text-secondary: #9ca0b0;
-    --text-tertiary: #6b7089;
-    --accent: #818cf8;
-    --accent-dim: #6366f1;
-    --accent-bg: rgba(99, 102, 241, 0.1);
-    --accent-border: rgba(99, 102, 241, 0.25);
-    --green: #34d399;
-    --green-bg: rgba(52, 211, 153, 0.1);
-    --yellow: #fbbf24;
-    --yellow-bg: rgba(251, 191, 36, 0.1);
-    --red: #f87171;
-    --red-bg: rgba(248, 113, 113, 0.1);
-    --orange: #fb923c;
-    --orange-bg: rgba(251, 146, 60, 0.1);
+    --bg-0: #13111C;
+    --bg-1: #1a1725;
+    --bg-2: #201d2e;
+    --bg-3: #272336;
+    --bg-hover: #2d293f;
+    --border: #332f47;
+    --border-hover: #443f5c;
+    --text-1: #F4F0FA;
+    --text-2: #AEA8C1;
+    --text-3: #736D8C;
+    --accent: #C9A0FF;
+    --accent-bright: #E0C1FF;
+    --accent-dim: #A47AD4;
+    --accent-bg: rgba(201, 160, 255, 0.07);
+    --accent-border: rgba(201, 160, 255, 0.18);
+    --green: #77DD77;
+    --green-bright: #a3e8a3;
+    --green-bg: rgba(119, 221, 119, 0.08);
+    --yellow: #FFD166;
+    --yellow-bg: rgba(255, 209, 102, 0.08);
+    --red: #FF6B6B;
+    --red-bg: rgba(255, 107, 107, 0.08);
+    --orange: #FFA06B;
+    --orange-bg: rgba(255, 160, 107, 0.08);
   }
-  body {
-    background-color: var(--bg-primary);
-    color: var(--text-primary);
-  }
-  ::selection { background: var(--accent); color: white; }
+  body { background: var(--bg-0); color: var(--text-1); }
+  ::selection { background: var(--accent-dim); color: white; }
 }
 
 @layer components {
-  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; }
+  .card { background: var(--bg-1); border: 1px solid var(--border); border-radius: 12px; }
   .card-hover { @apply card; transition: all 0.15s; cursor: pointer; }
-  .card-hover:hover { background: var(--bg-card-hover); border-color: var(--border-hover); }
-  .input-dark { background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); border-radius: 0.75rem; font-size: 0.875rem; padding: 0.625rem 0.75rem; outline: none; transition: border-color 0.15s; }
+  .card-hover:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+  .input-dark { background: var(--bg-2); border: 1px solid var(--border); color: var(--text-1); border-radius: 10px; font-size: 0.875rem; padding: 0.6rem 0.85rem; outline: none; transition: all 0.15s; }
   .input-dark:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-bg); }
-  .input-dark::placeholder { color: var(--text-tertiary); }
-  .select-dark { background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-secondary); border-radius: 0.75rem; font-size: 0.875rem; padding: 0.625rem 0.75rem; cursor: pointer; }
-  .btn-primary { background: var(--accent-dim); color: white; font-weight: 500; font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
-  .btn-primary:hover { background: var(--accent); }
-  .btn-secondary { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); font-weight: 500; font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
-  .btn-secondary:hover { background: var(--bg-elevated); border-color: var(--border-hover); color: var(--text-primary); }
+  .input-dark::placeholder { color: var(--text-3); }
+  .select-dark { background: var(--bg-2); border: 1px solid var(--border); color: var(--text-2); border-radius: 10px; font-size: 0.875rem; padding: 0.6rem 0.85rem; cursor: pointer; }
+  .btn-primary { background: var(--accent-dim); color: white; font-weight: 600; font-size: 0.8125rem; padding: 0.55rem 1.1rem; border-radius: 10px; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.45rem; }
+  .btn-primary:hover { background: var(--accent); color: var(--bg-0); }
+  .btn-secondary { background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); font-weight: 500; font-size: 0.8125rem; padding: 0.55rem 1.1rem; border-radius: 10px; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.45rem; }
+  .btn-secondary:hover { background: var(--bg-hover); border-color: var(--border-hover); color: var(--text-1); }
+  .badge-green { background: var(--green-bg); color: var(--green); font-size: 0.6875rem; font-weight: 500; padding: 0.15rem 0.55rem; border-radius: 6px; }
+  .badge-yellow { background: var(--yellow-bg); color: var(--yellow); font-size: 0.6875rem; font-weight: 500; padding: 0.15rem 0.55rem; border-radius: 6px; }
+  .badge-red { background: var(--red-bg); color: var(--red); font-size: 0.6875rem; font-weight: 500; padding: 0.15rem 0.55rem; border-radius: 6px; }
 }
 
 .recharts-cartesian-grid line { stroke: var(--border) !important; }
-.recharts-text { fill: var(--text-tertiary) !important; }
-.recharts-tooltip-wrapper .recharts-default-tooltip { background: var(--bg-elevated) !important; border: 1px solid var(--border) !important; border-radius: 0.5rem !important; color: var(--text-primary) !important; }
+.recharts-text { fill: var(--text-3) !important; }
+.recharts-tooltip-wrapper .recharts-default-tooltip { background: var(--bg-3) !important; border: 1px solid var(--border) !important; border-radius: 8px !important; color: var(--text-1) !important; }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-select option { background: var(--bg-secondary); color: var(--text-primary); }
+select option { background: var(--bg-2); color: var(--text-1); }
