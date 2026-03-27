@@ -43,6 +43,14 @@ export default function App() {
 
   useEffect(() => { fetch(`${API_BASE}/api/schools`).then(r => r.json()).then(d => setSchools(d.schools || [])).catch(() => {}) }, [])
 
+  // Keep-alive ping every 10 min to prevent Render free tier sleep
+  useEffect(() => {
+    const interval = setInterval(() => {
+      fetch(`${API_BASE}/api/health`).catch(() => {})
+    }, 10 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [])
+
   useEffect(() => {
     if (!school) return
     setLoading(true)
@@ -166,6 +174,16 @@ export default function App() {
           </div>
         )}
       </main>
+      <footer className="max-w-6xl mx-auto px-4 py-6 mt-8" style={{ borderTop: '1px solid var(--border)' }}>
+        <p className="text-[11px] leading-relaxed" style={{ color: 'var(--text-3)' }}>
+          ProfInsight is an independent, non-commercial academic project. Not affiliated with or endorsed by RateMyProfessor.
+          Review data is sourced from publicly accessible pages on RateMyProfessors.com and transformed through original Bayesian statistical analysis.
+          All analysis, ratings, verdicts, and predictions are computed by ProfInsight's own models and may not reflect the views of any university or platform.
+          This tool is provided as-is for informational purposes only.
+          <span className="mx-1">·</span>
+          <a href="https://github.com/thesanatt/profinsight" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>GitHub</a>
+        </p>
+      </footer>
     </div>
   )
 }

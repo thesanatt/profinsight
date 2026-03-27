@@ -95,15 +95,17 @@ function ReviewHighlights({ reviews }) {
   if (!reviews?.length) return null
   return (
     <div className="card p-5">
-      <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-1)' }}>What students are saying</h3>
+      <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>What students are saying</h3>
+      <p className="text-[10px] mb-3" style={{ color: 'var(--text-3)' }}>Sourced from RateMyProfessor.com reviews</p>
       <div className="space-y-3">
-        {reviews.map((r, i) => (
+        {reviews.slice(0, 3).map((r, i) => (
           <div key={i} className="pl-3" style={{ borderLeft: '2px solid var(--border)' }}>
-            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)' }}>{r.comment}</p>
+            <p className="text-sm leading-relaxed" style={{ color: 'var(--text-2)' }}>{r.comment?.slice(0, 280)}{r.comment?.length > 280 ? '...' : ''}</p>
             <div className="flex gap-3 mt-1.5 text-xs" style={{ color: 'var(--text-3)' }}>
               {r.class_name && <span style={{ color: 'var(--accent)' }}>{r.class_name}</span>}
               {r.grade && <span>Grade: {r.grade}</span>}
               {r.date && <span>{r.date}</span>}
+              <a href="https://www.ratemyprofessors.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-3)' }}>via RMP</a>
             </div>
           </div>
         ))}

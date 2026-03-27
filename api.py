@@ -10,11 +10,29 @@ Usage:
 import json
 import os
 import glob
+import threading
+import time as _time
+import requests as _requests
 from fastapi import FastAPI, Query, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 
 app = FastAPI(title="ProfInsight API", version="0.2.0")
+
+# Self-ping to prevent Render free tier sleep
+def _keep_alive():
+    url = os.environ.get("RENDER_EXTERNAL_URL")
+    if not url:
+        return
+    while True:
+        _time.sleep(600)  # 10 minutes
+        try:
+            _requests.get(f"{url}/api/health", timeout=10)
+        except Exception:
+            pass
+
+_keep_alive_thread = threading.Thread(target=_keep_alive, daemon=True)
+_keep_alive_thread.start()
 
 app.add_middleware(
     CORSMiddleware,
@@ -90,6 +108,12 @@ def get_default_slug() -> str:
 def root():
     schools = discover_schools()
     return {"service": "ProfInsight API v2", "schools": len(schools)}
+
+
+@app.get("/api/health")
+def health():
+    """Health check endpoint for keep-alive pings."""
+    return {"status": "ok"}
 
 
 @app.get("/api/schools")
