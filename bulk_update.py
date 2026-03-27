@@ -19,39 +19,40 @@ import time
 import argparse
 
 # ─── Default School List ──────────────────────────────────────────────────────
-# slug: (search name, max_professors)
+# slug: (search name, max_professors, school_id_override)
+# school_id_override is used when RMP search returns the wrong campus
 
 DEFAULT_SCHOOLS = {
-    "umich": ("University of Michigan", 200),
-    "mit": ("Massachusetts Institute of Technology", 150),
-    "stanford": ("Stanford University", 150),
-    "berkeley": ("University of California Berkeley", 150),
-    "utdallas": ("University of Texas at Dallas", 150),
-    "gatech": ("Georgia Institute of Technology", 150),
-    "uiuc": ("University of Illinois Urbana-Champaign", 150),
-    "cmu": ("Carnegie Mellon University", 150),
-    "purdue": ("Purdue University", 150),
-    "umass": ("University of Massachusetts Amherst", 150),
-    "unc": ("University of North Carolina at Chapel Hill", 150),
-    "nyu": ("New York University", 150),
-    "columbia": ("Columbia University", 150),
-    "upenn": ("University of Pennsylvania", 150),
-    "cornell": ("Cornell University", 150),
-    "umd": ("University of Maryland", 150),
-    "uw": ("University of Washington", 150),
-    "ucla": ("University of California Los Angeles", 150),
-    "ucsd": ("University of California San Diego", 150),
-    "osu": ("Ohio State University", 150),
-    "wisc": ("University of Wisconsin Madison", 150),
-    "uf": ("University of Florida", 150),
-    "fsu": ("Florida State University", 150),
-    "utaustin": ("University of Texas at Austin", 150),
-    "tamu": ("Texas A&M University", 150),
-    "msu": ("Michigan State University", 150),
-    "psu": ("Penn State University", 150),
-    "bu": ("Boston University", 150),
-    "northeastern": ("Northeastern University", 150),
-    "rice": ("Rice University", 150),
+    "umich": ("University of Michigan", 200, None),
+    "mit": ("Massachusetts Institute of Technology", 150, None),
+    "stanford": ("Stanford University", 150, None),
+    "berkeley": ("University of California Berkeley", 150, None),
+    "utdallas": ("University of Texas at Dallas", 150, None),
+    "gatech": ("Georgia Institute of Technology", 150, None),
+    "uiuc": ("University of Illinois Urbana-Champaign", 150, "U2Nob29sLTExMTI="),
+    "cmu": ("Carnegie Mellon University", 150, None),
+    "purdue": ("Purdue University", 150, "U2Nob29sLTc4Mw=="),
+    "umass": ("University of Massachusetts Amherst", 150, "U2Nob29sLTE1MTM="),
+    "unc": ("University of North Carolina at Chapel Hill", 150, None),
+    "nyu": ("New York University", 150, "U2Nob29sLTY3NQ=="),
+    "columbia": ("Columbia University", 150, None),
+    "upenn": ("University of Pennsylvania", 150, None),
+    "cornell": ("Cornell University", 150, None),
+    "umd": ("University of Maryland", 150, None),
+    "uw": ("University of Washington", 150, None),
+    "ucla": ("University of California Los Angeles", 150, None),
+    "ucsd": ("University of California San Diego", 150, None),
+    "osu": ("The Ohio State University", 150, "U2Nob29sLTcyNA=="),
+    "wisc": ("University of Wisconsin Madison", 150, None),
+    "uf": ("University of Florida", 150, None),
+    "fsu": ("Florida State University", 150, None),
+    "utaustin": ("University of Texas at Austin", 150, None),
+    "tamu": ("Texas A&M University", 150, None),
+    "msu": ("Michigan State University", 200, None),
+    "psu": ("Penn State University", 150, None),
+    "bu": ("Boston University", 150, None),
+    "northeastern": ("Northeastern University", 150, None),
+    "rice": ("Rice University", 150, None),
 }
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
@@ -59,26 +60,25 @@ SCRAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rmp_scraper.
 PIPELINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bayesian_pipeline.py")
 
 
-def scrape_school(slug, name, max_profs):
+def scrape_school(slug, name, max_profs, school_id=None):
     """Scrape a single school."""
     raw_path = os.path.join(DATA_DIR, f"{slug}.json")
     analyzed_path = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
 
     print(f"\n{'='*60}")
     print(f"  {name}")
-    print(f"  Slug: {slug} | Max professors: {max_profs}")
+    print(f"  Slug: {slug} | Max professors: {max_profs}" + (f" | ID: {school_id}" if school_id else ""))
     print(f"{'='*60}")
 
     # Step 1: Scrape
     print(f"\n[1/2] Scraping from RateMyProfessor...")
     t0 = time.time()
-    result = subprocess.run(
-        [sys.executable, SCRAPER,
-         "--school", name,
-         "--max-professors", str(max_profs),
-         "--output", raw_path],
-        capture_output=True, text=True
-    )
+    cmd = [sys.executable, SCRAPER, "--output", raw_path, "--max-professors", str(max_profs)]
+    if school_id:
+        cmd.extend(["--school-id", school_id, "--school", name])
+    else:
+        cmd.extend(["--school", name])
+    result = subprocess.run(cmd, capture_output=True, text=True)
     if result.returncode != 0:
         print(f"  FAILED: {result.stderr[-300:]}")
         return False
@@ -125,7 +125,7 @@ def list_schools():
     print(f"\n{'Slug':<15} {'School':<45} {'Status':<20} {'Profs':>6} {'Reviews':>8}")
     print("-" * 100)
 
-    for slug, (name, max_p) in sorted(DEFAULT_SCHOOLS.items()):
+    for slug, (name, max_p, sid) in sorted(DEFAULT_SCHOOLS.items()):
         analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
         if os.path.exists(analyzed):
             try:
@@ -167,52 +167,52 @@ def main():
         # Add a custom school
         slug = args.add_slug or args.add.lower().replace(" ", "").replace("-", "")[:12]
         max_p = args.max_professors or 150
-        schools_to_scrape.append((slug, args.add, max_p))
+        schools_to_scrape.append((slug, args.add, max_p, None))
 
     elif args.schools:
         # Specific schools by slug
         for slug in args.schools.split(","):
             slug = slug.strip().lower()
             if slug in DEFAULT_SCHOOLS:
-                name, max_p = DEFAULT_SCHOOLS[slug]
-                schools_to_scrape.append((slug, name, args.max_professors or max_p))
+                name, max_p, sid = DEFAULT_SCHOOLS[slug]
+                schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
             else:
                 print(f"Unknown slug: {slug}. Use --list to see available schools.")
 
     elif args.refresh:
         # Re-scrape all that have existing data
-        for slug, (name, max_p) in DEFAULT_SCHOOLS.items():
+        for slug, (name, max_p, sid) in DEFAULT_SCHOOLS.items():
             analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
             if os.path.exists(analyzed):
-                schools_to_scrape.append((slug, name, args.max_professors or max_p))
+                schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
 
     elif args.all:
         # Scrape everything
-        for slug, (name, max_p) in DEFAULT_SCHOOLS.items():
-            schools_to_scrape.append((slug, name, args.max_professors or max_p))
+        for slug, (name, max_p, sid) in DEFAULT_SCHOOLS.items():
+            schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
 
     else:
         # Default: scrape schools that don't have data yet
-        for slug, (name, max_p) in DEFAULT_SCHOOLS.items():
+        for slug, (name, max_p, sid) in DEFAULT_SCHOOLS.items():
             analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
             if not os.path.exists(analyzed):
-                schools_to_scrape.append((slug, name, args.max_professors or max_p))
+                schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
 
     if not schools_to_scrape:
         print("Nothing to scrape. Use --list to see status, or --all to scrape everything.")
         return
 
     print(f"\nWill scrape {len(schools_to_scrape)} schools:")
-    for slug, name, max_p in schools_to_scrape:
-        print(f"  • {name} ({slug}, max {max_p} profs)")
+    for slug, name, max_p, sid in schools_to_scrape:
+        print(f"  • {name} ({slug}, max {max_p} profs{', ID override' if sid else ''})")
 
     total_start = time.time()
     success = 0
     failed = 0
 
-    for slug, name, max_p in schools_to_scrape:
+    for slug, name, max_p, sid in schools_to_scrape:
         try:
-            if scrape_school(slug, name, max_p):
+            if scrape_school(slug, name, max_p, school_id=sid):
                 success += 1
             else:
                 failed += 1
