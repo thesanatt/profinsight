@@ -50,7 +50,7 @@ function QuickStats({ summary, gradeProbs }) {
     { label: 'Chance of A', val: a > 0 ? a.toFixed(0) + '%' : '—', color: a >= 60 ? 'var(--green)' : null },
   ]
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+    <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
       {items.map(i => (
         <div key={i.label} className="card px-4 py-3">
           <div className="text-2xl font-bold" style={{ color: i.color || 'var(--text-1)' }}>

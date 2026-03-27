@@ -74,12 +74,12 @@ export default function ProfessorList({ professors, loading, onSelect }) {
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <div className="text-center">
-                  <div className="text-lg font-bold" style={{ color: rColor }}>{prof.avg_rating?.toFixed(1)}</div>
+                  <div className="text-base sm:text-lg font-bold" style={{ color: rColor }}>{prof.avg_rating?.toFixed(1)}</div>
                   <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Quality</div>
                 </div>
-                <div className="text-center">
+                <div className="text-center hidden sm:block">
                   <div className="text-lg font-bold" style={{ color: 'var(--text-2)' }}>{prof.avg_difficulty?.toFixed(1)}</div>
                   <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Difficulty</div>
                 </div>

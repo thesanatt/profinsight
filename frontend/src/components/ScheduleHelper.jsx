@@ -96,6 +96,9 @@ export default function ScheduleHelper({ school, onSelect, onClose }) {
             {loading ? 'Searching...' : `Find professors for ${courseTags.length} course${courseTags.length !== 1 ? 's' : ''}`}
           </button>
         )}
+        {courseTags.length === 0 && !input && (
+          <p className="text-xs mt-2" style={{ color: 'var(--text-3)' }}>Type a course code and press Enter to add it</p>
+        )}
       </div>
 
       {results && (
