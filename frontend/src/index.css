@@ -3,37 +3,56 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-gray-50 text-gray-800;
+  :root {
+    --bg-primary: #0f1117;
+    --bg-secondary: #161822;
+    --bg-tertiary: #1c1f2e;
+    --bg-card: #1a1d2b;
+    --bg-card-hover: #1f2335;
+    --bg-elevated: #232738;
+    --border: #2a2e3f;
+    --border-hover: #363b50;
+    --text-primary: #e4e5ea;
+    --text-secondary: #9ca0b0;
+    --text-tertiary: #6b7089;
+    --accent: #818cf8;
+    --accent-dim: #6366f1;
+    --accent-bg: rgba(99, 102, 241, 0.1);
+    --accent-border: rgba(99, 102, 241, 0.25);
+    --green: #34d399;
+    --green-bg: rgba(52, 211, 153, 0.1);
+    --yellow: #fbbf24;
+    --yellow-bg: rgba(251, 191, 36, 0.1);
+    --red: #f87171;
+    --red-bg: rgba(248, 113, 113, 0.1);
+    --orange: #fb923c;
+    --orange-bg: rgba(251, 146, 60, 0.1);
   }
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  ::selection { background: var(--accent); color: white; }
 }
 
 @layer components {
-  .card {
-    @apply bg-white rounded-2xl border border-gray-100 shadow-sm;
-  }
-  .card-hover {
-    @apply card transition-all duration-200 hover:shadow-md hover:border-gray-200 cursor-pointer;
-  }
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
-  }
-  .badge-green {
-    @apply badge bg-emerald-50 text-emerald-700;
-  }
-  .badge-yellow {
-    @apply badge bg-amber-50 text-amber-700;
-  }
-  .badge-red {
-    @apply badge bg-red-50 text-red-700;
-  }
-  .badge-blue {
-    @apply badge bg-blue-50 text-blue-700;
-  }
-  .stat-value {
-    @apply text-3xl font-bold tracking-tight;
-  }
-  .stat-label {
-    @apply text-xs font-medium text-gray-500 uppercase tracking-wider mt-1;
-  }
+  .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 0.75rem; }
+  .card-hover { @apply card; transition: all 0.15s; cursor: pointer; }
+  .card-hover:hover { background: var(--bg-card-hover); border-color: var(--border-hover); }
+  .input-dark { background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-primary); border-radius: 0.75rem; font-size: 0.875rem; padding: 0.625rem 0.75rem; outline: none; transition: border-color 0.15s; }
+  .input-dark:focus { border-color: var(--accent-dim); box-shadow: 0 0 0 3px var(--accent-bg); }
+  .input-dark::placeholder { color: var(--text-tertiary); }
+  .select-dark { background: var(--bg-secondary); border: 1px solid var(--border); color: var(--text-secondary); border-radius: 0.75rem; font-size: 0.875rem; padding: 0.625rem 0.75rem; cursor: pointer; }
+  .btn-primary { background: var(--accent-dim); color: white; font-weight: 500; font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-secondary { background: var(--bg-tertiary); border: 1px solid var(--border); color: var(--text-secondary); font-weight: 500; font-size: 0.875rem; padding: 0.5rem 1rem; border-radius: 0.75rem; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.5rem; }
+  .btn-secondary:hover { background: var(--bg-elevated); border-color: var(--border-hover); color: var(--text-primary); }
 }
+
+.recharts-cartesian-grid line { stroke: var(--border) !important; }
+.recharts-text { fill: var(--text-tertiary) !important; }
+.recharts-tooltip-wrapper .recharts-default-tooltip { background: var(--bg-elevated) !important; border: 1px solid var(--border) !important; border-radius: 0.5rem !important; color: var(--text-primary) !important; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+select option { background: var(--bg-secondary); color: var(--text-primary); }
