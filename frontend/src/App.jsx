@@ -5,7 +5,7 @@ import ProfessorList from './components/ProfessorList'
 import ProfessorDetail from './components/ProfessorDetail'
 import FitQuiz from './components/FitQuiz'
 import CompareMode from './components/CompareMode'
-import ScheduleHelper from './components/ScheduleHelper'
+import SemesterOptimizer from './components/SemesterOptimizer'
 
 function useHash() {
   const [hash, setHash] = useState(window.location.hash.slice(1))
@@ -127,7 +127,7 @@ export default function App() {
         ) : mode === 'compare' ? (
           <CompareMode school={school} professors={professors} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
         ) : mode === 'schedule' ? (
-          <ScheduleHelper school={school} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
+          <SemesterOptimizer school={school} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
         ) : (
           <div>
             {stats && (
@@ -149,7 +149,7 @@ export default function App() {
               </button>
               <button onClick={() => nav(`/school/${school}/schedule`)} className="btn-secondary">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                Schedule
+                Optimize semester
               </button>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 mb-4">

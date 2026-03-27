@@ -105,7 +105,7 @@ function ReviewHighlights({ reviews }) {
               {r.class_name && <span style={{ color: 'var(--accent)' }}>{r.class_name}</span>}
               {r.grade && <span>Grade: {r.grade}</span>}
               {r.date && <span>{r.date}</span>}
-              <a href="https://www.ratemyprofessors.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-3)' }}>via RMP</a>
+              <a href="https://www.ratemyprofessors.com" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--text-3)' }}>via RateMyProfessors</a>
             </div>
           </div>
         ))}

@@ -474,3 +474,137 @@ def schedule_helper(school: str, courses: str = Query(..., description="Comma-se
         )
 
     return {"courses": course_list, "results": results}
+
+
+@app.get("/api/{school}/optimize")
+def optimize_semester(
+    school: str,
+    courses: str = Query(..., description="Comma-separated course codes"),
+    preference: str = Query("balanced", description="balanced, easy, or challenge"),
+):
+    """
+    Semester optimizer — finds the best professor combination across all courses
+    and predicts overall semester difficulty and estimated GPA.
+    """
+    course_list = [c.strip().upper() for c in courses.split(",") if c.strip()]
+    profs = load_school(school).get("analysis", [])
+
+    # Build candidate professors for each course
+    course_candidates = {}
+    for course_code in course_list:
+        candidates = []
+        for p in profs:
+            for c in p.get("class_breakdown", []):
+                cname = c.get("class_name", "").strip().upper()
+                if course_code in cname or cname in course_code:
+                    summary = p.get("summary", {})
+                    bayesian = p.get("bayesian_analysis", {})
+                    good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+                    grade_probs = p.get("grade_probabilities", {})
+
+                    # Compute a composite score based on preference
+                    rating = summary.get("avg_rating") or 3.0
+                    difficulty = summary.get("avg_difficulty") or 3.0
+                    good_prob = good_post.get("mean", 0.5)
+                    wta = summary.get("would_take_again_pct")
+                    wta_score = (wta / 100) if wta and wta >= 0 else 0.5
+                    a_pct = grade_probs.get("A range", 0) / 100 if grade_probs.get("A range") else 0.3
+
+                    if preference == "easy":
+                        score = (rating / 5) * 0.2 + (1 - difficulty / 5) * 0.35 + a_pct * 0.25 + wta_score * 0.2
+                    elif preference == "challenge":
+                        score = (rating / 5) * 0.4 + good_prob * 0.3 + wta_score * 0.2 + (difficulty / 5) * 0.1
+                    else:  # balanced
+                        score = (rating / 5) * 0.3 + good_prob * 0.25 + a_pct * 0.2 + wta_score * 0.15 + (1 - difficulty / 5) * 0.1
+
+                    # Confidence penalty for few reviews
+                    n_reviews = c.get("num_reviews", 0)
+                    if n_reviews < 5:
+                        score *= 0.8
+                    elif n_reviews < 10:
+                        score *= 0.9
+
+                    candidates.append({
+                        "id": p.get("professor_id"),
+                        "name": p.get("name"),
+                        "department": p.get("department"),
+                        "verdict": p.get("verdict", ""),
+                        "verdict_emoji": p.get("verdict_emoji", ""),
+                        "avg_rating": rating,
+                        "avg_difficulty": difficulty,
+                        "would_take_again_pct": wta,
+                        "bayesian_good_prob": good_prob,
+                        "grade_probabilities": grade_probs,
+                        "course_rating": c.get("avg_rating"),
+                        "course_reviews": c.get("num_reviews", 0),
+                        "course_grades": c.get("grades", {}),
+                        "optimizer_score": round(score, 4),
+                    })
+
+        candidates.sort(key=lambda x: -x["optimizer_score"])
+        course_candidates[course_code] = candidates
+
+    # Pick the best professor for each course (the "recommended" schedule)
+    recommended = {}
+    warnings = []
+    for course_code, candidates in course_candidates.items():
+        if candidates:
+            best = candidates[0]
+            recommended[course_code] = best
+            # Generate warnings
+            if best["avg_difficulty"] >= 4.0:
+                warnings.append(f"{course_code}: {best['name']} is rated very difficult ({best['avg_difficulty']:.1f}/5)")
+            if best.get("would_take_again_pct") is not None and 0 <= best["would_take_again_pct"] < 40:
+                warnings.append(f"{course_code}: Only {best['would_take_again_pct']:.0f}% would retake with {best['name']}")
+            if best["bayesian_good_prob"] < 0.4:
+                warnings.append(f"{course_code}: {best['name']} has low confidence rating — consider alternatives")
+        else:
+            recommended[course_code] = None
+            warnings.append(f"{course_code}: No professor data found")
+
+    # Compute semester-level predictions
+    rec_profs = [v for v in recommended.values() if v]
+    if rec_profs:
+        avg_difficulty = sum(p["avg_difficulty"] for p in rec_profs) / len(rec_profs)
+        avg_rating = sum(p["avg_rating"] for p in rec_profs) / len(rec_profs)
+
+        # Estimated GPA from grade probabilities
+        gpa_map = {"A range": 3.8, "B range": 3.0, "C range": 2.0, "D/F": 0.8}
+        gpa_estimates = []
+        for p in rec_profs:
+            gp = p.get("grade_probabilities", {})
+            if any(gp.values()):
+                est = sum(gpa_map.get(k, 2.5) * (v / 100) for k, v in gp.items() if v)
+                gpa_estimates.append(est)
+        est_gpa = round(sum(gpa_estimates) / len(gpa_estimates), 2) if gpa_estimates else None
+
+        # Semester difficulty label
+        if avg_difficulty >= 4.0:
+            difficulty_label = "Very heavy semester"
+        elif avg_difficulty >= 3.5:
+            difficulty_label = "Challenging semester"
+        elif avg_difficulty >= 2.5:
+            difficulty_label = "Manageable semester"
+        else:
+            difficulty_label = "Light semester"
+    else:
+        avg_difficulty = None
+        avg_rating = None
+        est_gpa = None
+        difficulty_label = "Not enough data"
+
+    return {
+        "courses": course_list,
+        "preference": preference,
+        "recommended": recommended,
+        "alternatives": {k: v[1:4] for k, v in course_candidates.items() if len(v) > 1},
+        "semester_prediction": {
+            "avg_difficulty": round(avg_difficulty, 2) if avg_difficulty else None,
+            "avg_quality": round(avg_rating, 2) if avg_rating else None,
+            "estimated_gpa": est_gpa,
+            "difficulty_label": difficulty_label,
+            "num_courses": len(course_list),
+            "courses_with_data": len(rec_profs),
+        },
+        "warnings": warnings,
+    }
