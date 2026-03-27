@@ -96,7 +96,7 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <select value={school} onChange={e => nav(`/school/${e.target.value}`)} className="select-dark text-sm py-1.5">
+            <select value={school} onChange={e => nav(`/school/${e.target.value}`)} className="select-dark text-sm py-1.5 max-w-[200px] sm:max-w-none truncate">
               {schools.map(s => <option key={s.slug} value={s.slug}>{s.name}</option>)}
             </select>
             {cur && <span className="hidden sm:inline text-xs" style={{ color: 'var(--text-3)' }}>{cur.professors} profs · {cur.reviews?.toLocaleString()} reviews</span>}
@@ -130,7 +130,7 @@ export default function App() {
                 </p>
               </div>
             )}
-            <div className="flex gap-2 mb-4">
+            <div className="flex flex-wrap gap-2 mb-4">
               <button onClick={() => nav(`/school/${school}/quiz`)} className="btn-primary">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
                 Find my match
