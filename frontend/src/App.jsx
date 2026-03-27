@@ -9,8 +9,7 @@ import CompareMode from './components/CompareMode'
 function useHash() {
   const [hash, setHash] = useState(window.location.hash.slice(1))
   useEffect(() => { const h = () => setHash(window.location.hash.slice(1)); window.addEventListener('hashchange', h); return () => window.removeEventListener('hashchange', h) }, [])
-  const nav = useCallback(p => { window.location.hash = p }, [])
-  return { path: hash, nav }
+  return { path: hash, nav: useCallback(p => { window.location.hash = p }, []) }
 }
 
 function parseRoute(p) {
@@ -65,38 +64,40 @@ export default function App() {
 
   const cur = schools.find(s => s.slug === school)
 
+  // Landing
   if (!school) return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
-      <header style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
+    <div style={{ background: 'var(--bg-0)', minHeight: '100vh' }}>
+      <header style={{ background: 'var(--bg-1)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent-dim)' }}>
             <span className="text-white font-bold text-xs">PI</span>
           </div>
-          <span className="font-semibold" style={{ color: 'var(--text-primary)' }}>ProfInsight</span>
+          <span className="font-semibold" style={{ color: 'var(--text-1)' }}>ProfInsight</span>
         </div>
       </header>
       <Landing schools={schools} onSelectSchool={s => nav(`/school/${s}`)} />
     </div>
   )
 
+  // Main app
   return (
-    <div style={{ background: 'var(--bg-primary)', minHeight: '100vh' }}>
-      <header className="sticky top-0 z-50" style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
+    <div style={{ background: 'var(--bg-0)', minHeight: '100vh' }}>
+      <header className="sticky top-0 z-50" style={{ background: 'var(--bg-1)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => nav('')}>
             <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'var(--accent-dim)' }}>
               <span className="text-white font-bold text-xs">PI</span>
             </div>
             <div>
-              <h1 className="text-base font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>ProfInsight</h1>
-              <p className="text-[10px]" style={{ color: 'var(--text-tertiary)' }}>Know your professor before you register</p>
+              <h1 className="text-sm font-bold leading-tight" style={{ color: 'var(--text-1)' }}>ProfInsight</h1>
+              <p className="text-[10px]" style={{ color: 'var(--text-3)' }}>Know your professor before you register</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
             <select value={school} onChange={e => nav(`/school/${e.target.value}`)} className="select-dark text-sm py-1.5">
               {schools.map(s => <option key={s.slug} value={s.slug}>{s.name}</option>)}
             </select>
-            {cur && <span className="hidden sm:inline text-xs" style={{ color: 'var(--text-tertiary)' }}>{cur.professors} profs · {cur.reviews?.toLocaleString()} reviews</span>}
+            {cur && <span className="hidden sm:inline text-xs" style={{ color: 'var(--text-3)' }}>{cur.professors} profs · {cur.reviews?.toLocaleString()} reviews</span>}
           </div>
         </div>
       </header>
@@ -104,7 +105,8 @@ export default function App() {
       <main className="max-w-6xl mx-auto px-4 py-5">
         {mode === 'detail' && profDetail ? (
           <div>
-            <button onClick={() => nav(`/school/${school}`)} className="flex items-center gap-1.5 text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
+            <button onClick={() => nav(`/school/${school}`)} className="flex items-center gap-1.5 text-sm mb-4 transition-colors" style={{ color: 'var(--text-3)' }}
+              onMouseEnter={e => e.currentTarget.style.color = 'var(--text-1)'} onMouseLeave={e => e.currentTarget.style.color = 'var(--text-3)'}>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
               Back
             </button>
@@ -118,8 +120,8 @@ export default function App() {
           <div>
             {stats && (
               <div className="mb-5">
-                <h2 className="text-2xl font-bold" style={{ color: 'var(--text-primary)' }}>Find the right professor</h2>
-                <p className="text-sm mt-1" style={{ color: 'var(--text-tertiary)' }}>
+                <h2 className="text-xl font-bold" style={{ color: 'var(--text-1)' }}>Find the right professor</h2>
+                <p className="text-sm mt-1" style={{ color: 'var(--text-3)' }}>
                   {stats.total_reviews?.toLocaleString()} reviews across {stats.departments} departments at {stats.school}
                 </p>
               </div>
@@ -134,9 +136,9 @@ export default function App() {
                 Compare
               </button>
             </div>
-            <div className="flex flex-col sm:flex-row gap-2.5 mb-5">
+            <div className="flex flex-col sm:flex-row gap-2 mb-4">
               <div className="relative flex-1">
-                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-tertiary)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
                 <input type="text" placeholder="Search by name or department..." value={search} onChange={e => setSearch(e.target.value)} className="input-dark w-full pl-10" />
