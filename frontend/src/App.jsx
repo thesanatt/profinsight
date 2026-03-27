@@ -5,6 +5,7 @@ import ProfessorList from './components/ProfessorList'
 import ProfessorDetail from './components/ProfessorDetail'
 import FitQuiz from './components/FitQuiz'
 import CompareMode from './components/CompareMode'
+import ScheduleHelper from './components/ScheduleHelper'
 
 function useHash() {
   const [hash, setHash] = useState(window.location.hash.slice(1))
@@ -18,6 +19,7 @@ function parseRoute(p) {
     if (s[2] === 'prof' && s[3]) return { school: s[1], profId: decodeURIComponent(s[3]) }
     if (s[2] === 'quiz') return { school: s[1], mode: 'quiz' }
     if (s[2] === 'compare') return { school: s[1], mode: 'compare' }
+    if (s[2] === 'schedule') return { school: s[1], mode: 'schedule' }
     return { school: s[1] }
   }
   return {}
@@ -116,6 +118,8 @@ export default function App() {
           <FitQuiz school={school} departments={departments} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
         ) : mode === 'compare' ? (
           <CompareMode school={school} professors={professors} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
+        ) : mode === 'schedule' ? (
+          <ScheduleHelper school={school} onSelect={id => nav(`/school/${school}/prof/${id}`)} onClose={() => nav(`/school/${school}`)} />
         ) : (
           <div>
             {stats && (
@@ -134,6 +138,10 @@ export default function App() {
               <button onClick={() => nav(`/school/${school}/compare`)} className="btn-secondary">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>
                 Compare
+              </button>
+              <button onClick={() => nav(`/school/${school}/schedule`)} className="btn-secondary">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                Schedule
               </button>
             </div>
             <div className="flex flex-col sm:flex-row gap-2 mb-4">

@@ -380,3 +380,73 @@ def fit_quiz(
         "lectures": lectures, "approachability": approachability,
         "workload": workload,
     }, "results": scored[:limit]}
+
+
+@app.get("/api/{school}/courses")
+def list_courses(school: str, search: Optional[str] = Query(None)):
+    """List all courses with professor counts."""
+    profs = load_school(school).get("analysis", [])
+    course_map = {}
+    for p in profs:
+        for c in p.get("class_breakdown", []):
+            name = c.get("class_name", "").strip().upper()
+            if not name:
+                continue
+            if name not in course_map:
+                course_map[name] = {"name": name, "professors": [], "total_reviews": 0}
+            course_map[name]["professors"].append(p.get("name"))
+            course_map[name]["total_reviews"] += c.get("num_reviews", 0)
+
+    courses = list(course_map.values())
+    if search:
+        s = search.upper()
+        courses = [c for c in courses if s in c["name"]]
+
+    courses.sort(key=lambda x: -x["total_reviews"])
+    return {"courses": courses[:100]}
+
+
+@app.get("/api/{school}/schedule")
+def schedule_helper(school: str, courses: str = Query(..., description="Comma-separated course codes")):
+    """
+    Schedule helper — given a list of courses, return the best professor
+    options for each course with their full analysis.
+    """
+    course_list = [c.strip().upper() for c in courses.split(",") if c.strip()]
+    profs = load_school(school).get("analysis", [])
+
+    results = {}
+    for course_code in course_list:
+        results[course_code] = []
+        for p in profs:
+            for c in p.get("class_breakdown", []):
+                cname = c.get("class_name", "").strip().upper()
+                if course_code in cname or cname in course_code:
+                    bayesian = p.get("bayesian_analysis", {})
+                    good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+                    results[course_code].append({
+                        "id": p.get("professor_id"),
+                        "name": p.get("name"),
+                        "department": p.get("department"),
+                        "verdict": p.get("verdict", ""),
+                        "verdict_emoji": p.get("verdict_emoji", ""),
+                        "confidence_level": p.get("confidence_level", ""),
+                        "avg_rating": p.get("summary", {}).get("avg_rating"),
+                        "avg_difficulty": p.get("summary", {}).get("avg_difficulty"),
+                        "would_take_again_pct": p.get("summary", {}).get("would_take_again_pct"),
+                        "bayesian_good_prob": good_post.get("mean"),
+                        "grade_probabilities": p.get("grade_probabilities", {}),
+                        "course_specific": {
+                            "avg_rating": c.get("avg_rating"),
+                            "num_reviews": c.get("num_reviews"),
+                            "grades": c.get("grades", {}),
+                        },
+                    })
+
+        # Sort by course-specific rating first, then overall
+        results[course_code].sort(
+            key=lambda x: (x["course_specific"].get("avg_rating") or x.get("avg_rating") or 0),
+            reverse=True,
+        )
+
+    return {"courses": course_list, "results": results}
