@@ -749,16 +749,16 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model) -> dict:
     ci_width = (good_post.get("ci_upper", 1) - good_post.get("ci_lower", 0))
     if n >= 100 and ci_width < 0.15:
         confidence_level = "Very high"
-        confidence_detail = f"Based on {n} reviews — this is a reliable picture"
+        confidence_detail = f"Based on {n} reviews, this is a reliable picture"
     elif n >= 30 and ci_width < 0.30:
         confidence_level = "High"
-        confidence_detail = f"Based on {n} reviews — fairly reliable"
+        confidence_detail = f"Based on {n} reviews, fairly reliable"
     elif n >= 10:
         confidence_level = "Moderate"
-        confidence_detail = f"Based on {n} reviews — decent sample but could shift"
+        confidence_detail = f"Based on {n} reviews, decent sample but could shift with more data"
     else:
         confidence_level = "Low"
-        confidence_detail = f"Only {n} reviews — take these numbers with a grain of salt"
+        confidence_detail = f"Only {n} reviews so far, take these numbers with a grain of salt"
 
     # --- Verdict (the headline) ---
     good_prob = good_post.get("mean", 0.5)
@@ -768,32 +768,32 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model) -> dict:
         wta_pct = None
 
     if good_prob >= 0.85 and difficulty <= 2.5:
-        verdict = "Excellent choice — highly rated and manageable workload"
+        verdict = "Highly rated with a manageable workload"
         verdict_emoji = "great"
     elif good_prob >= 0.85:
-        verdict = "Great professor — tough but students love the teaching"
+        verdict = "Tough course, but students consistently rate the teaching highly"
         verdict_emoji = "great"
     elif good_prob >= 0.65 and difficulty <= 3.0:
-        verdict = "Solid pick — well-liked with reasonable difficulty"
+        verdict = "Well liked with reasonable difficulty"
         verdict_emoji = "good"
     elif good_prob >= 0.65:
-        verdict = "Good teacher but expect a challenge"
+        verdict = "Good teaching but expect to put in the work"
         verdict_emoji = "good"
     elif good_prob >= 0.45:
-        verdict = "Mixed reviews — experiences vary a lot between students"
+        verdict = "Mixed reviews. Student experiences vary quite a bit"
         verdict_emoji = "mixed"
     elif good_prob >= 0.30:
-        verdict = "Below average reviews — check if this fits your learning style"
+        verdict = "Below average reviews. Worth checking if this fits your learning style"
         verdict_emoji = "caution"
     else:
-        verdict = "Most students had a tough time — consider alternatives if possible"
+        verdict = "Most students had a tough time. Look into alternatives if you can"
         verdict_emoji = "poor"
 
     # Adjust verdict with trend info
     if "improving" in trend_summary.lower():
-        verdict += ". But trending upward recently"
+        verdict += ", but ratings have been improving recently"
     elif "declining" in trend_summary.lower():
-        verdict += ". And trending downward"
+        verdict += ", and ratings have been declining"
 
     # --- Class-specific breakdown ---
     class_data = defaultdict(lambda: {"ratings": [], "grades": [], "count": 0})

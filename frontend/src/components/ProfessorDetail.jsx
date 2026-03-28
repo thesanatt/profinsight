@@ -24,7 +24,7 @@ function VerdictBanner({ verdict, emoji, confidence, detail, trend, flags }) {
     <div className="rounded-xl p-4" style={{ background: bgs[emoji] || 'var(--bg-2)', border: `1px solid color-mix(in srgb, ${c} 20%, transparent)` }}>
       <div className="font-semibold text-sm" style={{ color: c }}>{verdict}</div>
       <div className="flex flex-wrap gap-x-4 gap-y-1 mt-1.5 text-xs" style={{ color: 'var(--text-3)' }}>
-        <span>Confidence: <strong style={{ color: 'var(--text-2)' }}>{confidence}</strong> — {detail}</span>
+        <span>Confidence: <strong style={{ color: 'var(--text-2)' }}>{confidence}</strong> · {detail}</span>
         {trend && trend !== 'Not enough data' && <span>Trend: <strong style={{ color: 'var(--text-2)' }}>{trend}</strong></span>}
       </div>
       {flags.length > 0 && (
@@ -229,7 +229,7 @@ function BayesianSection({ analysis, sentiment }) {
           {Object.entries(posteriors).map(([level, p]) => (
             <div key={level}>
               <div className="flex justify-between text-xs mb-1">
-                <span style={{ color: 'var(--text-2)' }}>P({level}) — rating ≥ {p.threshold}</span>
+                <span style={{ color: 'var(--text-2)' }}>P({level}), rating ≥ {p.threshold}</span>
                 <span className="font-mono" style={{ color: 'var(--text-1)' }}>{(p.mean*100).toFixed(1)}%  <span style={{ color: 'var(--text-3)' }}>[{(p.ci_lower*100).toFixed(0)}%, {(p.ci_upper*100).toFixed(0)}%]</span></span>
               </div>
               <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-3)' }}>
