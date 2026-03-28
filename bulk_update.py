@@ -1,5 +1,5 @@
 """
-ProfInsight — Bulk School Scraper & Analyzer
+ProfInsight - Bulk School Scraper & Analyzer
 =============================================
 One command to scrape and analyze multiple schools.
 
@@ -18,7 +18,7 @@ import json
 import time
 import argparse
 
-# ─── Default School List ──────────────────────────────────────────────────────
+# Default School List
 # slug: (search name, max_professors, school_id_override)
 # school_id_override is used when RMP search returns the wrong campus
 

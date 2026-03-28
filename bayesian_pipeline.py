@@ -1,5 +1,5 @@
 """
-ProfInsight — Bayesian ML Pipeline
+ProfInsight - Bayesian ML Pipeline
 ===================================
 Three Bayesian models that turn raw RMP reviews into actionable insights:
 
@@ -40,7 +40,7 @@ class BetaBinomialModel:
     """
     Beta-Binomial model for professor ratings.
 
-    Prior: Beta(alpha_0, beta_0) — weakly informative, centered at population mean.
+    Prior: Beta(alpha_0, beta_0) - weakly informative, centered at population mean.
     Likelihood: Binomial (rating >= threshold counts as success).
     Posterior: Beta(alpha_0 + successes, beta_0 + failures).
     """
@@ -383,7 +383,7 @@ class NaiveBayesClassifier:
 #
 # Key EECS 498 connection: GP gives us a posterior distribution over functions,
 # not just a single trend line. The confidence band widens where we have
-# fewer data points — honest about uncertainty.
+# fewer data points - honest about uncertainty.
 #
 # This is a pure NumPy implementation to avoid heavy dependencies.
 
@@ -479,7 +479,7 @@ class GaussianProcessRegression:
             Dict with "mean" and "std" lists for each test point.
         """
         if len(x_train) < 2:
-            # Not enough data for GP — return prior
+            # Not enough data for GP - return prior
             prior_mean = sum(y_train) / len(y_train) if y_train else 3.0
             return {
                 "mean": [prior_mean] * len(x_test),
