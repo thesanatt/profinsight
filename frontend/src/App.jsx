@@ -136,6 +136,9 @@ export default function App() {
                 <p className="text-sm mt-1" style={{ color: 'var(--text-3)' }}>
                   {stats.total_reviews?.toLocaleString()} reviews across {stats.departments} departments at {stats.school}
                 </p>
+                <p className="text-xs mt-1" style={{ color: 'var(--text-3)', opacity: 0.7 }}>
+                  Showing the most reviewed professors. Not all professors at this university may be listed.
+                </p>
               </div>
             )}
             <div className="flex flex-wrap gap-2 mb-4">
@@ -176,10 +179,10 @@ export default function App() {
       </main>
       <footer className="max-w-6xl mx-auto px-4 py-6 mt-8" style={{ borderTop: '1px solid var(--border)' }}>
         <p className="text-[11px] leading-relaxed" style={{ color: 'var(--text-3)' }}>
-          ProfInsight is an independent, non-commercial academic project. Not affiliated with or endorsed by RateMyProfessor.
-          Review data is sourced from publicly accessible pages on RateMyProfessors.com and transformed through original Bayesian statistical analysis.
-          All analysis, ratings, verdicts, and predictions are computed by ProfInsight's own models and may not reflect the views of any university or platform.
-          This tool is provided as-is for informational purposes only.
+          ProfInsight is an independent, non-commercial academic project. Not affiliated with or endorsed by RateMyProfessors or any university.
+          Professor coverage varies by school and may not include all instructors.
+          Review data is sourced from publicly accessible pages on RateMyProfessors.com and analyzed using original Bayesian statistical models.
+          All verdicts and predictions are computed estimates and should be used alongside other resources when making course decisions.
           <span className="mx-1">·</span>
           <a href="https://github.com/thesanatt/profinsight" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>GitHub</a>
         </p>
