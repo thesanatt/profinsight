@@ -13,11 +13,13 @@ import glob
 import threading
 import time as _time
 import requests as _requests
-from fastapi import FastAPI, Query, HTTPException
+from collections import defaultdict
+from fastapi import FastAPI, Query, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from typing import Optional
 
-app = FastAPI(title="ProfInsight API", version="0.2.0")
+app = FastAPI(title="ProfInsight API", version="0.3.0")
 
 # Self-ping to prevent Render free tier sleep
 def _keep_alive():
@@ -25,7 +27,7 @@ def _keep_alive():
     if not url:
         return
     while True:
-        _time.sleep(600)  # 10 minutes
+        _time.sleep(600)
         try:
             _requests.get(f"{url}/api/health", timeout=10)
         except Exception:
@@ -34,12 +36,60 @@ def _keep_alive():
 _keep_alive_thread = threading.Thread(target=_keep_alive, daemon=True)
 _keep_alive_thread.start()
 
+# ─── Rate Limiting ───────────────────────────────────────────────────────────
+# Simple in-memory rate limiter: 60 requests per minute per IP
+
+_rate_limits = {}
+_rate_lock = threading.Lock()
+RATE_LIMIT = 60
+RATE_WINDOW = 60  # seconds
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    # Skip rate limiting for health checks
+    if request.url.path in ("/api/health", "/"):
+        return await call_next(request)
+
+    ip = request.client.host or "unknown"
+    now = _time.time()
+
+    with _rate_lock:
+        if ip not in _rate_limits:
+            _rate_limits[ip] = []
+        # Clean old entries
+        _rate_limits[ip] = [t for t in _rate_limits[ip] if now - t < RATE_WINDOW]
+        if len(_rate_limits[ip]) >= RATE_LIMIT:
+            return JSONResponse(
+                status_code=429,
+                content={"error": "Too many requests. Try again in a minute."}
+            )
+        _rate_limits[ip].append(now)
+
+    response = await call_next(request)
+
+    # Add cache headers for browser/CDN caching
+    if request.method == "GET" and response.status_code == 200:
+        # Cache school list for 5 min, professor data for 1 hour
+        if "/professors/" in request.url.path:
+            response.headers["Cache-Control"] = "public, max-age=3600"
+        elif "/schools" in request.url.path:
+            response.headers["Cache-Control"] = "public, max-age=300"
+        else:
+            response.headers["Cache-Control"] = "public, max-age=600"
+
+    # Security headers
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    return response
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173", "https://*.vercel.app"],
     allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET"],
     allow_headers=["*"],
 )
 
@@ -47,51 +97,71 @@ app.add_middleware(
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _cache = {}
+_schools_cache = None
+_schools_cache_time = 0
+SCHOOLS_CACHE_TTL = 300  # refresh school list every 5 min
+MAX_CACHED_SCHOOLS = 10  # only keep 10 schools in memory at once
 
 
 def discover_schools() -> list:
-    """Find all analyzed JSON files in data/ and return school list."""
+    """Find all analyzed JSON files. Cached for 5 minutes."""
+    global _schools_cache, _schools_cache_time
+    now = _time.time()
+    if _schools_cache and (now - _schools_cache_time) < SCHOOLS_CACHE_TTL:
+        return _schools_cache
+
     schools = []
     pattern = os.path.join(DATA_DIR, "*_analyzed.json")
     for filepath in sorted(glob.glob(pattern)):
         try:
+            # Only read metadata, not the full file
             with open(filepath, "r") as f:
-                data = json.load(f)
-            meta = data.get("metadata", {})
+                # Read just enough to get metadata (first ~2000 chars)
+                raw = f.read(5000)
+                # Find metadata section
+                meta_start = raw.find('"metadata"')
+                if meta_start == -1:
+                    continue
+                # Quick parse just the metadata
+                data = json.loads(raw[:raw.find('"analysis"')] + '"analysis": []}')
+                meta = data.get("metadata", {})
+
             slug = os.path.basename(filepath).replace("_analyzed.json", "")
             schools.append({
                 "slug": slug,
                 "name": meta.get("school_name", slug),
                 "professors": meta.get("total_professors", 0),
                 "reviews": meta.get("total_reviews", 0),
-                "file": filepath,
             })
-        except (json.JSONDecodeError, IOError):
-            continue
+        except Exception:
+            # Fallback: just list the file
+            slug = os.path.basename(filepath).replace("_analyzed.json", "")
+            schools.append({"slug": slug, "name": slug, "professors": 0, "reviews": 0})
+
+    _schools_cache = schools
+    _schools_cache_time = now
     return schools
 
 
 def load_school(slug: str) -> dict:
-    """Load a school's analyzed data by slug."""
+    """Load a school's analyzed data. LRU cache with eviction."""
     if slug in _cache:
+        # Move to front (most recently used)
+        _cache[slug] = _cache.pop(slug)
         return _cache[slug]
 
     filepath = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
     if not os.path.exists(filepath):
-        # Fallback: try to find any matching file
-        candidates = glob.glob(os.path.join(DATA_DIR, f"*{slug}*_analyzed.json"))
-        if candidates:
-            filepath = candidates[0]
-        else:
-            # Try the first available file
-            all_files = glob.glob(os.path.join(DATA_DIR, "*_analyzed.json"))
-            if all_files:
-                filepath = all_files[0]
-            else:
-                return {"metadata": {}, "analysis": []}
+        raise HTTPException(status_code=404, detail=f"School '{slug}' not found")
 
     with open(filepath, "r") as f:
         data = json.load(f)
+
+    # Evict oldest if cache is full
+    if len(_cache) >= MAX_CACHED_SCHOOLS:
+        oldest = next(iter(_cache))
+        del _cache[oldest]
+
     _cache[slug] = data
     return data
 

@@ -16,6 +16,7 @@ import time
 import argparse
 import os
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 # ─── RMP GraphQL Config ───────────────────────────────────────────────────────
@@ -34,8 +35,9 @@ HEADERS = {
     "Origin": "https://www.ratemyprofessors.com",
 }
 
-# Rate limiting: be respectful
+# Rate limiting: respect RMP's limits
 REQUEST_DELAY = 0.3  # seconds between requests
+MAX_WORKERS = 2  # parallel review fetches (higher = risk of 429s)
 
 
 # ─── GraphQL Queries ──────────────────────────────────────────────────────────
@@ -146,19 +148,30 @@ query ProfessorReviews($profID: ID!, $after: String) {
 
 # ─── API Helpers ──────────────────────────────────────────────────────────────
 
-def graphql_request(query: str, variables: dict) -> dict:
-    """Send a GraphQL request to RMP and return the JSON response."""
+def graphql_request(query: str, variables: dict, max_retries: int = 3) -> dict:
+    """Send a GraphQL request to RMP with retry and exponential backoff."""
     payload = {"query": query, "variables": variables}
-    try:
-        response = requests.post(RMP_GRAPHQL_URL, headers=HEADERS, json=payload, timeout=15)
-        response.raise_for_status()
-        data = response.json()
-        if "errors" in data:
-            print(f"  [WARN] GraphQL errors: {data['errors']}")
-        return data.get("data", {})
-    except requests.exceptions.RequestException as e:
-        print(f"  [ERROR] Request failed: {e}")
-        return {}
+    for attempt in range(max_retries + 1):
+        try:
+            response = requests.post(RMP_GRAPHQL_URL, headers=HEADERS, json=payload, timeout=15)
+            if response.status_code == 429:
+                # Rate limited - back off exponentially
+                wait = 2 ** attempt + 1  # 2s, 3s, 5s, 9s
+                if attempt < max_retries:
+                    time.sleep(wait)
+                    continue
+                else:
+                    return {}
+            response.raise_for_status()
+            data = response.json()
+            if "errors" in data:
+                pass  # silent, don't spam logs
+            return data.get("data", {})
+        except requests.exceptions.RequestException as e:
+            if attempt < max_retries:
+                time.sleep(2 ** attempt)
+                continue
+            return {}
 
 
 def search_school(school_name: str) -> list:
@@ -171,85 +184,102 @@ def search_school(school_name: str) -> list:
 def get_all_professors(school_id: str, max_professors: int = None) -> list:
     """
     Paginate through all professors at a school.
-    Uses two-letter search combinations for thorough coverage.
+    Uses two-letter search combinations with concurrent requests for speed.
     Returns list of professor summary dicts (deduplicated).
     """
-    seen_ids = set()
-    professors = []
+    import threading
 
-    # Two-letter combos give much better coverage than single letters
-    # For most schools, single letters miss many professors
+    seen_ids = set()
+    seen_lock = threading.Lock()
+    professors = []
+    professors_lock = threading.Lock()
+
     letters = "abcdefghijklmnopqrstuvwxyz"
-    search_terms = list(letters)  # Start with single letters
-    # Add two-letter combos for deeper coverage
+    search_terms = list(letters)
     for a in letters:
         for b in letters:
             search_terms.append(a + b)
 
-    searched = 0
-    for term in search_terms:
+    def search_term(term):
+        """Search a single term and return new professors found."""
+        results = []
         cursor = None
-        page = 0
-        term_new = 0
-
         while True:
-            page += 1
-            variables = {
-                "query": {
-                    "text": term,
-                    "schoolID": school_id,
-                }
-            }
+            variables = {"query": {"text": term, "schoolID": school_id}}
             if cursor:
                 variables["after"] = cursor
-
             data = graphql_request(SEARCH_PROFESSORS_QUERY, variables)
-
             if not data:
                 break
-
             teachers = data.get("newSearch", {}).get("teachers", {})
             edges = teachers.get("edges", [])
-
             if not edges:
                 break
-
             for edge in edges:
                 prof = edge["node"]
                 pid = prof.get("id")
-                if pid in seen_ids:
-                    continue
-                seen_ids.add(pid)
+                with seen_lock:
+                    if pid in seen_ids:
+                        continue
+                    seen_ids.add(pid)
                 if prof.get("numRatings", 0) > 0:
-                    professors.append(prof)
-                    term_new += 1
-
+                    results.append(prof)
             page_info = teachers.get("pageInfo", {})
-            has_next = page_info.get("hasNextPage", False)
-            cursor = page_info.get("endCursor")
-
-            if not has_next or not cursor:
+            if not page_info.get("hasNextPage") or not page_info.get("endCursor"):
                 break
+            cursor = page_info["endCursor"]
+            time.sleep(0.15)
+        return term, results
 
-            time.sleep(REQUEST_DELAY)
-
-        searched += 1
-        # Only print single-letter progress and two-letter combos that found new results
-        if len(term) == 1:
-            print(f"  Searching '{term}' ({searched}/{len(search_terms)})... {term_new} new", flush=True)
-        elif term_new > 0:
-            print(f"  Searching '{term}'... {term_new} new", flush=True)
-
+    # First do single letters sequentially (fast, gives us a baseline)
+    print("  Phase 1: Single letter search...", flush=True)
+    for term in search_terms[:26]:
+        _, results = search_term(term)
+        professors.extend(results)
+        if results:
+            print(f"    '{term}': {len(results)} new", flush=True)
         if max_professors and len(professors) >= max_professors:
             professors = professors[:max_professors]
-            print(f"  Reached max_professors limit ({max_professors})")
-            break
+            print(f"  Reached limit ({max_professors})")
+            return professors
 
-        # Print progress every 100 two-letter combos
-        if len(term) == 2 and searched % 100 == 0:
-            print(f"  ... {searched}/{len(search_terms)} searched, {len(professors)} found so far", flush=True)
+    print(f"  Phase 1 done: {len(professors)} professors", flush=True)
 
-        time.sleep(REQUEST_DELAY)
+    if max_professors and len(professors) >= max_professors:
+        professors = professors[:max_professors]
+        return professors
+
+    # Phase 2: Two-letter combos in parallel (8 workers)
+    print(f"  Phase 2: Two-letter combos (8 concurrent)...", flush=True)
+    two_letter_terms = search_terms[26:]
+    done = 0
+    stopped = False
+
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures = {executor.submit(search_term, t): t for t in two_letter_terms}
+        for future in as_completed(futures):
+            if stopped:
+                continue
+            try:
+                term, results = future.result()
+                done += 1
+                if results:
+                    with professors_lock:
+                        professors.extend(results)
+                    if len(results) > 3:
+                        print(f"    '{term}': {len(results)} new (total: {len(professors)})", flush=True)
+
+                if done % 100 == 0:
+                    print(f"  ... {done}/{len(two_letter_terms)} searched, {len(professors)} found", flush=True)
+
+                if max_professors and len(professors) >= max_professors:
+                    stopped = True
+                    print(f"  Reached limit ({max_professors}) at {done}/{len(two_letter_terms)} searches")
+            except Exception as e:
+                done += 1
+
+    if max_professors:
+        professors = professors[:max_professors]
 
     print(f"  Total: {len(professors)} professors with ratings.")
     return professors
@@ -343,17 +373,13 @@ def scrape_school(
     professors = [p for p in professors if p.get("numRatings", 0) >= min_ratings]
     print(f"After filtering (min {min_ratings} ratings): {len(professors)} professors")
 
-    # Step 3: Fetch reviews for each professor
-    print(f"\nFetching reviews for {len(professors)} professors...")
+    # Step 3: Fetch reviews for each professor (parallel for speed)
+    print(f"\nFetching reviews for {len(professors)} professors (parallel)...")
     professor_data = []
 
-    for i, prof in enumerate(professors):
-        prof_name = f"{prof['firstName']} {prof['lastName']}"
-        print(f"  [{i+1}/{len(professors)}] {prof_name} ({prof['numRatings']} ratings)...")
-
+    def fetch_one(prof):
         reviews = get_professor_reviews(prof["id"], max_reviews_per_prof)
-
-        professor_data.append({
+        return {
             "id": prof["id"],
             "legacy_id": prof.get("legacyId"),
             "first_name": prof["firstName"],
@@ -387,9 +413,25 @@ def scrape_school(
                 }
                 for r in reviews
             ],
-        })
+        }
 
-        time.sleep(REQUEST_DELAY)
+    done = 0
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(fetch_one, prof): prof for prof in professors}
+        for future in as_completed(futures):
+            try:
+                data = future.result()
+                professor_data.append(data)
+                done += 1
+                if done % 50 == 0 or done == len(professors):
+                    print(f"  {done}/{len(professors)} professors fetched...", flush=True)
+                # Small delay every batch to avoid rate limits
+                if done % 20 == 0:
+                    time.sleep(1)
+            except Exception as e:
+                prof = futures[future]
+                print(f"  [ERROR] {prof['firstName']} {prof['lastName']}: {e}")
+                done += 1
 
     # Step 4: Package result
     result = {
