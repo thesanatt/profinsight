@@ -1,114 +1,112 @@
 # ProfInsight
 
-Bayesian ML-powered professor analysis. Uses Beta-Binomial posteriors, Naive Bayes classification, and Gaussian Process Regression — no LLM APIs, no monthly costs.
+**Know your professor before you register.**
 
-## Setup (Mac)
+ProfInsight analyzes student reviews using Bayesian machine learning to give you more than a star rating. It tells you how confident we are in that rating, whether a professor is getting better or worse, what grades students actually get, and which professor fits how you learn.
 
-You need: Python 3.10+, Node.js 18+, and a terminal.
+**Live:** [profinsight-three.vercel.app](https://profinsight-three.vercel.app)
 
-### Step 1 — Project structure
+---
+
+## Why this exists
+
+RateMyProfessors gives you a number. But a professor with 4.5 stars from 3 reviews is very different from a professor with 4.5 stars from 300 reviews. A professor trending from 3.0 to 4.5 over the last two years is very different from one trending from 4.5 down to 3.0. ProfInsight captures that nuance.
+
+## What it does
+
+**For students:**
+- Letter-grade ratings for every professor (A+ through D) based on Bayesian confidence, not just averages
+- Plain language verdicts: "Tough course, but students consistently rate the teaching highly"
+- Grade predictions: "Likely an A" vs "Could go either way" vs "Tough grading"
+- Red flag detection: declining ratings, low retake rates, poor lecture reviews
+- Semester optimizer: enter your courses, pick a preference (easy / balanced / challenge), and get the best professor combination with a predicted semester GPA
+- Student fit quiz: tell us how you learn, we rank professors by compatibility
+- Side-by-side professor comparison with radar charts
+
+**Under the hood:**
+- Beta-Binomial posteriors for confidence-aware quality ratings
+- Naive Bayes classifier for multi-category sentiment analysis (lectures, grading, workload, approachability, exams)
+- Gaussian Process Regression for rating trend detection with uncertainty bands
+- Grade probability estimation from self-reported grade distributions
+- No LLM APIs. All analysis is original statistical modeling in pure Python.
+
+## Coverage
+
+29 universities including University of Michigan, MIT, Stanford, UC Berkeley, Georgia Tech, Carnegie Mellon, Purdue, NYU, Ohio State, Michigan State, and more. Data refreshes weekly via automated GitHub Actions.
+
+## Architecture
+
+```
+┌──────────────┐     ┌────────────────────┐     ┌──────────────┐
+│  RMP GraphQL  │────▶│  Bayesian Pipeline  │────▶│  FastAPI      │
+│  Scraper      │     │  (Beta-Binomial,    │     │  REST API     │
+│  (Python)     │     │   NB, GP Regression)│     │               │
+└──────────────┘     └────────────────────┘     └──────┬───────┘
+                                                        │
+                                                 ┌──────▼───────┐
+                                                 │  React +      │
+                                                 │  Tailwind     │
+                                                 │  Frontend     │
+                                                 └──────────────┘
+```
+
+| Component | Tech |
+|-----------|------|
+| Scraper | Python, requests, RMP GraphQL API, ThreadPoolExecutor, retry with exponential backoff |
+| ML Pipeline | Pure Python: Beta-Binomial posteriors, Naive Bayes, Gaussian Process Regression (no sklearn/scipy) |
+| Backend | FastAPI, in-memory LRU cache, rate limiting, response caching |
+| Frontend | React 18, Vite, Tailwind CSS, Recharts |
+| Deployment | Render (API), Vercel (frontend), GitHub Actions (weekly data refresh) |
+
+## Running locally
+
+**Prerequisites:** Python 3.10+, Node.js 18+
 
 ```bash
-mkdir -p ~/Projects/profinsight/data
-cd ~/Projects/profinsight
-```
+git clone https://github.com/thesanatt/profinsight.git
+cd profinsight
 
-Move ALL the downloaded files into `~/Projects/profinsight/`. Your folder should look like:
-
-```
-profinsight/
-├── rmp_scraper.py
-├── bayesian_pipeline.py
-├── api.py
-├── data/
-│   └── (empty for now)
-└── frontend/
-    ├── package.json
-    ├── vite.config.js
-    ├── tailwind.config.js
-    ├── postcss.config.js
-    ├── index.html
-    └── src/
-        ├── main.jsx
-        ├── App.jsx
-        ├── index.css
-        └── components/
-            ├── StatsBar.jsx
-            ├── ProfessorList.jsx
-            └── ProfessorDetail.jsx
-```
-
-### Step 2 — Python backend setup
-
-```bash
-cd ~/Projects/profinsight
-
-# Create virtual environment
+# Backend
 python3 -m venv venv
 source venv/bin/activate
-
-# Install Python deps
-pip install requests fastapi uvicorn
-```
-
-### Step 3 — Scrape + analyze data
-
-```bash
-# Scrape UMich professors (start with 50, takes ~2 min)
-python rmp_scraper.py --school "University of Michigan" \
-  --max-professors 50 --output data/umich.json
-
-# Run Bayesian ML analysis
-python bayesian_pipeline.py --input data/umich.json \
-  --output data/umich_analyzed.json
-```
-
-### Step 4 — Start the API server
-
-```bash
-# In one terminal tab:
-cd ~/Projects/profinsight
-source venv/bin/activate
+pip install -r requirements.txt
 uvicorn api:app --reload --port 8000
-```
 
-Test it: open http://localhost:8000 in your browser. You should see JSON.
-
-### Step 5 — Start the React frontend
-
-```bash
-# In a SECOND terminal tab:
-cd ~/Projects/profinsight/frontend
+# Frontend (new terminal)
+cd frontend
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173 — you should see the dashboard.
+Open http://localhost:5173
 
-## What you're looking at
-
-- **Professor list** with Bayesian P(good) confidence bars — the dot shows the posterior mean, the shaded area is the 95% credible interval
-- **Click any professor** to see:
-  - **Rating posteriors** — Beta-Binomial analysis at three quality thresholds
-  - **GP trend** — Gaussian Process regression showing rating trajectory with uncertainty
-  - **Sentiment radar** — Naive Bayes topic classification showing per-category sentiment
-  - **Grade distribution** — Self-reported student grades
-  - **Tag cloud** — Most common student tags
-
-## Tech stack
-
-| Layer | Tech |
-|-------|------|
-| Scraper | Python, requests, RMP GraphQL API |
-| ML Pipeline | Pure Python (no sklearn/scipy needed) — Beta-Binomial, Naive Bayes, GP Regression |
-| Backend | FastAPI, uvicorn |
-| Frontend | React 18, Vite, Tailwind CSS, Recharts |
-
-## Scrape other schools
+## Adding a new school
 
 ```bash
-python rmp_scraper.py --school "MIT" --max-professors 50 --output data/mit.json
-python bayesian_pipeline.py --input data/mit.json --output data/mit_analyzed.json
+python rmp_scraper.py --school "Harvard University" --max-professors 500 --output data/harvard.json
+python bayesian_pipeline.py --input data/harvard.json --output data/harvard_analyzed.json
 ```
 
-Then update `api.py` line ~30 to load the new file, or rename it to `umich_analyzed.json`.
+The API auto-discovers new `*_analyzed.json` files. Refresh the browser and the school appears.
+
+To add it to the weekly auto-update, add an entry to `DEFAULT_SCHOOLS` in `bulk_update.py`.
+
+## How the ML works
+
+**Beta-Binomial model:** Instead of just averaging ratings, we model each professor's quality as a Beta distribution. The posterior probability P(good) represents how likely it is that a randomly selected student would rate them above a threshold, with credible intervals that shrink as more reviews come in. A professor with 4.5/5 from 3 reviews gets wide intervals (low confidence). The same rating from 200 reviews gets tight intervals (high confidence).
+
+**Naive Bayes sentiment:** Reviews are classified into five categories (lectures, grading, workload, approachability, exams) using a bag-of-words Naive Bayes model trained on the full review corpus. Each category gets a positive/negative ratio that feeds into the professor profile.
+
+**Gaussian Process Regression:** Rating timestamps are modeled as a GP with an RBF kernel to detect trends. The model outputs a smooth prediction curve with uncertainty bands, showing whether a professor is improving, declining, or stable over time.
+
+## Disclaimer
+
+ProfInsight is an independent, non-commercial academic project. Not affiliated with or endorsed by RateMyProfessors or any university. Professor coverage varies by school. All verdicts and predictions are computed estimates based on publicly available review data.
+
+## License
+
+MIT
+
+## Author
+
+Built by [Sanat Gupta](https://thesanatgupta.com) · [LinkedIn](https://linkedin.com/in/sanat-gupta)
