@@ -53,7 +53,7 @@ export default function ScheduleHelper({ school, onSelect, onClose }) {
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-xl font-bold" style={{ color: 'var(--text-1)' }}>Schedule helper</h2>
-          <p className="text-sm mt-0.5" style={{ color: 'var(--text-3)' }}>Enter courses you're considering — we'll find the best professor for each</p>
+          <p className="text-sm mt-0.5" style={{ color: 'var(--text-3)' }}>Enter courses you're considering and we'll find the best professor for each</p>
         </div>
         <button onClick={onClose} className="text-sm" style={{ color: 'var(--text-3)' }}>Close</button>
       </div>
