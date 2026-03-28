@@ -1,35 +1,33 @@
-function getRedFlags(prof) {
-  const flags = []
+function profGrade(prob) {
+  if (prob == null) return { letter: '?', color: 'var(--text-3)' }
+  if (prob >= 0.9) return { letter: 'A+', color: 'var(--green)' }
+  if (prob >= 0.8) return { letter: 'A', color: 'var(--green)' }
+  if (prob >= 0.7) return { letter: 'B+', color: '#8be78b' }
+  if (prob >= 0.6) return { letter: 'B', color: 'var(--yellow)' }
+  if (prob >= 0.45) return { letter: 'C+', color: 'var(--yellow)' }
+  if (prob >= 0.3) return { letter: 'C', color: 'var(--orange)' }
+  return { letter: 'D', color: 'var(--red)' }
+}
+
+function getFlags(prof) {
+  const f = []
   if (prof.would_take_again_pct != null && prof.would_take_again_pct >= 0 && prof.would_take_again_pct < 35)
-    flags.push('Low retake rate')
+    f.push('Low retake rate')
   if (prof.avg_rating != null && prof.avg_rating < 2.5)
-    flags.push('Very low ratings')
+    f.push('Low ratings')
   if (prof.avg_difficulty != null && prof.avg_difficulty >= 4.5)
-    flags.push('Extremely difficult')
-  if (prof.verdict_emoji === 'poor')
-    flags.push('Poor reviews')
+    f.push('Very hard')
   if (prof.trend_summary && prof.trend_summary.toLowerCase().includes('declining'))
-    flags.push('Trending down')
-  return flags
+    f.push('Getting worse')
+  return f
 }
 
-function GradeBar({ probs }) {
-  if (!probs) return null
-  const a = probs['A range'] || 0, b = probs['B range'] || 0, c = probs['C range'] || 0
-  return (
-    <div className="flex items-center gap-2">
-      <div className="flex-1 h-1.5 rounded-full overflow-hidden flex" style={{ background: 'var(--bg-3)' }}>
-        {a > 0 && <div className="h-full" style={{ width: `${a}%`, background: 'var(--green)' }} />}
-        {b > 0 && <div className="h-full" style={{ width: `${b}%`, background: 'var(--yellow)' }} />}
-        {c > 0 && <div className="h-full" style={{ width: `${c}%`, background: 'var(--orange)' }} />}
-      </div>
-      <span className="text-xs w-12 text-right" style={{ color: 'var(--text-3)' }}>{a > 0 ? `${a.toFixed(0)}% A` : ''}</span>
-    </div>
-  )
-}
-
-const emojiColors = {
-  great: 'var(--green)', good: 'var(--accent)', mixed: 'var(--yellow)', caution: 'var(--orange)', poor: 'var(--red)',
+function diffLabel(d) {
+  if (d == null) return ''
+  if (d >= 4.5) return 'Very hard'
+  if (d >= 3.5) return 'Hard'
+  if (d >= 2.5) return 'Medium'
+  return 'Easy'
 }
 
 export default function ProfessorList({ professors, loading, onSelect }) {
@@ -43,56 +41,62 @@ export default function ProfessorList({ professors, loading, onSelect }) {
   return (
     <div className="space-y-1.5">
       {professors.map(prof => {
-        const flags = getRedFlags(prof)
-        const vc = emojiColors[prof.verdict_emoji] || 'var(--text-3)'
-        const rColor = prof.avg_rating >= 4 ? 'var(--green)' : prof.avg_rating >= 3 ? 'var(--yellow)' : 'var(--red)'
+        const flags = getFlags(prof)
+        const grade = profGrade(prof.bayesian_good_prob)
+        const aPct = prof.grade_probabilities?.['A range'] || 0
+        const dLabel = diffLabel(prof.avg_difficulty)
+        const wta = prof.would_take_again_pct
+
         return (
-          <div key={prof.id} onClick={() => onSelect(prof.id)} className="card-hover px-5 py-3.5">
+          <div key={prof.id} onClick={() => onSelect(prof.id)} className="card-hover px-5 py-4">
             <div className="flex items-center gap-4">
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className="font-semibold" style={{ color: 'var(--text-1)' }}>{prof.name}</span>
-                  {prof.confidence_level && (
-                    <div className="flex gap-0.5">
-                      {[1,2,3,4].map(i => (
-                        <div key={i} className="w-1.5 h-1.5 rounded-full"
-                          style={{ background: i <= {'Very high':4,'High':3,'Moderate':2,'Low':1}[prof.confidence_level] ? 'var(--accent)' : 'var(--border)' }} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{prof.department}</div>
-                {prof.verdict && (
-                  <div className="flex items-center gap-1.5 mt-1.5">
-                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: vc }} />
-                    <span className="text-xs" style={{ color: vc }}>{prof.verdict.split('.')[0]}</span>
-                  </div>
-                )}
-                {flags.length > 0 && (
-                  <div className="flex gap-1.5 mt-1">
-                    {flags.map(f => <span key={f} className="badge-red text-[10px]">{f}</span>)}
-                  </div>
-                )}
+              {/* Professor grade */}
+              <div className="w-11 h-11 rounded-xl flex items-center justify-center text-base font-bold flex-shrink-0"
+                style={{ background: `${grade.color}15`, color: grade.color, border: `1px solid ${grade.color}30` }}>
+                {grade.letter}
               </div>
-              <div className="flex items-center gap-3 sm:gap-4">
-                <div className="text-center">
-                  <div className="text-base sm:text-lg font-bold" style={{ color: rColor }}>{prof.avg_rating?.toFixed(1)}</div>
-                  <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Quality</div>
+
+              {/* Name + quick info */}
+              <div className="flex-1 min-w-0">
+                <div className="font-semibold" style={{ color: 'var(--text-1)' }}>{prof.name}</div>
+                <div className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>{prof.department}</div>
+                <div className="flex flex-wrap items-center gap-2 mt-1.5">
+                  {prof.verdict && (
+                    <span className="text-xs" style={{ color: 'var(--text-2)' }}>{prof.verdict.split('.')[0].split(',')[0]}</span>
+                  )}
+                  {flags.length > 0 && flags.map(f => (
+                    <span key={f} className="badge-red text-[10px]">{f}</span>
+                  ))}
                 </div>
-                <div className="text-center hidden sm:block">
-                  <div className="text-lg font-bold" style={{ color: 'var(--text-2)' }}>{prof.avg_difficulty?.toFixed(1)}</div>
+              </div>
+
+              {/* Key stats */}
+              <div className="hidden sm:flex items-center gap-5">
+                <div className="text-center">
+                  <div className="text-sm font-bold" style={{ color: prof.avg_rating >= 4 ? 'var(--green)' : prof.avg_rating >= 3 ? 'var(--yellow)' : 'var(--red)' }}>
+                    {prof.avg_rating?.toFixed(1)}/5
+                  </div>
+                  <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Rating</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold" style={{ color: prof.avg_difficulty >= 4 ? 'var(--orange)' : 'var(--text-2)' }}>{dLabel}</div>
                   <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Difficulty</div>
                 </div>
-              </div>
-              <div className="hidden sm:flex flex-col items-end gap-1 w-36">
-                <GradeBar probs={prof.grade_probabilities} />
-                <div className="flex items-center gap-3 text-xs" style={{ color: 'var(--text-3)' }}>
-                  <span>{prof.num_ratings} reviews</span>
-                  {prof.would_take_again_pct >= 0 && (
-                    <span style={{ color: prof.would_take_again_pct >= 60 ? 'var(--green)' : prof.would_take_again_pct >= 40 ? 'var(--yellow)' : 'var(--red)' }}>
-                      {prof.would_take_again_pct?.toFixed(0)}% again
-                    </span>
-                  )}
+                <div className="text-center">
+                  <div className="text-sm font-semibold" style={{ color: aPct >= 60 ? 'var(--green)' : aPct >= 40 ? 'var(--yellow)' : 'var(--text-2)' }}>
+                    {aPct > 0 ? `${aPct.toFixed(0)}%` : '?'}
+                  </div>
+                  <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Get an A</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-sm font-semibold" style={{ color: wta >= 60 ? 'var(--green)' : wta >= 40 ? 'var(--yellow)' : wta >= 0 ? 'var(--red)' : 'var(--text-3)' }}>
+                    {wta >= 0 ? `${wta?.toFixed(0)}%` : '?'}
+                  </div>
+                  <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Would retake</div>
+                </div>
+                <div className="text-xs" style={{ color: 'var(--text-3)' }}>
+                  {prof.num_ratings} reviews
+                  {prof.confidence_level === 'Low' && <div className="text-[10px]" style={{ color: 'var(--orange)' }}>Limited data</div>}
                 </div>
               </div>
             </div>
