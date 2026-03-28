@@ -1,5 +1,5 @@
 """
-ProfInsight — RateMyProfessor GraphQL Scraper
+ProfInsight - RateMyProfessor GraphQL Scraper
 =============================================
 Scrapes professor profiles and full review text from RMP's GraphQL API.
 Outputs clean JSON ready for the Bayesian ML pipeline.
@@ -19,11 +19,11 @@ from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
-# ─── RMP GraphQL Config ───────────────────────────────────────────────────────
+# RMP GraphQL Config
 
 RMP_GRAPHQL_URL = "https://www.ratemyprofessors.com/graphql"
 
-# RMP uses a static auth header (base64 encoded "test:test" — this is their
+# RMP uses a static auth header (base64 encoded "test:test" - this is their
 # public-facing token embedded in the frontend JS bundle)
 RMP_AUTH_TOKEN = "dGVzdDp0ZXN0"
 
@@ -40,7 +40,7 @@ REQUEST_DELAY = 0.3  # seconds between requests
 MAX_WORKERS = 2  # parallel review fetches (higher = risk of 429s)
 
 
-# ─── GraphQL Queries ──────────────────────────────────────────────────────────
+# GraphQL Queries
 
 SEARCH_SCHOOL_QUERY = """
 query SearchSchool($query: String!) {
@@ -146,7 +146,7 @@ query ProfessorReviews($profID: ID!, $after: String) {
 """
 
 
-# ─── API Helpers ──────────────────────────────────────────────────────────────
+# API Helpers
 
 def graphql_request(query: str, variables: dict, max_retries: int = 3) -> dict:
     """Send a GraphQL request to RMP with retry and exponential backoff."""
@@ -328,7 +328,7 @@ def get_professor_reviews(prof_id: str, max_reviews: int = None) -> list:
     return reviews
 
 
-# ─── Main Scraping Pipeline ──────────────────────────────────────────────────
+# Main Scraping Pipeline
 
 def scrape_school(
     school_name: str = None,
@@ -460,7 +460,7 @@ def save_json(data: dict, output_path: str):
     print(f"  Reviews: {data['metadata']['total_reviews']}")
 
 
-# ─── CLI ──────────────────────────────────────────────────────────────────────
+# CLI
 
 def main():
     parser = argparse.ArgumentParser(description="ProfInsight RMP Scraper")

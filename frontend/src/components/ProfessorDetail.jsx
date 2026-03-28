@@ -4,7 +4,7 @@ import {
   ResponsiveContainer, CartesianGrid, Cell, ReferenceLine,
 } from 'recharts'
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// Helpers
 
 function sentimentLabel(pct) {
   if (pct >= 80) return { text: 'Great', color: 'var(--green)' }
@@ -33,7 +33,7 @@ function getRedFlags(p) {
   return f
 }
 
-// ─── Verdict Banner ──────────────────────────────────────────────────────────
+// Verdict Banner
 
 function VerdictBanner({ verdict, emoji, confidence, detail, trend, flags }) {
   const colors = { great: 'var(--green)', good: 'var(--accent)', mixed: 'var(--yellow)', caution: 'var(--orange)', poor: 'var(--red)' }
@@ -55,7 +55,7 @@ function VerdictBanner({ verdict, emoji, confidence, detail, trend, flags }) {
   )
 }
 
-// ─── The Bottom Line (replaces Quick Stats) ──────────────────────────────────
+// The Bottom Line (replaces Quick Stats)
 
 function BottomLine({ summary, gradeProbs }) {
   const r = summary?.avg_rating
@@ -103,7 +103,7 @@ function BottomLine({ summary, gradeProbs }) {
   )
 }
 
-// ─── What's This Prof Like (replaces What To Expect) ─────────────────────────
+// What's This Prof Like (replaces What To Expect)
 
 function ProfVibe({ sentiment }) {
   if (!sentiment || !Object.keys(sentiment).length) return null
@@ -133,7 +133,7 @@ function ProfVibe({ sentiment }) {
   )
 }
 
-// ─── Review Highlights ───────────────────────────────────────────────────────
+// Review Highlights
 
 function ReviewHighlights({ reviews }) {
   if (!reviews?.length) return null
@@ -158,7 +158,7 @@ function ReviewHighlights({ reviews }) {
   )
 }
 
-// ─── Rating Over Time ────────────────────────────────────────────────────────
+// Rating Over Time
 
 function TrendChart({ gp }) {
   if (!gp || gp.insufficient_data) return null
@@ -193,7 +193,7 @@ function TrendChart({ gp }) {
   )
 }
 
-// ─── Grades ──────────────────────────────────────────────────────────────────
+// Grades
 
 function GradeChart({ grades }) {
   if (!grades || !Object.keys(grades).length) return null
@@ -219,7 +219,7 @@ function GradeChart({ grades }) {
   )
 }
 
-// ─── Course Breakdown ────────────────────────────────────────────────────────
+// Course Breakdown
 
 function CourseBreakdown({ classes }) {
   if (!classes?.length) return null
@@ -244,7 +244,7 @@ function CourseBreakdown({ classes }) {
   )
 }
 
-// ─── Tags ────────────────────────────────────────────────────────────────────
+// Tags
 
 function Tags({ tags }) {
   if (!tags?.length) return null
@@ -267,7 +267,7 @@ function Tags({ tags }) {
   )
 }
 
-// ─── Share + Bayesian Deep Dive ──────────────────────────────────────────────
+// Share + Bayesian Deep Dive
 
 function ShareBtn() {
   const [copied, setCopied] = useState(false)
@@ -309,7 +309,7 @@ function BayesianDetails({ analysis }) {
   )
 }
 
-// ─── Main ────────────────────────────────────────────────────────────────────
+// Main
 
 export default function ProfessorDetail({ professor }) {
   if (!professor) return null

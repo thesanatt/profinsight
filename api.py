@@ -1,5 +1,5 @@
 """
-ProfInsight — FastAPI Backend (V2)
+ProfInsight - FastAPI Backend (V2)
 ===================================
 Multi-school REST API serving Bayesian ML analysis results.
 
@@ -36,7 +36,7 @@ def _keep_alive():
 _keep_alive_thread = threading.Thread(target=_keep_alive, daemon=True)
 _keep_alive_thread.start()
 
-# ─── Rate Limiting ───────────────────────────────────────────────────────────
+# Rate Limiting
 # Simple in-memory rate limiter: 60 requests per minute per IP
 
 _rate_limits = {}
@@ -93,7 +93,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ─── Multi-School Data Loading ────────────────────────────────────────────────
+# Multi-School Data Loading
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 _cache = {}
@@ -172,7 +172,7 @@ def get_default_slug() -> str:
     return schools[0]["slug"] if schools else "umich"
 
 
-# ─── Endpoints ────────────────────────────────────────────────────────────────
+# Endpoints
 
 @app.get("/")
 def root():
@@ -326,7 +326,7 @@ def fit_quiz(
     limit: int = Query(20, ge=1, le=100),
 ):
     """
-    Student fit quiz — rank professors by how well they match preferences.
+    Student fit quiz - rank professors by how well they match preferences.
 
     The fit score is computed as a weighted match between student preferences
     and the professor's Bayesian-analyzed profile:
@@ -503,7 +503,7 @@ def list_courses(school: str, search: Optional[str] = Query(None)):
 @app.get("/api/{school}/schedule")
 def schedule_helper(school: str, courses: str = Query(..., description="Comma-separated course codes")):
     """
-    Schedule helper — given a list of courses, return the best professor
+    Schedule helper - given a list of courses, return the best professor
     options for each course with their full analysis.
     """
     course_list = [c.strip().upper() for c in courses.split(",") if c.strip()]
@@ -553,7 +553,7 @@ def optimize_semester(
     preference: str = Query("balanced", description="balanced, easy, or challenge"),
 ):
     """
-    Semester optimizer — finds the best professor combination across all courses
+    Semester optimizer - finds the best professor combination across all courses
     and predicts overall semester difficulty and estimated GPA.
     """
     course_list = [c.strip().upper() for c in courses.split(",") if c.strip()]
@@ -627,7 +627,7 @@ def optimize_semester(
             if best.get("would_take_again_pct") is not None and 0 <= best["would_take_again_pct"] < 40:
                 warnings.append(f"{course_code}: Only {best['would_take_again_pct']:.0f}% would retake with {best['name']}")
             if best["bayesian_good_prob"] < 0.4:
-                warnings.append(f"{course_code}: {best['name']} has low confidence rating — consider alternatives")
+                warnings.append(f"{course_code}: {best['name']} has low confidence rating - consider alternatives")
         else:
             recommended[course_code] = None
             warnings.append(f"{course_code}: No professor data found")
