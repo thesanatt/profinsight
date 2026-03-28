@@ -35,7 +35,8 @@ export default function Landing({ schools, onSelectSchool }) {
           </h1>
 
           <p className="mt-5 text-base max-w-md mx-auto leading-relaxed" style={{ color: 'var(--text-2)' }}>
-            Bayesian ML analysis of student reviews. Confidence levels, trend analysis, grade predictions, and personalized matching.
+            Go beyond star ratings. See how confident we are in a professor's score,
+            whether they're getting better or worse, and which one actually fits how you learn.
           </p>
 
           {/* School search */}
@@ -74,7 +75,7 @@ export default function Landing({ schools, onSelectSchool }) {
 
           {/* Feature pills */}
           <div className="mt-10 flex flex-wrap justify-center gap-2">
-            {['Bayesian confidence', 'Rating trends', 'Professor matching', 'Sentiment analysis', 'Grade predictions', 'Compare mode'].map(f => (
+            {['Confidence ratings', 'Grade predictions', 'Semester optimizer', 'Professor matching', 'Trend analysis', 'Side-by-side compare'].map(f => (
               <span key={f} className="px-2.5 py-1 rounded-md text-[11px]"
                 style={{ background: 'var(--bg-2)', color: 'var(--text-3)', border: '1px solid var(--border)' }}>{f}</span>
             ))}
@@ -83,7 +84,7 @@ export default function Landing({ schools, onSelectSchool }) {
       </div>
 
       <div className="text-center py-5 text-xs" style={{ color: 'var(--text-3)' }}>
-        No LLM APIs. No monthly costs. Just math.
+        Open source
         <span className="mx-2">·</span>
         <a href="https://github.com/thesanatt/profinsight" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>GitHub</a>
       </div>
