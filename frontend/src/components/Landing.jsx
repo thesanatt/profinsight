@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 export default function Landing({ schools, onSelectSchool }) {
   const [query, setQuery] = useState('')
+  const loading = schools.length === 0
   const totalProfs = schools.reduce((s, x) => s + (x.professors || 0), 0)
   const totalReviews = schools.reduce((s, x) => s + (x.reviews || 0), 0)
 
@@ -13,11 +14,19 @@ export default function Landing({ schools, onSelectSchool }) {
     <div className="min-h-[88vh] flex flex-col">
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="max-w-xl w-full text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
-            style={{ background: 'var(--accent-bg)', color: 'var(--accent)' }}>
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--green)' }} />
-            {schools.length} universities · {totalProfs.toLocaleString()} professors · {totalReviews.toLocaleString()} reviews
-          </div>
+          {loading ? (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
+              style={{ background: 'var(--bg-2)', color: 'var(--text-3)' }}>
+              <div className="w-3 h-3 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
+              Loading schools...
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
+              style={{ background: 'var(--accent-bg)', color: 'var(--accent)' }}>
+              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--green)' }} />
+              {schools.length} universities · {totalProfs.toLocaleString()} professors · {totalReviews.toLocaleString()} reviews
+            </div>
+          )}
 
           <h1 className="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.15]" style={{ color: 'var(--text-1)' }}>
             Know your professor
