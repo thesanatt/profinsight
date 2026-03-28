@@ -171,33 +171,37 @@ def search_school(school_name: str) -> list:
 def get_all_professors(school_id: str, max_professors: int = None) -> list:
     """
     Paginate through all professors at a school.
-    RMP's search API limits empty-text queries, so we search through
-    each letter of the alphabet to find all professors.
+    Uses two-letter search combinations for thorough coverage.
     Returns list of professor summary dicts (deduplicated).
     """
     seen_ids = set()
     professors = []
 
-    # Search with each letter to get broad coverage
-    search_terms = list("abcdefghijklmnopqrstuvwxyz")
+    # Two-letter combos give much better coverage than single letters
+    # For most schools, single letters miss many professors
+    letters = "abcdefghijklmnopqrstuvwxyz"
+    search_terms = list(letters)  # Start with single letters
+    # Add two-letter combos for deeper coverage
+    for a in letters:
+        for b in letters:
+            search_terms.append(a + b)
 
-    for letter_idx, letter in enumerate(search_terms):
+    searched = 0
+    for term in search_terms:
         cursor = None
         page = 0
+        term_new = 0
 
         while True:
             page += 1
             variables = {
                 "query": {
-                    "text": letter,
+                    "text": term,
                     "schoolID": school_id,
                 }
             }
             if cursor:
                 variables["after"] = cursor
-
-            if page == 1:
-                print(f"  Searching '{letter}' ({letter_idx+1}/{len(search_terms)})...", end="", flush=True)
 
             data = graphql_request(SEARCH_PROFESSORS_QUERY, variables)
 
@@ -210,7 +214,6 @@ def get_all_professors(school_id: str, max_professors: int = None) -> list:
             if not edges:
                 break
 
-            new_count = 0
             for edge in edges:
                 prof = edge["node"]
                 pid = prof.get("id")
@@ -219,7 +222,7 @@ def get_all_professors(school_id: str, max_professors: int = None) -> list:
                 seen_ids.add(pid)
                 if prof.get("numRatings", 0) > 0:
                     professors.append(prof)
-                    new_count += 1
+                    term_new += 1
 
             page_info = teachers.get("pageInfo", {})
             has_next = page_info.get("hasNextPage", False)
@@ -230,15 +233,21 @@ def get_all_professors(school_id: str, max_professors: int = None) -> list:
 
             time.sleep(REQUEST_DELAY)
 
-        if page == 1:
-            print(f" {new_count} new")
-        else:
-            print(f" {new_count} new ({page} pages)")
+        searched += 1
+        # Only print single-letter progress and two-letter combos that found new results
+        if len(term) == 1:
+            print(f"  Searching '{term}' ({searched}/{len(search_terms)})... {term_new} new", flush=True)
+        elif term_new > 0:
+            print(f"  Searching '{term}'... {term_new} new", flush=True)
 
         if max_professors and len(professors) >= max_professors:
             professors = professors[:max_professors]
             print(f"  Reached max_professors limit ({max_professors})")
             break
+
+        # Print progress every 100 two-letter combos
+        if len(term) == 2 and searched % 100 == 0:
+            print(f"  ... {searched}/{len(search_terms)} searched, {len(professors)} found so far", flush=True)
 
         time.sleep(REQUEST_DELAY)
 
