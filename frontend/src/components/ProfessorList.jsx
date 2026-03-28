@@ -12,22 +12,22 @@ function profGrade(prob) {
 function getFlags(prof) {
   const f = []
   if (prof.would_take_again_pct != null && prof.would_take_again_pct >= 0 && prof.would_take_again_pct < 35)
-    f.push('Low retake rate')
+    f.push('Few would retake')
   if (prof.avg_rating != null && prof.avg_rating < 2.5)
-    f.push('Low ratings')
+    f.push('Below average ratings')
   if (prof.avg_difficulty != null && prof.avg_difficulty >= 4.5)
-    f.push('Very hard')
+    f.push('High difficulty')
   if (prof.trend_summary && prof.trend_summary.toLowerCase().includes('declining'))
-    f.push('Getting worse')
+    f.push('Ratings trending down')
   return f
 }
 
 function diffLabel(d) {
   if (d == null) return ''
-  if (d >= 4.5) return 'Very hard'
-  if (d >= 3.5) return 'Hard'
-  if (d >= 2.5) return 'Medium'
-  return 'Easy'
+  if (d >= 4.5) return 'Very challenging'
+  if (d >= 3.5) return 'Challenging'
+  if (d >= 2.5) return 'Moderate'
+  return 'Light'
 }
 
 export default function ProfessorList({ professors, loading, onSelect }) {

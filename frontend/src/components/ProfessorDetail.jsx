@@ -11,25 +11,25 @@ function sentimentLabel(pct) {
   if (pct >= 60) return { text: 'Good', color: '#8be78b' }
   if (pct >= 45) return { text: 'Mixed', color: 'var(--yellow)' }
   if (pct >= 30) return { text: 'Weak', color: 'var(--orange)' }
-  return { text: 'Poor', color: 'var(--red)' }
+  return { text: 'Below average', color: 'var(--red)' }
 }
 
 function diffLabel(d) {
-  if (d >= 4.5) return 'Very hard'
-  if (d >= 3.5) return 'Hard'
-  if (d >= 2.5) return 'Medium'
-  if (d >= 1.5) return 'Easy'
-  return 'Very easy'
+  if (d >= 4.5) return 'Very challenging'
+  if (d >= 3.5) return 'Challenging'
+  if (d >= 2.5) return 'Moderate'
+  if (d >= 1.5) return 'Light'
+  return 'Very light'
 }
 
 function getRedFlags(p) {
   const f = [], s = p.summary || {}
-  if (s.would_take_again_pct != null && s.would_take_again_pct >= 0 && s.would_take_again_pct < 35) f.push('Only ' + s.would_take_again_pct.toFixed(0) + '% would take again')
-  if (s.avg_rating && s.avg_rating < 2.5) f.push('Very low overall rating')
-  if (s.avg_difficulty && s.avg_difficulty >= 4.5) f.push('Extremely difficult')
+  if (s.would_take_again_pct != null && s.would_take_again_pct >= 0 && s.would_take_again_pct < 35) f.push(s.would_take_again_pct.toFixed(0) + '% of students would retake')
+  if (s.avg_rating && s.avg_rating < 2.5) f.push('Below average overall rating')
+  if (s.avg_difficulty && s.avg_difficulty >= 4.5) f.push('High difficulty level')
   const lec = p.category_sentiment?.lectures
-  if (lec && lec.pct_positive < 30) f.push('Lectures rated poorly')
-  if (p.trend_summary?.toLowerCase().includes('declining')) f.push('Ratings have been declining')
+  if (lec && lec.pct_positive < 30) f.push('Lecture quality rated below average')
+  if (p.trend_summary?.toLowerCase().includes('declining')) f.push('Ratings have been trending down recently')
   return f
 }
 
@@ -169,9 +169,9 @@ function TrendChart({ gp }) {
   const first = means[0], last = means[means.length - 1]
   const diff = last - first
   let trendText = 'Ratings have been fairly stable'
-  if (diff > 0.5) trendText = 'Ratings have improved significantly over time'
+  if (diff > 0.5) trendText = 'Ratings have improved noticeably over time'
   else if (diff > 0.2) trendText = 'Ratings have been trending up slightly'
-  else if (diff < -0.5) trendText = 'Ratings have dropped significantly over time'
+  else if (diff < -0.5) trendText = 'Ratings have shifted down over time'
   else if (diff < -0.2) trendText = 'Ratings have been trending down slightly'
 
   return (
