@@ -29,6 +29,7 @@ function StatRow({ label, values, names, format, higherIsBetter = true }) {
 
 export default function CompareMode({ school, professors, onSelect, onClose }) {
   const [selected, setSelected] = useState([])
+  const [selectedInfo, setSelectedInfo] = useState({}) // {id: {name, department}}
   const [details, setDetails] = useState([])
   const [search, setSearch] = useState('')
   const [searchResults, setSearchResults] = useState([])
@@ -40,7 +41,6 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
     )).then(setDetails).catch(() => {})
   }, [selected, school])
 
-  // Search the API directly so all professors are available, not just the 300 loaded on browse
   useEffect(() => {
     if (search.length < 2) { setSearchResults([]); return }
     const t = setTimeout(() => {
@@ -52,7 +52,18 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
     return () => clearTimeout(t)
   }, [search, school, selected])
 
-  const toggle = id => setSelected(p => p.includes(id) ? p.filter(x => x !== id) : p.length < 4 ? [...p, id] : p)
+  const addProf = (prof) => {
+    if (selected.includes(prof.id) || selected.length >= 4) return
+    setSelected(prev => [...prev, prof.id])
+    setSelectedInfo(prev => ({ ...prev, [prof.id]: { name: prof.name, department: prof.department } }))
+    setSearch('')
+    setSearchResults([])
+  }
+
+  const removeProf = (id) => {
+    setSelected(prev => prev.filter(x => x !== id))
+    setSelectedInfo(prev => { const n = { ...prev }; delete n[id]; return n })
+  }
   const names = details.map(d => d.name?.split(' ').pop() || d.name)
 
   const radarData = details.length >= 2 ? ['approachability','lectures','workload','exams','grading'].map(cat => {
@@ -73,12 +84,12 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
 
       <div className="flex flex-wrap gap-2 mb-4">
         {selected.map(id => {
-          const p = professors.find(x => x.id === id) || {}
+          const info = selectedInfo[id] || {}
           return (
             <span key={id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm"
               style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}>
-              {p.name}
-              <button onClick={() => toggle(id)} className="ml-1 opacity-60 hover:opacity-100">×</button>
+              {info.name || 'Loading...'}
+              <button onClick={() => removeProf(id)} className="ml-1 opacity-60 hover:opacity-100">×</button>
             </span>
           )
         })}
@@ -90,7 +101,7 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
               <div className="absolute top-full left-0 mt-1 w-72 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto"
                 style={{ background: 'var(--bg-3)', border: '1px solid var(--border)' }}>
                 {searchResults.map(p => (
-                  <button key={p.id} onClick={() => { toggle(p.id); setSearch(''); setSearchResults([]) }}
+                  <button key={p.id} onClick={() => addProf(p)}
                     className="w-full text-left px-3 py-2.5 text-sm transition-colors"
                     style={{ borderBottom: '1px solid var(--border)' }}
                     onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-hover)'}
