@@ -4,359 +4,12 @@
     "school_id": "U2Nob29sLTE4OTc2",
     "city": "Beaumont",
     "state": "TX",
-    "scraped_at": "2026-03-27T08:59:31.907795+00:00",
+    "scraped_at": "2026-03-29T06:01:06.066220+00:00",
     "total_professors": 4,
     "total_reviews": 13,
-    "analyzed_at": "2026-03-27T04:59:32.050176"
+    "analyzed_at": "2026-03-29T06:01:06.129776"
   },
   "analysis": [
-    {
-      "professor_id": "VGVhY2hlci0zMDI2MjY2",
-      "legacy_id": 3026266,
-      "name": "Angelique Morvant",
-      "department": "Mathematics",
-      "summary": {
-        "avg_rating": 5,
-        "avg_difficulty": 2.8,
-        "num_ratings": 4,
-        "would_take_again_pct": 100
-      },
-      "verdict": "Solid pick — well-liked with reasonable difficulty. And trending downward",
-      "verdict_emoji": "good",
-      "confidence_level": "Low",
-      "confidence_detail": "Only 4 reviews — take these numbers with a grain of salt",
-      "trend_summary": "Declining over time",
-      "grade_probabilities": {
-        "A range": 50.0,
-        "B range": 50.0,
-        "C range": 0.0,
-        "D/F": 0.0
-      },
-      "review_highlights": [
-        {
-          "comment": "Professor Morvant is a great professor. I have/had her for math 140 and while the subject is difficult she is amazing at teaching the problems step by step.",
-          "class_name": "MATH-140",
-          "grade": "B",
-          "date": "2025-11-06",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 3.3936986301369867
-        },
-        {
-          "comment": "I had her for Math 140 and really enjoyed her class! There was one in-class quiz each week, which was usually pretty difficult. We also had two homework assignments due at the end of each week. She responds to emails quickly and is helpful during her office hours. No extra credit and she uses iClicker so attendance is important.",
-          "class_name": "MATH-140",
-          "grade": "A",
-          "date": "2024-12-14",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 3.367808219178082
-        },
-        {
-          "comment": "She is adorable! I had her for her first semester teaching a non-summer class and she was awesome. Her lectures were very helpful, and she responded to emails so quickly and gave great feedback. I would recommend her to anyone who is taking math 140!",
-          "class_name": "MATH-140",
-          "grade": "B",
-          "date": "2024-11-21",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 2.904794520547945
-        },
-        {
-          "comment": "She was awesome! One quiz each week (rotated between group and individual quizzes) weren't too hard as long as you understood the material. Exams are straightforward. I would highly reccomend!",
-          "class_name": "MATH-140",
-          "grade": "A",
-          "date": "2025-02-11",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 2,
-          "score": 2.8394520547945206
-        }
-      ],
-      "class_breakdown": [
-        {
-          "class_name": "MATH-140",
-          "num_reviews": 4,
-          "avg_rating": 5.0,
-          "grades": {
-            "B": 2,
-            "A": 2
-          }
-        }
-      ],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 3.5,
-            "raw_mean": 5.0
-          },
-          "helpfulness": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 3.5,
-            "raw_mean": 5.0
-          },
-          "difficulty": {
-            "alpha": 6.0,
-            "beta": 2.0,
-            "mean": 0.75,
-            "variance": 0.020833,
-            "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
-            "n_ratings": 4,
-            "n_above_threshold": 4,
-            "threshold": 1.5,
-            "raw_mean": 2.75
-          }
-        },
-        "would_take_again_posterior": {
-          "alpha": 6.0,
-          "beta": 2.0,
-          "mean": 0.75,
-          "variance": 0.020833,
-          "std": 0.1443,
-          "ci_lower": 0.4671,
-          "ci_upper": 1.0,
-          "n_ratings": 4,
-          "n_above_threshold": 4,
-          "threshold": 3.0
-        }
-      },
-      "category_sentiment": {
-        "lectures": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 2,
-          "pct_positive": 100.0
-        },
-        "exams": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        },
-        "approachability": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2024-11",
-          "2024-12",
-          "2025-02",
-          "2025-11"
-        ],
-        "train_ratings": [
-          5.0,
-          5.0,
-          5.0,
-          5.0
-        ],
-        "pred_dates": [
-          "2024-11",
-          "2024-12",
-          "2024-12",
-          "2025-01",
-          "2025-02",
-          "2025-02",
-          "2025-03",
-          "2025-03",
-          "2025-04",
-          "2025-05",
-          "2025-05",
-          "2025-06",
-          "2025-06",
-          "2025-07",
-          "2025-08",
-          "2025-08",
-          "2025-09",
-          "2025-09",
-          "2025-10",
-          "2025-11"
-        ],
-        "pred_mean": [
-          3.884,
-          3.998,
-          4.089,
-          4.156,
-          4.199,
-          4.22,
-          4.221,
-          4.203,
-          4.168,
-          4.12,
-          4.06,
-          3.989,
-          3.909,
-          3.821,
-          3.726,
-          3.623,
-          3.513,
-          3.396,
-          3.27,
-          3.137
-        ],
-        "pred_std": [
-          0.488,
-          0.47,
-          0.464,
-          0.471,
-          0.487,
-          0.511,
-          0.538,
-          0.567,
-          0.594,
-          0.618,
-          0.637,
-          0.651,
-          0.659,
-          0.663,
-          0.662,
-          0.659,
-          0.655,
-          0.652,
-          0.652,
-          0.657
-        ],
-        "pred_ci_lower": [
-          2.928,
-          3.077,
-          3.18,
-          3.233,
-          3.244,
-          3.218,
-          3.167,
-          3.092,
-          3.004,
-          2.909,
-          2.811,
-          2.713,
-          2.617,
-          2.522,
-          2.428,
-          2.331,
-          2.229,
-          2.118,
-          1.992,
-          1.849
-        ],
-        "pred_ci_upper": [
-          4.84,
-          4.919,
-          4.998,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          4.915,
-          4.797,
-          4.674,
-          4.548,
-          4.425
-        ],
-        "n_data_points": 4,
-        "date_range": "2024-11 to 2025-11"
-      },
-      "grade_distribution": {
-        "B": 2,
-        "A": 2
-      },
-      "top_tags": [
-        {
-          "tag": "Amazing lectures ",
-          "count": 3
-        },
-        {
-          "tag": "Gives good feedback",
-          "count": 1
-        },
-        {
-          "tag": "Lots of homework",
-          "count": 1
-        },
-        {
-          "tag": "Beware of pop quizzes",
-          "count": 1
-        },
-        {
-          "tag": "Caring",
-          "count": 1
-        },
-        {
-          "tag": "Accessible outside class",
-          "count": 3
-        },
-        {
-          "tag": "Online Savvy",
-          "count": 1
-        }
-      ]
-    },
     {
       "professor_id": "VGVhY2hlci0zMTQ3MDUy",
       "legacy_id": 3147052,
@@ -368,10 +21,10 @@
         "num_ratings": 3,
         "would_take_again_pct": 100
       },
-      "verdict": "Solid pick — well-liked with reasonable difficulty. And trending downward",
+      "verdict": "Well liked with reasonable difficulty, and ratings have been declining",
       "verdict_emoji": "good",
       "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews — take these numbers with a grain of salt",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
       "trend_summary": "Declining over time",
       "grade_probabilities": {
         "A range": 66.7,
@@ -388,7 +41,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 4.55
+          "score": 4.544520547945206
         },
         {
           "comment": "Just attend lectures and blindly take notes. What he speaks is what appears on the exam. Don't miss a single lecture no content posted online make note taking friends if missing. Questions are straight forward and easy. 40 out of 50 questions are just lecture content. 10 are from readings for which 2-3 youtube summaries is enough.",
@@ -398,7 +51,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.481917808219178
+          "score": 4.476438356164383
         },
         {
           "comment": "Amazing prof! I loved his class. It was almost like he was telling a story. Very engaging and passionate! Tests are fairly easy if you pay attention and take notes. Graded on 3 exams and one essay. He offers extra credit at the end. The final is not cumulative. If you show up to class, pay attention, and take notes you will do well.",
@@ -408,7 +61,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 4.406986301369863
+          "score": 4.401506849315068
         }
       ],
       "class_breakdown": [
@@ -675,6 +328,348 @@
       ]
     },
     {
+      "professor_id": "VGVhY2hlci0zMDI2MjY2",
+      "legacy_id": 3026266,
+      "name": "Angelique Morvant",
+      "department": "Mathematics",
+      "summary": {
+        "avg_rating": 5,
+        "avg_difficulty": 2.8,
+        "num_ratings": 4,
+        "would_take_again_pct": 100
+      },
+      "verdict": "Well liked with reasonable difficulty, and ratings have been declining",
+      "verdict_emoji": "good",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 4 reviews so far, take these numbers with a grain of salt",
+      "trend_summary": "Declining over time",
+      "grade_probabilities": {
+        "A range": 50.0,
+        "B range": 50.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "comment": "Professor Morvant is a great professor. I have/had her for math 140 and while the subject is difficult she is amazing at teaching the problems step by step.",
+          "class_name": "MATH-140",
+          "grade": "B",
+          "date": "2025-11-06",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 3.388219178082192
+        },
+        {
+          "comment": "I had her for Math 140 and really enjoyed her class! There was one in-class quiz each week, which was usually pretty difficult. We also had two homework assignments due at the end of each week. She responds to emails quickly and is helpful during her office hours. No extra credit and she uses iClicker so attendance is important.",
+          "class_name": "MATH-140",
+          "grade": "A",
+          "date": "2024-12-14",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 3.3623287671232873
+        },
+        {
+          "comment": "She is adorable! I had her for her first semester teaching a non-summer class and she was awesome. Her lectures were very helpful, and she responded to emails so quickly and gave great feedback. I would recommend her to anyone who is taking math 140!",
+          "class_name": "MATH-140",
+          "grade": "B",
+          "date": "2024-11-21",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 2.899315068493151
+        },
+        {
+          "comment": "She was awesome! One quiz each week (rotated between group and individual quizzes) weren't too hard as long as you understood the material. Exams are straightforward. I would highly reccomend!",
+          "class_name": "MATH-140",
+          "grade": "A",
+          "date": "2025-02-11",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 2,
+          "score": 2.833972602739726
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "MATH-140",
+          "num_reviews": 4,
+          "avg_rating": 5.0,
+          "grades": {
+            "B": 2,
+            "A": 2
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 3.5,
+            "raw_mean": 5.0
+          },
+          "helpfulness": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 3.5,
+            "raw_mean": 5.0
+          },
+          "difficulty": {
+            "alpha": 6.0,
+            "beta": 2.0,
+            "mean": 0.75,
+            "variance": 0.020833,
+            "std": 0.1443,
+            "ci_lower": 0.4671,
+            "ci_upper": 1.0,
+            "n_ratings": 4,
+            "n_above_threshold": 4,
+            "threshold": 1.5,
+            "raw_mean": 2.75
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 6.0,
+          "beta": 2.0,
+          "mean": 0.75,
+          "variance": 0.020833,
+          "std": 0.1443,
+          "ci_lower": 0.4671,
+          "ci_upper": 1.0,
+          "n_ratings": 4,
+          "n_above_threshold": 4,
+          "threshold": 3.0
+        }
+      },
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 3,
+          "pct_positive": 100.0
+        },
+        "exams": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2024-11",
+          "2024-12",
+          "2025-02",
+          "2025-11"
+        ],
+        "train_ratings": [
+          5.0,
+          5.0,
+          5.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2024-11",
+          "2024-12",
+          "2024-12",
+          "2025-01",
+          "2025-02",
+          "2025-02",
+          "2025-03",
+          "2025-03",
+          "2025-04",
+          "2025-05",
+          "2025-05",
+          "2025-06",
+          "2025-06",
+          "2025-07",
+          "2025-08",
+          "2025-08",
+          "2025-09",
+          "2025-09",
+          "2025-10",
+          "2025-11"
+        ],
+        "pred_mean": [
+          3.884,
+          3.998,
+          4.089,
+          4.156,
+          4.199,
+          4.22,
+          4.221,
+          4.203,
+          4.168,
+          4.12,
+          4.06,
+          3.989,
+          3.909,
+          3.821,
+          3.726,
+          3.623,
+          3.513,
+          3.396,
+          3.27,
+          3.137
+        ],
+        "pred_std": [
+          0.488,
+          0.47,
+          0.464,
+          0.471,
+          0.487,
+          0.511,
+          0.538,
+          0.567,
+          0.594,
+          0.618,
+          0.637,
+          0.651,
+          0.659,
+          0.663,
+          0.662,
+          0.659,
+          0.655,
+          0.652,
+          0.652,
+          0.657
+        ],
+        "pred_ci_lower": [
+          2.928,
+          3.077,
+          3.18,
+          3.233,
+          3.244,
+          3.218,
+          3.167,
+          3.092,
+          3.004,
+          2.909,
+          2.811,
+          2.713,
+          2.617,
+          2.522,
+          2.428,
+          2.331,
+          2.229,
+          2.118,
+          1.992,
+          1.849
+        ],
+        "pred_ci_upper": [
+          4.84,
+          4.919,
+          4.998,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          4.915,
+          4.797,
+          4.674,
+          4.548,
+          4.425
+        ],
+        "n_data_points": 4,
+        "date_range": "2024-11 to 2025-11"
+      },
+      "grade_distribution": {
+        "B": 2,
+        "A": 2
+      },
+      "top_tags": [
+        {
+          "tag": "Amazing lectures ",
+          "count": 3
+        },
+        {
+          "tag": "Gives good feedback",
+          "count": 1
+        },
+        {
+          "tag": "Lots of homework",
+          "count": 1
+        },
+        {
+          "tag": "Beware of pop quizzes",
+          "count": 1
+        },
+        {
+          "tag": "Caring",
+          "count": 1
+        },
+        {
+          "tag": "Accessible outside class",
+          "count": 3
+        },
+        {
+          "tag": "Online Savvy",
+          "count": 1
+        }
+      ]
+    },
+    {
       "professor_id": "VGVhY2hlci0zMDg3Mzc3",
       "legacy_id": 3087377,
       "name": "Sean McKinnon",
@@ -685,10 +680,10 @@
         "num_ratings": 3,
         "would_take_again_pct": 33.3333
       },
-      "verdict": "Below average reviews — check if this fits your learning style. But trending upward recently",
+      "verdict": "Below average reviews. Worth checking if this fits your learning style, but ratings have been improving recently",
       "verdict_emoji": "caution",
       "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews — take these numbers with a grain of salt",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
       "trend_summary": "Significantly improving over time",
       "grade_probabilities": {
         "A range": 66.7,
@@ -705,7 +700,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.55
+          "score": 4.544520547945206
         },
         {
           "comment": "Crazy workload for this course - you must participate and attend, there are frequent quizzes, daily homework, and 20 page take home exams that take hours. He is a kind prof that teaches interesting content well, but the amount of work is unreasonable and hard to manage. Don't recommend unless you genuinely want to learn linguistics.",
@@ -715,7 +710,7 @@
           "clarity": 3,
           "helpful": 3,
           "difficulty": 5,
-          "score": 3.7056164383561643
+          "score": 3.70013698630137
         },
         {
           "comment": "Super weird, makes people uncomfortable, and unreasonable grader.",
@@ -725,7 +720,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 2.8976027397260276
+          "score": 2.8921232876712333
         }
       ],
       "class_breakdown": [
@@ -1022,10 +1017,10 @@
         "num_ratings": 3,
         "would_take_again_pct": 100
       },
-      "verdict": "Solid pick — well-liked with reasonable difficulty",
+      "verdict": "Well liked with reasonable difficulty",
       "verdict_emoji": "good",
       "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews — take these numbers with a grain of salt",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
       "trend_summary": "Trending downward recently",
       "grade_probabilities": {
         "A range": 100.0,
@@ -1042,7 +1037,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 4.093698630136986
+          "score": 4.088219178082191
         },
         {
           "comment": "Dr Marlow's first semester here was great - he is very understanding and helpful with assignments, emails quickly, and has clear expectations. I really enjoyed his 420 class, which is coding and lecture heavy but he works through it really well! Amazing prof, highly recommend",
@@ -1052,7 +1047,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 3.2594520547945205
+          "score": 3.2539726027397258
         },
         {
           "comment": "Currently taking Dr Marlow for environmental, he's very helpful with assignments and clear with his expectations Lecture heavy but interesting and funny",
@@ -1062,7 +1057,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.6394520547945204
+          "score": 2.633972602739726
         }
       ],
       "class_breakdown": [
