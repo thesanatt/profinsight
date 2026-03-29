@@ -183,8 +183,6 @@ export default function App() {
           Professor coverage varies by school and may not include all instructors.
           Review data is sourced from publicly accessible pages on RateMyProfessors.com and analyzed using original Bayesian statistical models.
           All verdicts and predictions are computed estimates and should be used alongside other resources when making course decisions.
-          <span className="mx-1">·</span>
-          <a href="https://github.com/thesanatt/profinsight" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>GitHub</a>
         </p>
       </footer>
     </div>

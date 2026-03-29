@@ -84,9 +84,7 @@ export default function Landing({ schools, onSelectSchool }) {
       </div>
 
       <div className="text-center py-5 text-xs" style={{ color: 'var(--text-3)' }}>
-        Open source
-        <span className="mx-2">·</span>
-        <a href="https://github.com/thesanatt/profinsight" target="_blank" rel="noopener" style={{ color: 'var(--accent)' }}>GitHub</a>
+        Free and open source
       </div>
     </div>
   )
