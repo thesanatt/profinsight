@@ -31,6 +31,7 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
   const [selected, setSelected] = useState([])
   const [details, setDetails] = useState([])
   const [search, setSearch] = useState('')
+  const [searchResults, setSearchResults] = useState([])
 
   useEffect(() => {
     if (selected.length < 2) { setDetails([]); return }
@@ -39,9 +40,17 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
     )).then(setDetails).catch(() => {})
   }, [selected, school])
 
-  const filtered = professors.filter(p => !selected.includes(p.id) &&
-    (!search || p.name.toLowerCase().includes(search.toLowerCase()) || p.department?.toLowerCase().includes(search.toLowerCase()))
-  ).slice(0, 12)
+  // Search the API directly so all professors are available, not just the 300 loaded on browse
+  useEffect(() => {
+    if (search.length < 2) { setSearchResults([]); return }
+    const t = setTimeout(() => {
+      fetch(`${API_BASE}/api/${school}/professors?search=${encodeURIComponent(search)}&limit=12`)
+        .then(r => r.json())
+        .then(d => setSearchResults((d.professors || []).filter(p => !selected.includes(p.id))))
+        .catch(() => {})
+    }, 200)
+    return () => clearTimeout(t)
+  }, [search, school, selected])
 
   const toggle = id => setSelected(p => p.includes(id) ? p.filter(x => x !== id) : p.length < 4 ? [...p, id] : p)
   const names = details.map(d => d.name?.split(' ').pop() || d.name)
@@ -75,13 +84,13 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
         })}
         {selected.length < 4 && (
           <div className="relative">
-            <input type="text" placeholder="Add professor..." value={search} onChange={e => setSearch(e.target.value)}
+            <input type="text" placeholder="Search professor..." value={search} onChange={e => setSearch(e.target.value)}
               className="input-dark w-48 text-sm py-1.5" />
-            {search && (
+            {search.length >= 2 && searchResults.length > 0 && (
               <div className="absolute top-full left-0 mt-1 w-72 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto"
                 style={{ background: 'var(--bg-3)', border: '1px solid var(--border)' }}>
-                {filtered.map(p => (
-                  <button key={p.id} onClick={() => { toggle(p.id); setSearch('') }}
+                {searchResults.map(p => (
+                  <button key={p.id} onClick={() => { toggle(p.id); setSearch(''); setSearchResults([]) }}
                     className="w-full text-left px-3 py-2.5 text-sm transition-colors"
                     style={{ borderBottom: '1px solid var(--border)' }}
                     onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-hover)'}
@@ -90,7 +99,12 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
                     <span className="ml-2 text-xs" style={{ color: 'var(--text-3)' }}>{p.department}</span>
                   </button>
                 ))}
-                {filtered.length === 0 && <div className="px-3 py-3 text-sm" style={{ color: 'var(--text-3)' }}>No results</div>}
+              </div>
+            )}
+            {search.length >= 2 && searchResults.length === 0 && (
+              <div className="absolute top-full left-0 mt-1 w-72 rounded-xl shadow-lg z-10 px-3 py-3 text-sm"
+                style={{ background: 'var(--bg-3)', border: '1px solid var(--border)', color: 'var(--text-3)' }}>
+                No professors found
               </div>
             )}
           </div>
