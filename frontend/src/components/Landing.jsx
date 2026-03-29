@@ -2,29 +2,31 @@ import { useState } from 'react'
 
 export default function Landing({ schools, onSelectSchool }) {
   const [query, setQuery] = useState('')
+  const [focused, setFocused] = useState(false)
   const loading = schools.length === 0
-  const totalProfs = schools.reduce((s, x) => s + (x.professors || 0), 0)
-  const totalReviews = schools.reduce((s, x) => s + (x.reviews || 0), 0)
+
+  // Sort: UMich first, then alphabetical
+  const sorted = [...schools].sort((a, b) => {
+    if (a.slug === 'umich') return -1
+    if (b.slug === 'umich') return 1
+    return a.name.localeCompare(b.name)
+  })
 
   const filtered = query
-    ? schools.filter(s => s.name.toLowerCase().includes(query.toLowerCase()))
-    : schools
+    ? sorted.filter(s => s.name.toLowerCase().includes(query.toLowerCase()))
+    : sorted
+
+  const showList = focused || query
 
   return (
     <div className="min-h-[88vh] flex flex-col">
       <div className="flex-1 flex items-center justify-center px-4">
         <div className="max-w-xl w-full text-center">
-          {loading ? (
+          {loading && (
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
               style={{ background: 'var(--bg-2)', color: 'var(--text-3)' }}>
               <div className="w-3 h-3 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
-              Loading schools...
-            </div>
-          ) : (
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
-              style={{ background: 'var(--accent-bg)', color: 'var(--accent)' }}>
-              <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: 'var(--green)' }} />
-              {schools.length} universities · {totalProfs.toLocaleString()} professors · {totalReviews.toLocaleString()} reviews
+              Loading...
             </div>
           )}
 
@@ -39,7 +41,6 @@ export default function Landing({ schools, onSelectSchool }) {
             whether they're getting better or worse, and which one actually fits how you learn.
           </p>
 
-          {/* School search */}
           <div className="mt-10 relative max-w-sm mx-auto">
             <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -49,42 +50,53 @@ export default function Landing({ schools, onSelectSchool }) {
               placeholder="Search your school..."
               value={query}
               onChange={e => setQuery(e.target.value)}
+              onFocus={() => setFocused(true)}
+              onBlur={() => setTimeout(() => setFocused(false), 200)}
               className="input-dark w-full pl-10 py-3 text-base"
-              autoFocus
             />
-          </div>
 
-          {/* School list */}
-          <div className="mt-4 max-w-sm mx-auto text-left max-h-64 overflow-y-auto">
-            {filtered.map(s => (
-              <button key={s.slug} onClick={() => onSelectSchool(s.slug)}
-                className="w-full flex items-center justify-between px-4 py-2.5 rounded-lg text-sm transition-all"
-                style={{ color: 'var(--text-2)' }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg-3)'; e.currentTarget.style.color = 'var(--text-1)' }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-2)' }}>
-                <span>{s.name}</span>
-                <span className="text-xs" style={{ color: 'var(--text-3)' }}>{s.professors} profs</span>
-              </button>
-            ))}
-            {filtered.length === 0 && (
-              <div className="text-center py-6 text-sm" style={{ color: 'var(--text-3)' }}>
-                No schools match "{query}"
+            {showList && !loading && (
+              <div className="absolute top-full left-0 right-0 mt-2 rounded-xl max-h-72 overflow-y-auto"
+                style={{ background: 'var(--bg-1)', border: '1px solid var(--border)', boxShadow: '0 8px 32px rgba(0,0,0,0.3)' }}>
+                {filtered.map(s => {
+                  const isUmich = s.slug === 'umich'
+                  return (
+                    <button key={s.slug} onClick={() => onSelectSchool(s.slug)}
+                      className="w-full flex items-center justify-between px-4 py-2.5 text-sm transition-all"
+                      style={{
+                        color: isUmich ? 'var(--accent)' : 'var(--text-2)',
+                        borderBottom: '1px solid var(--border)',
+                        background: isUmich ? 'var(--accent-bg)' : 'transparent',
+                      }}
+                      onMouseEnter={e => { if (!isUmich) { e.currentTarget.style.background = 'var(--bg-3)'; e.currentTarget.style.color = 'var(--text-1)' }}}
+                      onMouseLeave={e => { if (!isUmich) { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = 'var(--text-2)' }}}>
+                      <span className={isUmich ? 'font-medium' : ''}>{s.name}</span>
+                      <span className="text-xs" style={{ color: 'var(--text-3)' }}>{s.professors} profs</span>
+                    </button>
+                  )
+                })}
+                {filtered.length === 0 && (
+                  <div className="text-center py-6 text-sm" style={{ color: 'var(--text-3)' }}>
+                    No schools match "{query}"
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Feature pills */}
-          <div className="mt-10 flex flex-wrap justify-center gap-2">
-            {['Confidence ratings', 'Grade predictions', 'Semester optimizer', 'Professor matching', 'Trend analysis', 'Side-by-side compare'].map(f => (
-              <span key={f} className="px-2.5 py-1 rounded-md text-[11px]"
-                style={{ background: 'var(--bg-2)', color: 'var(--text-3)', border: '1px solid var(--border)' }}>{f}</span>
-            ))}
-          </div>
+          {!showList && !loading && (
+            <div className="mt-10 flex flex-wrap justify-center gap-2">
+              {['Confidence ratings', 'Grade predictions', 'Semester optimizer', 'Professor matching', 'Trend analysis', 'Side-by-side compare'].map(f => (
+                <span key={f} className="px-2.5 py-1 rounded-md text-[11px]"
+                  style={{ background: 'var(--bg-2)', color: 'var(--text-3)', border: '1px solid var(--border)' }}>{f}</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       <div className="text-center py-5 text-xs" style={{ color: 'var(--text-3)' }}>
-        Free and open source
+        Free to use
       </div>
     </div>
   )
