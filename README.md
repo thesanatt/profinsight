@@ -24,11 +24,16 @@ RateMyProfessors gives you a number. But a professor with 4.5 stars from 3 revie
 - Side-by-side professor comparison with radar charts
 
 **Under the hood:**
-- Beta-Binomial posteriors for confidence-aware quality ratings
+- Beta-Binomial posteriors with **empirical-Bayes priors** fit per department so small-n professors shrink toward their peers (no more "5.0 from 2 reviews" artifact)
+- **Decision-theoretic display toggle** — Conservative / Expected / Optimistic point estimates driven by posterior quantiles (Lecture 4)
+- **Posterior hypothesis test** `P(Prof A > Prof B)` on the compare view via Monte Carlo over two Beta posteriors
+- **Posterior-predictive moderation** on fit scores — thin-data dimensions automatically widen the credible band
+- **Per-tag Beta-Binomial** — each tag gets its own posterior mean with a 95% credible interval, not a raw count
 - Naive Bayes classifier for multi-category sentiment analysis (lectures, grading, workload, approachability, exams)
-- Gaussian Process Regression for rating trend detection with uncertainty bands
+- Gaussian Process Regression for rating trend detection with credible bands
 - Grade probability estimation from self-reported grade distributions
-- No LLM APIs. All analysis is original statistical modeling in pure Python.
+- **Exact** Beta credible intervals (regularized incomplete Beta via continued fraction) — no more normal-approximation overshoot into [−0.1, 1.1]
+- No LLM APIs, no scipy, no sklearn. All analysis is original statistical modeling in pure Python.
 
 ## Coverage
 
@@ -66,17 +71,12 @@ RateMyProfessors gives you a number. But a professor with 4.5 stars from 3 revie
 git clone https://github.com/thesanatt/profinsight.git
 cd profinsight
 
-# Backend
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-uvicorn api:app --reload --port 8000
-
-# Frontend (new terminal)
-cd frontend
-npm install
-npm run dev
+# One-shot: installs deps, analyzes, builds, runs both servers
+./deploy.sh setup
+./deploy.sh dev
 ```
+
+Subcommands: `setup`, `analyze`, `build`, `dev`, `serve`, `scrape <slug> "<Name>"`, `refresh`, `status`, `deploy`. See `./deploy.sh help`.
 
 Open http://localhost:5173
 
@@ -93,11 +93,21 @@ To add it to the weekly auto-update, add an entry to `DEFAULT_SCHOOLS` in `bulk_
 
 ## How the ML works
 
-**Beta-Binomial model:** Instead of just averaging ratings, we model each professor's quality as a Beta distribution. The posterior probability P(good) represents how likely it is that a randomly selected student would rate them above a threshold, with credible intervals that shrink as more reviews come in. A professor with 4.5/5 from 3 reviews gets wide intervals (low confidence). The same rating from 200 reviews gets tight intervals (high confidence).
+**Beta-Binomial with empirical-Bayes priors:** Each professor's quality is a Beta distribution. We don't pick a fixed prior — we fit `Beta(α, β)` by method of moments from every other professor in their department (or the school, if the department is small). That means a small-n professor's posterior is automatically pulled toward their department's baseline, and the amount of pulling is inferred from the between-professor variance. Credible intervals are computed exactly via the regularized incomplete Beta (numerical CDF inversion), so they don't overflow `[0, 1]`.
 
-**Naive Bayes sentiment:** Reviews are classified into five categories (lectures, grading, workload, approachability, exams) using a bag-of-words Naive Bayes model trained on the full review corpus. Each category gets a positive/negative ratio that feeds into the professor profile.
+**Decision-theoretic display:** Following Lecture 4, the "right" point estimate depends on the loss function. We expose a `Conservative / Expected / Optimistic` toggle — posterior 25%-quantile, mean, and 75%-quantile respectively. Default is `Expected`.
 
-**Gaussian Process Regression:** Rating timestamps are modeled as a GP with an RBF kernel to detect trends. The model outputs a smooth prediction curve with uncertainty bands, showing whether a professor is improving, declining, or stable over time.
+**Posterior hypothesis test:** On the compare view, `P(Prof A > Prof B)` is computed directly from their two Beta posteriors (seeded Monte Carlo; a closed-form check for small shapes runs in the test suite). No null hypothesis, no p-value — you get an actual probability statement.
+
+**Posterior-predictive moderation on fit scores:** Each category of sentiment is turned into a Beta posterior with a weak prior; the fit score is the weighted expectation of those posteriors, with variance propagated into a credible band. Thin-data categories don't pull the score confidently in any direction.
+
+**Per-tag Beta-Binomial:** Each tag's count is turned into a posterior with a fixed weak prior centered at the global tag base-rate. Small-n tags show visibly wider bars so users can see what's confident and what isn't.
+
+**Naive Bayes sentiment:** Reviews are classified into five categories (lectures, grading, workload, approachability, exams) using a bag-of-words Naive Bayes model trained semi-supervised on the full review corpus.
+
+**Gaussian Process Regression:** Rating timestamps are modeled as a GP with an RBF kernel to detect trends. The model outputs a smooth prediction curve with credible bands, showing whether a professor is improving, declining, or stable over time.
+
+All Bayesian primitives live in `bayesian_calibration.py` and have 60+ doctests + property tests (`tests/test_bayesian_calibration.py`). See `LIVE_GUIDE/` for the full concept-by-concept mapping from class lectures to pipeline code.
 
 ## Disclaimer
 
