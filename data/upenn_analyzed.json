@@ -7,7 +7,7 @@
     "scraped_at": "2026-04-19T05:58:49.123842+00:00",
     "total_professors": 234,
     "total_reviews": 1828,
-    "analyzed_at": "2026-04-23T06:09:32.008916"
+    "analyzed_at": "2026-04-23T06:24:29.515485"
   },
   "analysis": [
     {
@@ -306,6 +306,24 @@
           0.263
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.714,
+        "adjusted_rating": 2.08,
+        "grade_inflation_effect": 0.634,
+        "n_reviews_used": 7,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.71,
@@ -777,6 +795,42 @@
           0.144
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.364,
+        "adjusted_rating": 2.941,
+        "grade_inflation_effect": 0.423,
+        "n_reviews_used": 11,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 3,
+          "n_reviews": 14,
+          "posterior_mean": 0.167,
+          "confidence": "probably"
+        },
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 14,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 14,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.71,
@@ -1209,6 +1263,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.667,
+        "adjusted_rating": 3.973,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -1688,6 +1750,42 @@
           0.121
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.0,
+        "adjusted_rating": 1.771,
+        "grade_inflation_effect": 0.229,
+        "n_reviews_used": 10,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 15,
+          "posterior_mean": 0.12,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.08,
@@ -2180,6 +2278,14 @@
           0.089
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.306,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 5.0,
@@ -2646,6 +2752,8 @@
           0.351
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.4,
@@ -3093,6 +3201,14 @@
           0.107
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.8,
+        "adjusted_rating": 1.606,
+        "grade_inflation_effect": 0.194,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.71,
@@ -3497,6 +3613,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -3897,6 +4015,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.514,
+        "grade_inflation_effect": 0.486,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 2.0,
@@ -4274,6 +4400,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -4673,6 +4801,18 @@
           0.123
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.5,
@@ -5125,6 +5265,42 @@
           0.203
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.278,
+        "adjusted_rating": 3.046,
+        "grade_inflation_effect": 0.231,
+        "n_reviews_used": 9,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 19,
+          "posterior_mean": 0.103,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 19,
+          "posterior_mean": 0.103,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 19,
+          "posterior_mean": 0.069,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.09,
@@ -5580,6 +5756,14 @@
           0.132
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.0,
+        "adjusted_rating": 1.625,
+        "grade_inflation_effect": 0.375,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.5,
@@ -6041,6 +6225,18 @@
           0.045
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "participation_graded",
+          "label": "Participation counts",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 10,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.78,
@@ -6456,6 +6652,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.0,
+        "adjusted_rating": 1.0,
+        "grade_inflation_effect": 0.0,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.0,
@@ -6868,6 +7072,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -7274,6 +7480,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -7684,6 +7902,8 @@
           0.064
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.1,
@@ -8109,6 +8329,14 @@
           0.097
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.0,
+        "adjusted_rating": 2.162,
+        "grade_inflation_effect": -0.162,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.6,
@@ -8533,6 +8761,8 @@
           0.461
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 1.5,
@@ -8958,6 +9188,8 @@
           0.132
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -9390,6 +9622,8 @@
           0.022
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.9,
@@ -9822,6 +10056,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.0,
@@ -10221,6 +10467,8 @@
           0.216
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.0,
@@ -10688,6 +10936,24 @@
           0.057
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.0,
+        "adjusted_rating": 3.306,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 21,
+          "posterior_mean": 0.065,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.14,
@@ -11153,6 +11419,24 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.333,
+        "adjusted_rating": 3.403,
+        "grade_inflation_effect": -0.069,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -11684,6 +11968,14 @@
           0.609
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.727,
+        "adjusted_rating": 4.406,
+        "grade_inflation_effect": 0.322,
+        "n_reviews_used": 22,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.38,
@@ -12212,6 +12504,24 @@
           0.492
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.167,
+        "adjusted_rating": 2.473,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 13,
+          "posterior_mean": 0.087,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -12682,6 +12992,8 @@
           0.089
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.42,
@@ -13097,6 +13409,18 @@
           0.125
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.2,
@@ -13549,6 +13873,33 @@
           0.136
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.667,
+        "adjusted_rating": 4.088,
+        "grade_inflation_effect": 0.578,
+        "n_reviews_used": 6,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 12,
+          "posterior_mean": 0.091,
+          "confidence": "maybe"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 12,
+          "posterior_mean": 0.091,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.82,
@@ -14004,6 +14355,8 @@
           0.022
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.92,
@@ -14445,6 +14798,24 @@
           0.094
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.333,
+        "adjusted_rating": 2.871,
+        "grade_inflation_effect": 0.463,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.2,
@@ -14855,6 +15226,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -15262,6 +15635,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -15709,6 +16084,27 @@
           0.1
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -16127,6 +16523,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.699,
+        "grade_inflation_effect": 0.301,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.0,
@@ -16573,6 +16977,24 @@
           0.148
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.429,
+        "adjusted_rating": 3.963,
+        "grade_inflation_effect": 0.466,
+        "n_reviews_used": 7,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 15,
+          "posterior_mean": 0.12,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.73,
@@ -17018,6 +17440,33 @@
           0.079
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.297,
+        "grade_inflation_effect": 0.37,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.25,
@@ -17416,6 +17865,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -17803,6 +18264,8 @@
           0.071
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -18195,6 +18658,8 @@
           0.127
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.62,
@@ -18797,6 +19262,18 @@
           0.028
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 73,
+          "posterior_mean": 0.024,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.84,
@@ -19364,6 +19841,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.0,
+        "adjusted_rating": 3.537,
+        "grade_inflation_effect": 0.463,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -19812,6 +20297,8 @@
           0.151
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.64,
@@ -20242,6 +20729,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -20677,6 +21166,24 @@
           0.122
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.25,
+        "adjusted_rating": 2.556,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 8,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 9,
+          "posterior_mean": 0.158,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.25,
@@ -21151,6 +21658,24 @@
           0.252
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.333,
+        "adjusted_rating": 1.83,
+        "grade_inflation_effect": 0.503,
+        "n_reviews_used": 12,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 16,
+          "posterior_mean": 0.077,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.43,
@@ -21620,6 +22145,8 @@
           0.225
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -22062,6 +22589,24 @@
           0.203
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.343,
+        "grade_inflation_effect": 0.324,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.12,
@@ -22483,6 +23028,8 @@
           0.515
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.71,
@@ -22935,6 +23482,24 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.358,
+        "grade_inflation_effect": 0.642,
+        "n_reviews_used": 4,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 10,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -23378,6 +23943,8 @@
           0.097
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 1.0,
@@ -23814,6 +24381,18 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -24355,6 +24934,33 @@
           1.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.159,
+        "adjusted_rating": 1.047,
+        "grade_inflation_effect": 0.111,
+        "n_reviews_used": 63,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 77,
+          "posterior_mean": 0.046,
+          "confidence": "probably"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 77,
+          "posterior_mean": 0.034,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.3,
@@ -24973,6 +25579,8 @@
           0.1
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.58,
@@ -25421,6 +26029,36 @@
           0.134
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 7,
+          "posterior_mean": 0.176,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.75,
@@ -25897,6 +26535,24 @@
           0.128
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.136,
+        "adjusted_rating": 2.966,
+        "grade_inflation_effect": 0.17,
+        "n_reviews_used": 11,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 21,
+          "posterior_mean": 0.097,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.86,
@@ -26383,6 +27039,14 @@
           0.047
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.667,
+        "adjusted_rating": 3.973,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.22,
@@ -26761,6 +27425,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 5.0,
@@ -27231,6 +27897,51 @@
           0.102
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.154,
+        "adjusted_rating": 1.834,
+        "grade_inflation_effect": 0.32,
+        "n_reviews_used": 13,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 21,
+          "posterior_mean": 0.129,
+          "confidence": "probably"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 3,
+          "n_reviews": 21,
+          "posterior_mean": 0.129,
+          "confidence": "probably"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 21,
+          "posterior_mean": 0.097,
+          "confidence": "maybe"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 21,
+          "posterior_mean": 0.065,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.71,
@@ -27684,6 +28395,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -28079,6 +28802,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.17,
@@ -28455,6 +29180,8 @@
           0.231
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -28939,6 +29666,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.646,
+        "grade_inflation_effect": 0.354,
+        "n_reviews_used": 10,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -29411,6 +30146,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.042,
+        "grade_inflation_effect": 0.625,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.67,
@@ -29818,6 +30561,8 @@
           0.107
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.3,
@@ -30262,6 +31007,14 @@
           0.187
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.774,
+        "grade_inflation_effect": 0.226,
+        "n_reviews_used": 4,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.4,
@@ -30751,6 +31504,24 @@
           0.336
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.077,
+        "adjusted_rating": 1.762,
+        "grade_inflation_effect": 0.315,
+        "n_reviews_used": 13,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 5,
+          "n_reviews": 31,
+          "posterior_mean": 0.146,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 1.0,
@@ -31262,6 +32033,8 @@
           0.101
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.75,
@@ -31714,6 +32487,18 @@
           0.091
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 14,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.93,
@@ -32135,6 +32920,18 @@
           0.715
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -32582,6 +33379,18 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 8,
+          "posterior_mean": 0.111,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.44,
@@ -32992,6 +33801,24 @@
           0.125
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.898,
+        "grade_inflation_effect": -0.231,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.2,
@@ -33430,6 +34257,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.792,
+        "grade_inflation_effect": 0.208,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -33948,6 +34783,33 @@
           0.442
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.833,
+        "adjusted_rating": 1.368,
+        "grade_inflation_effect": 0.465,
+        "n_reviews_used": 60,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 66,
+          "posterior_mean": 0.053,
+          "confidence": "probably"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 66,
+          "posterior_mean": 0.026,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.13,
@@ -34494,6 +35356,8 @@
           0.354
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.2,
@@ -34959,6 +35823,33 @@
           0.138
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.542,
+        "grade_inflation_effect": 0.458,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.19,
@@ -35459,6 +36350,8 @@
           0.106
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.62,
@@ -35920,6 +36813,14 @@
           0.126
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.333,
+        "adjusted_rating": 3.241,
+        "grade_inflation_effect": 0.093,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -36320,6 +37221,24 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.597,
+        "grade_inflation_effect": 0.069,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.67,
@@ -36727,6 +37646,8 @@
           0.103
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.17,
@@ -37153,6 +38074,8 @@
           0.922
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 3.0,
@@ -37646,6 +38569,8 @@
           0.098
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.0,
@@ -38084,6 +39009,8 @@
           0.18
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.38,
@@ -38468,6 +39395,8 @@
           0.861
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.17,
@@ -38844,6 +39773,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -39251,6 +40182,14 @@
           0.122
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 3.945,
+        "grade_inflation_effect": 0.555,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 5.0,
@@ -39662,6 +40601,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 3,
+          "posterior_mean": 0.231,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.33,
@@ -40066,6 +41017,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -40451,6 +41404,8 @@
           0.351
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.4,
@@ -40849,6 +41804,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.375,
+        "grade_inflation_effect": 0.625,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -41282,6 +42245,8 @@
           0.107
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.22,
@@ -41688,6 +42653,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -42097,6 +43074,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -42584,6 +43573,14 @@
           0.157
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.857,
+        "adjusted_rating": 1.332,
+        "grade_inflation_effect": 0.525,
+        "n_reviews_used": 7,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -43038,6 +44035,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.67,
@@ -43450,6 +44459,8 @@
           0.08
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.08,
@@ -43941,6 +44952,51 @@
           0.088
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.778,
+        "adjusted_rating": 3.338,
+        "grade_inflation_effect": 0.439,
+        "n_reviews_used": 9,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 32,
+          "posterior_mean": 0.095,
+          "confidence": "probably"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 2,
+          "n_reviews": 32,
+          "posterior_mean": 0.071,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 32,
+          "posterior_mean": 0.048,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 32,
+          "posterior_mean": 0.048,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.65,
@@ -44380,6 +45436,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.83,
@@ -44764,6 +45822,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.83,
@@ -45210,6 +46270,18 @@
           0.04
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 13,
+          "posterior_mean": 0.174,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.69,
@@ -45591,6 +46663,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.75,
@@ -46022,6 +47096,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -46474,6 +47550,18 @@
           0.178
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 9,
+          "posterior_mean": 0.158,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.43,
@@ -46891,6 +47979,8 @@
           0.211
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.5,
@@ -47296,6 +48386,8 @@
           0.118
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.58,
@@ -47711,6 +48803,8 @@
           0.128
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.93,
@@ -48114,6 +49208,8 @@
           0.022
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.9,
@@ -48528,6 +49624,8 @@
           0.023
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.12,
@@ -48984,6 +50082,8 @@
           0.081
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -49440,6 +50540,24 @@
           0.059
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.4,
+        "adjusted_rating": 3.706,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 8,
+          "posterior_mean": 0.111,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.56,
@@ -49827,6 +50945,8 @@
           0.101
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -50209,6 +51329,8 @@
           0.087
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 2.0,
@@ -50626,6 +51748,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -51052,6 +52176,14 @@
           0.066
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.4,
+        "adjusted_rating": 3.984,
+        "grade_inflation_effect": 0.416,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.75,
@@ -51472,6 +52604,8 @@
           0.024
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.88,
@@ -51876,6 +53010,24 @@
           0.118
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.333,
+        "adjusted_rating": 3.801,
+        "grade_inflation_effect": 0.532,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.2,
@@ -52294,6 +53446,8 @@
           0.104
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.2,
@@ -52711,6 +53865,18 @@
           0.063
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.6,
@@ -53096,6 +54262,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.75,
@@ -53534,6 +54702,24 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.503,
+        "grade_inflation_effect": 0.497,
+        "n_reviews_used": 6,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 8,
+          "posterior_mean": 0.111,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -53988,6 +55174,18 @@
           0.369
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 10,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.25,
@@ -54388,6 +55586,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 4.5,
@@ -54800,6 +56000,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.67,
@@ -55193,6 +56395,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.67,
@@ -55599,6 +56813,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.33,
@@ -55996,6 +57212,8 @@
           0.044
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.8,
@@ -56352,6 +57570,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -56748,6 +57968,8 @@
           0.06
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.3,
@@ -57133,6 +58355,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -57573,6 +58797,18 @@
           0.217
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.11,
@@ -58076,6 +59312,18 @@
           0.124
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 23,
+          "posterior_mean": 0.061,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.15,
@@ -58540,6 +59788,18 @@
           0.074
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.44,
@@ -58924,6 +60184,8 @@
           0.077
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.88,
@@ -59346,6 +60608,8 @@
           0.19
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.5,
@@ -59740,6 +61004,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.75,
@@ -60118,6 +61384,8 @@
           0.263
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.0,
@@ -60513,6 +61781,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -60951,6 +62221,24 @@
           0.06
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.286,
+        "adjusted_rating": 3.651,
+        "grade_inflation_effect": 0.634,
+        "n_reviews_used": 7,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 12,
+          "posterior_mean": 0.091,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.12,
@@ -61351,6 +62639,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.33,
@@ -61792,6 +63082,8 @@
           0.059
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.41,
@@ -62218,6 +63510,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.25,
@@ -62616,6 +63910,8 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.38,
@@ -63027,6 +64323,8 @@
           0.719
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.79,
@@ -63405,6 +64703,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -63801,6 +65101,8 @@
           0.126
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -64210,6 +65512,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.67,
@@ -64620,6 +65924,8 @@
           0.15
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.88,
@@ -65037,6 +66343,18 @@
           0.041
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.82,
@@ -65469,6 +66787,8 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.88,
@@ -65859,6 +67179,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.83,
@@ -66232,6 +67554,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -66605,6 +67929,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.17,
@@ -67069,6 +68395,8 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.68,
@@ -67503,6 +68831,8 @@
           0.028
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.86,
@@ -67874,6 +69204,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -68278,6 +69610,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -68676,6 +70010,8 @@
           0.112
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.1,
@@ -69088,6 +70424,8 @@
           0.106
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.5,
@@ -69467,6 +70805,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -69847,6 +71187,8 @@
           0.131
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -70255,6 +71597,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.33,
@@ -70682,6 +72026,8 @@
           0.03
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.76,
@@ -71084,6 +72430,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.33,
@@ -71495,6 +72843,8 @@
           0.024
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -71907,6 +73257,8 @@
           0.101
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.2,
@@ -72313,6 +73665,18 @@
           0.172
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.3,
@@ -72708,6 +74072,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.445,
+        "grade_inflation_effect": 0.555,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -73085,6 +74457,8 @@
           0.729
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.4,
@@ -73467,6 +74841,8 @@
           0.096
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.7,
@@ -73876,6 +75252,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -74279,6 +75657,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -74667,6 +76047,8 @@
           0.16
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -75071,6 +76453,8 @@
           0.082
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -75462,6 +76846,8 @@
           0.255
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.12,
@@ -75852,6 +77238,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.83,
@@ -76226,6 +77624,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.83,
@@ -76599,6 +77999,18 @@
           0.106
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.25,
@@ -76980,6 +78392,8 @@
           0.053
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.42,
@@ -77426,6 +78840,18 @@
           0.121
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.84,
@@ -77895,6 +79321,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.769,
+        "grade_inflation_effect": 0.231,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -78320,6 +79754,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -78721,6 +80157,8 @@
           0.16
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.6,
@@ -79132,6 +80570,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -79549,6 +80989,18 @@
           0.161
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.75,
@@ -79917,6 +81369,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -80342,6 +81796,8 @@
           0.073
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.58,
@@ -80745,6 +82201,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -81174,6 +82632,27 @@
           0.134
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.86,
@@ -81590,6 +83069,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -81985,6 +83466,8 @@
           0.413
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.25,
@@ -82395,6 +83878,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -82876,6 +84371,24 @@
           1.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.306,
+        "grade_inflation_effect": 0.694,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 19,
+          "posterior_mean": 0.069,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.74,
@@ -83297,6 +84810,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -83695,6 +85220,18 @@
           0.484
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "participation_graded",
+          "label": "Participation counts",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.88,
@@ -84133,6 +85670,8 @@
           0.078
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 5.0,
@@ -84608,6 +86147,18 @@
           0.071
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.38,
@@ -85094,6 +86645,14 @@
           0.078
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.333,
+        "adjusted_rating": 3.94,
+        "grade_inflation_effect": 0.393,
+        "n_reviews_used": 6,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.43,
@@ -85502,6 +87061,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 4,
+          "posterior_mean": 0.214,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -85889,6 +87460,8 @@
           0.112
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 2.0,
@@ -86272,6 +87845,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -86661,6 +88236,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -87070,6 +88647,14 @@
           1.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.0,
+        "adjusted_rating": 3.532,
+        "grade_inflation_effect": 0.468,
+        "n_reviews_used": 4,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -87521,6 +89106,33 @@
           0.844
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.46,
+        "grade_inflation_effect": 0.54,
+        "n_reviews_used": 9,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 14,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 14,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.93,
@@ -87945,6 +89557,18 @@
           0.211
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.75,
@@ -88360,6 +89984,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -88755,6 +90381,27 @@
           0.1
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.2,
@@ -89132,6 +90779,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.0,
@@ -89549,6 +91198,8 @@
           0.131
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.88,
@@ -89929,6 +91580,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.5,
@@ -90405,6 +92058,27 @@
           0.078
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 22,
+          "posterior_mean": 0.062,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 22,
+          "posterior_mean": 0.062,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.4,
@@ -90882,6 +92556,18 @@
           0.24
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -91281,6 +92967,8 @@
           0.031
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.67,
@@ -91694,6 +93382,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.5,
+        "adjusted_rating": 1.5,
+        "grade_inflation_effect": 0.0,
+        "n_reviews_used": 3,
+        "beta_used": 0.6939
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.0,
@@ -92074,6 +93770,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.17,
@@ -92437,6 +94135,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 2.5,
@@ -92846,6 +94546,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.83,
@@ -93254,6 +94966,8 @@
           0.022
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.92,
@@ -93623,6 +95337,8 @@
           0.034
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.7,
@@ -94025,6 +95741,18 @@
           0.144
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -94451,6 +96179,18 @@
           0.068
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 14,
+          "posterior_mean": 0.167,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.46,
@@ -94878,6 +96618,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -95333,6 +97075,27 @@
           0.125
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 26,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 26,
+          "posterior_mean": 0.056,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.64,
@@ -95660,6 +97423,8 @@
       "grade_forecast": null,
       "recency": null,
       "review_quality": null,
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {},
       "gp_trend": {
         "insufficient_data": true,
@@ -95807,6 +97572,8 @@
       "grade_forecast": null,
       "recency": null,
       "review_quality": null,
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {},
       "gp_trend": {
         "insufficient_data": true,
@@ -95954,6 +97721,8 @@
       "grade_forecast": null,
       "recency": null,
       "review_quality": null,
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {},
       "gp_trend": {
         "insufficient_data": true,
@@ -96101,6 +97870,8 @@
       "grade_forecast": null,
       "recency": null,
       "review_quality": null,
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {},
       "gp_trend": {
         "insufficient_data": true,
@@ -96378,6 +98149,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -96784,6 +98557,18 @@
           0.127
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.1,
@@ -97176,6 +98961,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 2.5,
@@ -97535,6 +99322,8 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.5,
@@ -97909,6 +99698,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 3.83,
@@ -98382,6 +100173,33 @@
           0.036
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 3.848,
+        "grade_inflation_effect": 0.652,
+        "n_reviews_used": 5,
+        "beta_used": 0.6939
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 2,
+          "n_reviews": 30,
+          "posterior_mean": 0.075,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 30,
+          "posterior_mean": 0.05,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.7,
@@ -98593,6 +100411,7 @@
         "source": "empirical_bayes_mom"
       }
     },
-    "n_departments": 40
+    "n_departments": 40,
+    "grade_inflation_beta": 0.6939
   }
 }

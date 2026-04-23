@@ -7,7 +7,7 @@
     "scraped_at": "2026-04-19T06:21:38.793238+00:00",
     "total_professors": 5,
     "total_reviews": 18,
-    "analyzed_at": "2026-04-23T06:09:25.702949"
+    "analyzed_at": "2026-04-23T06:24:21.548714"
   },
   "analysis": [
     {
@@ -281,6 +281,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.258,
+        "grade_inflation_effect": 0.742,
+        "n_reviews_used": 3,
+        "beta_used": 0.9684
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -702,6 +710,33 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.516,
+        "grade_inflation_effect": 0.484,
+        "n_reviews_used": 4,
+        "beta_used": 0.9684
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -1131,6 +1166,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.09,
+        "grade_inflation_effect": 0.91,
+        "n_reviews_used": 5,
+        "beta_used": 0.9684
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -1546,6 +1589,33 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.354,
+        "grade_inflation_effect": 0.646,
+        "n_reviews_used": 3,
+        "beta_used": 0.9684
+      },
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -1960,6 +2030,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -2116,6 +2188,7 @@
         "source": "fallback_weak"
       }
     },
-    "n_departments": 5
+    "n_departments": 5,
+    "grade_inflation_beta": 0.9684
   }
 }
