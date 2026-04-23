@@ -52,14 +52,32 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
           </div>
         </div>
         <div className="space-y-1.5">
-          {results.results.map((p, i) => (
+          {results.results.map((p, i) => {
+            // Plain-language reliability tag derived from the posterior
+            // variance. Wider band = thinner data = "Low reviews".
+            const mp = p.match_posterior
+            let reliability = null
+            if (mp) {
+              const width = (mp.ci_upper - mp.ci_lower)
+              if (p.num_ratings >= 30 && width < 0.25) reliability = { label: 'Lots of data', tone: 'var(--green)' }
+              else if (p.num_ratings >= 10 && width < 0.45) reliability = { label: 'Enough data', tone: 'var(--text-3)' }
+              else reliability = { label: 'Few reviews', tone: 'var(--orange)' }
+            }
+            return (
             <div key={p.id} onClick={() => onSelect(p.id)} className="card-hover px-5 py-3.5">
               <div className="flex items-center gap-4">
                 <span className="text-lg font-bold w-6 text-right" style={{ color: 'var(--text-3)' }}>#{i+1}</span>
                 <FitRing score={p.fit_score} />
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold" style={{ color: 'var(--text-1)' }}>{p.name}</div>
-                  <div className="text-xs" style={{ color: 'var(--text-3)' }}>{p.department}</div>
+                  <div className="text-xs" style={{ color: 'var(--text-3)' }}>
+                    {p.department}
+                    {reliability && (
+                      <span className="ml-2" style={{ color: reliability.tone }}>
+                        · {reliability.label}
+                      </span>
+                    )}
+                  </div>
                   {p.fit_reasons?.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-1.5">
                       {p.fit_reasons.map((r, j) => (
@@ -81,7 +99,8 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     )

@@ -244,30 +244,7 @@ function CourseBreakdown({ classes }) {
   )
 }
 
-// Tags
-
-function Tags({ tags }) {
-  if (!tags?.length) return null
-  const max = Math.max(...tags.map(t => t.count || 1))
-  return (
-    <div className="card p-5">
-      <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-1)' }}>Students describe them as</h3>
-      <div className="flex flex-wrap gap-1.5">
-        {tags.map(t => {
-          const a = Math.max(0.25, (t.count || 1) / max)
-          return (
-            <span key={t.tag} className="px-2.5 py-1 rounded-lg text-xs"
-              style={{ background: `rgba(201,160,255,${a * 0.1})`, border: `1px solid rgba(201,160,255,${a * 0.2})`, color: `rgba(224,193,255,${0.45 + a * 0.55})` }}>
-              {t.tag} <span style={{ opacity: 0.45 }}>{t.count}</span>
-            </span>
-          )
-        })}
-      </div>
-    </div>
-  )
-}
-
-// Share + Bayesian Deep Dive
+// Share button
 
 function ShareBtn() {
   const [copied, setCopied] = useState(false)
@@ -275,36 +252,94 @@ function ShareBtn() {
   return <button onClick={copy} className="btn-secondary text-xs">{copied ? '✓ Copied!' : '🔗 Share'}</button>
 }
 
-function BayesianDetails({ analysis }) {
-  const [open, setOpen] = useState(false)
-  if (!analysis) return null
-  const posteriors = analysis.rating_posteriors || {}
+// "How sure are we?" — plain-language reliability card. Translates the
+// calibrated posterior into a single sentence a student can act on.
+function ReliabilityCard({ calibrated, numRatings }) {
+  if (!calibrated) return null
+  const good = calibrated.good_rating
+  if (!good) return null
+
+  const n = good.n || 0
+  const ciWidth = (good.ci_upper || 1) - (good.ci_lower || 0)
+  const shrink = good.shrinkage || 0
+
+  let headline, tone
+  if (n >= 50 && ciWidth < 0.2) {
+    headline = 'Solid read'
+    tone = 'var(--green)'
+  } else if (n >= 15 && ciWidth < 0.35) {
+    headline = 'Decent read'
+    tone = 'var(--green)'
+  } else if (n >= 5) {
+    headline = 'Use with caution'
+    tone = 'var(--yellow)'
+  } else {
+    headline = 'Too few reviews'
+    tone = 'var(--orange)'
+  }
+
+  let explainer
+  if (n < 5) {
+    explainer = `Only ${n} usable reviews — real quality could differ a lot from what's shown.`
+  } else if (shrink > 0.2) {
+    explainer = `Numbers here are a bit adjusted toward ${calibrated.department_used || 'department'} norms because only ${n} students weighed in.`
+  } else if (n >= 50) {
+    explainer = `${n} reviews in — the numbers above should be pretty close to what you'd experience.`
+  } else {
+    explainer = `Based on ${n} reviews. Enough to get the gist, but could shift with more data.`
+  }
+
   return (
-    <div className="card">
-      <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between px-5 py-3 text-left">
-        <span className="text-xs" style={{ color: 'var(--text-3)' }}>Show statistical details (Bayesian analysis)</span>
-        <svg className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      {open && (
-        <div className="px-5 pb-4 space-y-2" style={{ borderTop: '1px solid var(--border)' }}>
-          <p className="text-[11px] pt-3 mb-2" style={{ color: 'var(--text-3)' }}>
-            These are Beta-Binomial posterior probabilities. The confidence interval shows the range where the true value likely falls.
-          </p>
-          {Object.entries(posteriors).map(([level, p]) => (
-            <div key={level}>
-              <div className="flex justify-between text-xs mb-1">
-                <span style={{ color: 'var(--text-2)' }}>P({level}), rating ≥ {p.threshold}</span>
-                <span className="font-mono" style={{ color: 'var(--text-1)' }}>{(p.mean*100).toFixed(1)}% <span style={{ color: 'var(--text-3)' }}>[{(p.ci_lower*100).toFixed(0)}%, {(p.ci_upper*100).toFixed(0)}%]</span></span>
-              </div>
-              <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-3)' }}>
-                <div className="h-full rounded-full" style={{ width: `${p.mean*100}%`, background: 'var(--accent)', opacity: 0.6 }} />
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+    <div className="card p-5 flex items-start gap-3">
+      <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+        style={{ background: 'var(--accent-bg)', border: '1.5px solid var(--accent-border)' }}>
+        <span style={{ color: 'var(--accent)' }} className="text-base">✦</span>
+      </div>
+      <div>
+        <div className="font-semibold text-sm" style={{ color: tone }}>{headline}</div>
+        <p className="text-sm leading-relaxed mt-0.5" style={{ color: 'var(--text-2)' }}>{explainer}</p>
+      </div>
+    </div>
+  )
+}
+
+// Tag cloud, sized by how strongly students agree, with a quiet subtitle
+// rather than a bunch of numeric ranges. Tags with thin support are shown
+// smaller and dimmer so users naturally downweight them.
+function Tags({ tagPosteriors, topTags }) {
+  // Prefer calibrated per-tag posteriors if present; fall back to raw top_tags.
+  let chips = []
+  if (tagPosteriors?.length) {
+    chips = tagPosteriors.slice(0, 8).map(t => ({ name: t.tag, strength: t.mean, n: t.n }))
+  } else if (topTags?.length) {
+    const max = Math.max(...topTags.map(t => t.count || 1))
+    chips = topTags.map(t => ({ name: t.tag, strength: (t.count || 1) / max, n: t.count || 1 }))
+  }
+  if (!chips.length) return null
+
+  return (
+    <div className="card p-5">
+      <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>Students describe them as</h3>
+      <p className="text-[11px] mb-3" style={{ color: 'var(--text-3)' }}>Bigger words = more students said it.</p>
+      <div className="flex flex-wrap gap-1.5">
+        {chips.map(t => {
+          const s = Math.max(0.35, t.strength)
+          const sizePx = 12 + Math.round(s * 5) // 12–17px
+          return (
+            <span key={t.name} className="inline-flex items-center px-2.5 py-1 rounded-lg"
+              style={{
+                background: `rgba(180, 83, 46, ${0.06 + s * 0.14})`,
+                border: `1.5px solid rgba(180, 83, 46, ${0.15 + s * 0.25})`,
+                color: 'var(--text-1)',
+                fontSize: sizePx,
+                fontWeight: 500,
+                opacity: 0.55 + s * 0.45,
+              }}>
+              {t.name}
+            </span>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -339,6 +374,9 @@ export default function ProfessorDetail({ professor }) {
       {/* The Bottom Line */}
       <BottomLine summary={p.summary} gradeProbs={p.grade_probabilities} />
 
+      {/* Plain-language reliability note */}
+      <ReliabilityCard calibrated={p.calibrated_analysis} numRatings={p.summary?.num_ratings} />
+
       {/* Content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <ProfVibe sentiment={p.category_sentiment} />
@@ -346,11 +384,8 @@ export default function ProfessorDetail({ professor }) {
         <TrendChart gp={p.gp_trend} />
         <GradeChart grades={p.grade_distribution} />
         <CourseBreakdown classes={p.class_breakdown} />
-        <Tags tags={p.top_tags} />
+        <Tags tagPosteriors={p.tag_posteriors} topTags={p.top_tags} />
       </div>
-
-      {/* Nerdy details (collapsed) */}
-      <BayesianDetails analysis={p.bayesian_analysis} />
     </div>
   )
 }

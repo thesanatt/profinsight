@@ -1,41 +1,127 @@
-name: Weekly Data Update
+name: Nightly Data Refresh
+
+# Rotation strategy:
+# The full school list is ~65 entries. Scraping all of them in one run would
+# blow the 6-hour GitHub Actions budget and would also be uncourteous to
+# RateMyProfessors' servers. Instead we split into 3 deterministic batches
+# by slug. Each night we run one batch (batch index = day-of-year mod 3),
+# so every school refreshes about every 3 days.
 
 on:
   schedule:
-    # Run every Sunday at 3am UTC (Saturday 11pm EST)
-    - cron: '0 3 * * 0'
-  workflow_dispatch: # Allow manual trigger from GitHub UI
+    # 03:00 UTC nightly (≈ 11pm ET the previous evening).
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      batch_override:
+        description: 'Batch to run as i/N (e.g. 0/3). Leave blank for auto-rotation.'
+        required: false
+        default: ''
+      max_professors:
+        description: 'Cap per school (0 = unlimited, default 1500).'
+        required: false
+        default: '1500'
+      stale_days:
+        description: 'Only refresh schools older than this many days (blank = ignore staleness).'
+        required: false
+        default: ''
+
+concurrency:
+  group: data-refresh
+  cancel-in-progress: false
 
 jobs:
-  update-data:
+  refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 340   # 5h40m; leaves a buffer under the 6h ceiling
 
     steps:
-      - name: Checkout repo
+      - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install -r requirements.txt
 
-      - name: Run bulk scraper (refresh all existing schools)
-        run: python bulk_update.py --refresh --max-professors 500
+      - name: Pick batch
+        id: batch
+        run: |
+          # If the user passed a batch override via workflow_dispatch, use it.
+          # Otherwise rotate by day-of-year mod 3.
+          if [ -n "${{ github.event.inputs.batch_override }}" ]; then
+            echo "batch=${{ github.event.inputs.batch_override }}" >> "$GITHUB_OUTPUT"
+          else
+            DOY=$(date -u +%j)
+            echo "batch=$(( DOY % 3 ))/3" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Check for changes
+      - name: Refresh batch
+        run: |
+          MAX="${{ github.event.inputs.max_professors || '1500' }}"
+          STALE_FLAG=""
+          if [ -n "${{ github.event.inputs.stale_days }}" ]; then
+            STALE_FLAG="--stale-days ${{ github.event.inputs.stale_days }}"
+          fi
+          echo "Batch: ${{ steps.batch.outputs.batch }}"
+          echo "Max professors: $MAX"
+          python bulk_update.py \
+            --all \
+            --batch "${{ steps.batch.outputs.batch }}" \
+            --max-professors "$MAX" \
+            $STALE_FLAG
+
+      - name: Quick sanity checks on output
+        run: |
+          # Fail fast if the refresh destroyed anything: every analyzed file
+          # must still be valid JSON and still have the calibration block.
+          python - <<'PY'
+          import glob, json, sys
+          bad = []
+          for f in glob.glob('data/*_analyzed.json'):
+              try:
+                  d = json.load(open(f))
+                  if not d.get('calibration') or not d.get('analysis'):
+                      bad.append(f)
+              except Exception as e:
+                  bad.append(f'{f} :: {e}')
+          if bad:
+              print('SANITY FAILURES:')
+              for b in bad:
+                  print(' ', b)
+              sys.exit(1)
+          print(f'OK: {len(glob.glob("data/*_analyzed.json"))} analyzed files valid.')
+          PY
+
+      - name: Detect changes
         id: check
         run: |
-          git diff --quiet data/ && echo "changed=false" >> $GITHUB_OUTPUT || echo "changed=true" >> $GITHUB_OUTPUT
+          if git diff --quiet data/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff --stat data/ | tail -3
+          fi
 
-      - name: Commit and push updated data
+      - name: Commit + push
         if: steps.check.outputs.changed == 'true'
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Pull first so a concurrent manual push doesn't cause rejection.
+          git pull --rebase --autostash origin main
           git add data/
-          git commit -m "Auto-update: refresh professor data $(date +%Y-%m-%d)"
-          git push
+          git commit -m "data: refresh batch ${{ steps.batch.outputs.batch }} $(date -u +%Y-%m-%d)"
+          # Retry the push once if somebody else pushed between rebase and push.
+          for i in 1 2 3; do
+            git push && break
+            echo "push attempt $i failed; pulling + retrying"
+            git pull --rebase --autostash origin main
+            sleep 5
+          done

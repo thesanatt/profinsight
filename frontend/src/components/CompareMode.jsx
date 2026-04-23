@@ -33,12 +33,25 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
   const [details, setDetails] = useState([])
   const [search, setSearch] = useState('')
   const [searchResults, setSearchResults] = useState([])
+  const [h2h, setH2h] = useState(null)
 
   useEffect(() => {
     if (selected.length < 2) { setDetails([]); return }
     Promise.all(selected.map(id =>
       fetch(`${API_BASE}/api/${school}/professors/${encodeURIComponent(id)}`).then(r => r.json())
     )).then(setDetails).catch(() => {})
+  }, [selected, school])
+
+  // Bayesian head-to-head: when exactly two profs are selected, compute
+  // P(A > B) on the calibrated Beta posteriors. Reframes the compare view
+  // from "two numbers side by side" to "83% probability Prof A is better."
+  useEffect(() => {
+    if (selected.length !== 2) { setH2h(null); return }
+    const [a, b] = selected
+    fetch(`${API_BASE}/api/${school}/head_to_head?a=${encodeURIComponent(a)}&b=${encodeURIComponent(b)}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(setH2h)
+      .catch(() => setH2h(null))
   }, [selected, school])
 
   useEffect(() => {
@@ -124,6 +137,39 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
 
       {details.length >= 2 && (
         <div className="space-y-3">
+          {h2h?.comparisons && (
+            <div className="card p-5">
+              <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>Who comes out on top?</h3>
+              <p className="text-[11px] mb-3" style={{ color: 'var(--text-3)' }}>
+                How likely {h2h.a.name} is rated higher than {h2h.b.name}, based on all their reviews.
+              </p>
+              <div className="space-y-2.5">
+                {Object.entries(h2h.comparisons).map(([dim, info]) => {
+                  const pct = Math.round(info.p_a_gt_b * 100)
+                  const aSide = pct >= 50
+                  const leaderPct = aSide ? pct : 100 - pct
+                  return (
+                    <div key={dim}>
+                      <div className="flex justify-between text-xs mb-1">
+                        <span style={{ color: 'var(--text-2)' }}>
+                          {dim === 'overall_good_rating' ? 'Overall quality' : 'Would take again'}
+                        </span>
+                        <span style={{ color: 'var(--text-1)' }}>
+                          <strong>{aSide ? h2h.a.name : h2h.b.name}</strong>
+                          <span style={{ color: 'var(--text-3)' }}> · {leaderPct}%</span>
+                        </span>
+                      </div>
+                      <div className="relative h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg-3)' }}>
+                        <div className="h-full" style={{ width: `${pct}%`, background: COLORS[0] }} />
+                        <div className="absolute top-0 right-0 h-full" style={{ width: `${100 - pct}%`, background: COLORS[1], opacity: 0.5 }} />
+                      </div>
+                      <p className="text-[11px] mt-1" style={{ color: 'var(--text-3)' }}>{info.verdict}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
+          )}
           <div className="card p-5">
             <h3 className="font-semibold text-sm mb-3" style={{ color: 'var(--text-1)' }}>Head to head</h3>
             <StatRow label="Rating" names={names} values={details.map(d => d.summary?.avg_rating)} format={v => v?.toFixed(1)} />

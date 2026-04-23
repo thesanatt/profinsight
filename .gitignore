@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Node / Vite
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/node_modules/.vite/
+
+# Local state / tooling
+.claude/
+.DS_Store
+*.log
+/tmp/
+
+# Copyrighted class material — DO NOT commit
+class_content/

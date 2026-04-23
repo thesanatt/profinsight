@@ -19,6 +19,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from typing import Optional
 
+from bayesian_calibration import (
+    BetaPrior,
+    posterior_from_counts,
+    posterior_predictive_match,
+    prob_a_gt_b_mc,
+)
+
 app = FastAPI(title="ProfInsight API", version="0.3.0")
 
 # Self-ping to prevent Render free tier sleep
@@ -314,6 +321,104 @@ def compare_professors(school: str, ids: str = Query(...)):
     return {"professors": results}
 
 
+def _calibrated_good_params(prof: dict) -> Optional[tuple[float, float]]:
+    """Pull (alpha, beta) out of the calibrated_analysis block, with a fallback
+    to the legacy bayesian_analysis Beta posterior for pre-calibration JSON."""
+    cal = prof.get("calibrated_analysis") or {}
+    gr = cal.get("good_rating") if isinstance(cal, dict) else None
+    if gr and gr.get("alpha") is not None and gr.get("beta") is not None:
+        return float(gr["alpha"]), float(gr["beta"])
+    # Legacy fallback
+    good = (prof.get("bayesian_analysis") or {}).get("rating_posteriors", {}).get("good", {})
+    if good.get("alpha") is not None and good.get("beta") is not None:
+        return float(good["alpha"]), float(good["beta"])
+    return None
+
+
+def _calibrated_wta_params(prof: dict) -> Optional[tuple[float, float]]:
+    cal = prof.get("calibrated_analysis") or {}
+    wta = cal.get("take_again") if isinstance(cal, dict) else None
+    if wta and wta.get("alpha") is not None and wta.get("beta") is not None:
+        return float(wta["alpha"]), float(wta["beta"])
+    legacy = (prof.get("bayesian_analysis") or {}).get("would_take_again_posterior")
+    if legacy and legacy.get("alpha") is not None and legacy.get("beta") is not None:
+        return float(legacy["alpha"]), float(legacy["beta"])
+    return None
+
+
+@app.get("/api/{school}/head_to_head")
+def head_to_head(school: str, a: str = Query(...), b: str = Query(...)):
+    """
+    Bayesian head-to-head comparison of two professors.
+
+    Returns P(A > B) on each comparable posterior (overall "good" rating,
+    "would take again") computed by Monte Carlo from the Beta posteriors
+    stored in `calibrated_analysis`. This reframes CompareMode from
+    "here are two averages, squint and decide" to a direct probability
+    statement (e.g. "83% chance Prof A is rated more highly"), which
+    collapses sample-size asymmetries automatically — two profs with the
+    same mean but 10× different review counts won't tie.
+    """
+    profs = load_school(school).get("analysis", [])
+    prof_a = next((p for p in profs if p.get("professor_id") == a), None)
+    prof_b = next((p for p in profs if p.get("professor_id") == b), None)
+    if prof_a is None or prof_b is None:
+        raise HTTPException(status_code=404, detail="One or both professors not found")
+
+    comparisons: dict = {}
+
+    pg_a, pg_b = _calibrated_good_params(prof_a), _calibrated_good_params(prof_b)
+    if pg_a and pg_b:
+        p = prob_a_gt_b_mc(pg_a[0], pg_a[1], pg_b[0], pg_b[1], n_samples=6000, seed=42)
+        comparisons["overall_good_rating"] = {
+            "p_a_gt_b": round(p, 4),
+            "a_posterior": {"alpha": pg_a[0], "beta": pg_a[1]},
+            "b_posterior": {"alpha": pg_b[0], "beta": pg_b[1]},
+            "verdict": _verdict_from_p(p, prof_a.get("name"), prof_b.get("name"), "overall rating"),
+        }
+
+    pw_a, pw_b = _calibrated_wta_params(prof_a), _calibrated_wta_params(prof_b)
+    if pw_a and pw_b:
+        p = prob_a_gt_b_mc(pw_a[0], pw_a[1], pw_b[0], pw_b[1], n_samples=6000, seed=43)
+        comparisons["would_take_again"] = {
+            "p_a_gt_b": round(p, 4),
+            "a_posterior": {"alpha": pw_a[0], "beta": pw_a[1]},
+            "b_posterior": {"alpha": pw_b[0], "beta": pw_b[1]},
+            "verdict": _verdict_from_p(p, prof_a.get("name"), prof_b.get("name"), "would-take-again"),
+        }
+
+    if not comparisons:
+        raise HTTPException(
+            status_code=409,
+            detail="Calibrated posteriors unavailable for these professors. Re-run the pipeline.",
+        )
+
+    return {
+        "a": {"id": prof_a.get("professor_id"), "name": prof_a.get("name"),
+              "department": prof_a.get("department")},
+        "b": {"id": prof_b.get("professor_id"), "name": prof_b.get("name"),
+              "department": prof_b.get("department")},
+        "comparisons": comparisons,
+    }
+
+
+def _verdict_from_p(p: float, a_name: str, b_name: str, what: str) -> str:
+    """Human-readable head-to-head sentence for a win probability `p = P(A > B)`."""
+    if p >= 0.95:
+        return f"Students clearly rate {a_name} higher on {what}."
+    if p >= 0.80:
+        return f"{a_name} usually comes out ahead on {what}."
+    if p >= 0.60:
+        return f"{a_name} has a slight edge on {what}."
+    if p >= 0.40:
+        return f"Pretty much a toss-up on {what}."
+    if p >= 0.20:
+        return f"{b_name} has a slight edge on {what}."
+    if p >= 0.05:
+        return f"{b_name} usually comes out ahead on {what}."
+    return f"Students clearly rate {b_name} higher on {what}."
+
+
 @app.get("/api/{school}/fit")
 def fit_quiz(
     school: str,
@@ -376,20 +481,43 @@ def fit_quiz(
         weights_total += weight
 
         # 2-5. Sentiment category matches
+        # Posterior-predictive moderation (Lecture 8 pp.3–4): for each category,
+        # convert (n_reviews, pct_positive) -> (successes, n) -> Beta posterior
+        # with a weak prior, and use the posterior mean instead of the raw MLE.
+        # A category with 2 reviews at 100% positive now scores ~75 instead of
+        # 100, automatically preventing confidently-wrong fit scores on thin n.
         pref_map = {
             "grading": grading,
             "lectures": lectures,
             "approachability": approachability,
             "workload": workload,
         }
+        FIT_PRIOR = BetaPrior(2.0, 2.0, source="fit_weak_prior")
+        per_category_posteriors = {}  # for returning explainers
         for cat, pref_val in pref_map.items():
             cat_data = sentiment.get(cat, {})
             pct_positive = cat_data.get("pct_positive")
+            n_cat = cat_data.get("n_reviews") or 0
             if pct_positive is None:
                 continue
 
+            if n_cat > 0:
+                successes = max(0, min(n_cat, round(pct_positive / 100.0 * n_cat)))
+                post = posterior_from_counts(successes, n_cat, FIT_PRIOR)
+                moderated_pct = post.mean * 100
+                ci_lo, ci_hi = post.credible_interval(0.95)
+                per_category_posteriors[cat] = {
+                    "n_reviews": n_cat,
+                    "raw_pct_positive": pct_positive,
+                    "posterior_pct": round(moderated_pct, 1),
+                    "ci_lower_pct": round(ci_lo * 100, 1),
+                    "ci_upper_pct": round(ci_hi * 100, 1),
+                }
+            else:
+                moderated_pct = pct_positive
+
             importance = pref_val / 5.0  # 0.2 to 1.0
-            cat_score = pct_positive  # 0-100
+            cat_score = moderated_pct  # 0-100
 
             # If student says "very important" (4-5), weight this category more
             # and penalize low scores harder
@@ -423,11 +551,29 @@ def fit_quiz(
         # Normalize to 0-100
         fit_score = round(score / weights_total, 1) if weights_total > 0 else 50.0
 
-        # Confidence penalty: fewer reviews = less certain about the fit
+        # The per-dimension Beta-moderation above already does most of the
+        # shrinkage work, but we keep a small total-review-count floor penalty
+        # to avoid very-thin-data profs dominating the top of the list.
         if num_ratings < 10:
             fit_score = round(fit_score * 0.85, 1)  # 15% penalty
         elif num_ratings < 20:
             fit_score = round(fit_score * 0.92, 1)  # 8% penalty
+
+        # Credible band on the fit score, by propagating variance across the
+        # per-dimension Beta posteriors. Gives the UI an honest +/- instead
+        # of just a point estimate.
+        def _weight_for(pref):
+            return 2.5 if pref >= 4 else (0.5 if pref <= 2 else 1.5)
+        w_map = {cat: _weight_for(pref_map[cat]) for cat in pref_map}
+        components = []
+        for cat, pref_val in pref_map.items():
+            info = per_category_posteriors.get(cat)
+            if not info:
+                continue
+            successes = max(0, min(info["n_reviews"], round(info["raw_pct_positive"] / 100.0 * info["n_reviews"])))
+            post = posterior_from_counts(successes, info["n_reviews"], FIT_PRIOR)
+            components.append((cat, w_map[cat], post))
+        match = posterior_predictive_match(components) if components else None
 
         # Build match reasons
         reasons = []
@@ -466,6 +612,9 @@ def fit_quiz(
             "grade_probabilities": grade_probs,
             "bayesian_good_prob": good_post.get("mean"),
             "confidence_level": p.get("confidence_level", ""),
+            # Posterior-predictive match with credible band
+            "match_posterior": match.as_dict() if match else None,
+            "category_posteriors": per_category_posteriors,
         })
 
     scored.sort(key=lambda x: -x["fit_score"])
