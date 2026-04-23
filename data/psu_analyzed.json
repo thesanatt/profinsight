@@ -7,7 +7,26 @@
     "scraped_at": "2026-03-29T06:03:48.981525+00:00",
     "total_professors": 0,
     "total_reviews": 0,
-    "analyzed_at": "2026-03-29T06:03:49.037182"
+    "analyzed_at": "2026-04-23T05:02:59.835958"
   },
-  "analysis": []
+  "analysis": [],
+  "calibration": {
+    "school_priors": {
+      "good_rating": {
+        "alpha": 2.0,
+        "beta": 2.0,
+        "mean": 0.5,
+        "concentration": 4.0,
+        "source": "fallback_weak"
+      },
+      "take_again": {
+        "alpha": 2.0,
+        "beta": 2.0,
+        "mean": 0.5,
+        "concentration": 4.0,
+        "source": "fallback_weak"
+      }
+    },
+    "n_departments": 0
+  }
 }
