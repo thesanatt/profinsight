@@ -27,7 +27,31 @@ from bayesian_calibration import (
 )
 from bayesian_advanced import personal_grade_forecast
 
-app = FastAPI(title="ProfInsight API", version="0.3.0")
+app = FastAPI(title="ProfInsight API", version="0.4.0")
+
+
+# ─── Schedule index (current-term schedules by school) ──────────────────────
+# Loaded at startup; refreshed when the file on disk changes (mtime check).
+# Only schools with a scraped data/{slug}_schedule.json get a schedule; everything
+# else returns an empty/None schedule payload, and the UI just doesn't render the
+# "Teaching now" badge.
+_SCHEDULE_CACHE: dict = {}
+_SCHEDULE_MTIME: dict = {}
+
+
+def _load_schedule(slug: str) -> Optional[dict]:
+    path = os.path.join(DATA_DIR, f"{slug}_schedule.json")
+    if not os.path.exists(path):
+        return None
+    try:
+        mtime = os.path.getmtime(path)
+    except OSError:
+        return None
+    if _SCHEDULE_MTIME.get(slug) != mtime:
+        with open(path) as f:
+            _SCHEDULE_CACHE[slug] = json.load(f)
+        _SCHEDULE_MTIME[slug] = mtime
+    return _SCHEDULE_CACHE.get(slug)
 
 # Self-ping to prevent Render free tier sleep
 def _keep_alive():
@@ -258,12 +282,115 @@ def list_professors(
 
 @app.get("/api/{school}/professors/{professor_id}")
 def get_professor(school: str, professor_id: str):
-    """Full analysis for a single professor."""
+    """Full analysis for a single professor, enriched with schedule data
+    when this school has a scraped current-term schedule."""
     data = load_school(school)
     for p in data.get("analysis", []):
         if p.get("professor_id") == professor_id:
+            # Attach schedule data if available for this school.
+            sched = _load_schedule(school)
+            if sched:
+                teaching_map = sched.get("teaching_now_by_prof", {}) or {}
+                courses = teaching_map.get(professor_id, [])
+                p = {**p, "teaching_now": {
+                    "term": sched.get("term"),
+                    "term_label": sched.get("term_label"),
+                    "courses": courses,
+                    "n_courses": len(courses),
+                }}
             return p
     raise HTTPException(status_code=404, detail="Professor not found")
+
+
+@app.get("/api/{school}/teaching_now/{course_code}")
+def teaching_now(school: str, course_code: str):
+    """Given a course code (e.g. 'HIST200'), return the professors teaching it
+    this term *with their ratings joined in*. The binding-agent endpoint that
+    turns ProfInsight from a lookup into a registration-time decision tool."""
+    sched = _load_schedule(school)
+    if not sched:
+        raise HTTPException(status_code=404,
+                            detail=f"No schedule available for {school} yet.")
+    course_code = course_code.strip().upper()
+    sections = sched.get("courses", {}).get(course_code, [])
+    if not sections:
+        raise HTTPException(status_code=404,
+                            detail=f"No sections found for {course_code} in {sched.get('term_label')}.")
+
+    profs_list = load_school(school).get("analysis", [])
+    prof_by_id = {p.get("professor_id"): p for p in profs_list}
+
+    per_prof: dict = {}
+    tba_sections = 0
+    for s in sections:
+        pids = s.get("matched_professor_ids") or []
+        if not pids:
+            if not s.get("instructors"):
+                tba_sections += 1
+            # unmatched instructor name — include so UI can still list it
+            for name in (s.get("instructors") or []):
+                per_prof.setdefault(("unmatched", name), {
+                    "matched": False,
+                    "instructor_name": name,
+                    "sections": [],
+                })[ "sections"].append(s)
+            continue
+        for pid in pids:
+            key = ("matched", pid)
+            if key not in per_prof:
+                prof = prof_by_id.get(pid) or {}
+                per_prof[key] = {
+                    "matched": True,
+                    "professor_id": pid,
+                    "name": prof.get("name"),
+                    "department": prof.get("department"),
+                    "avg_rating": prof.get("summary", {}).get("avg_rating"),
+                    "avg_difficulty": prof.get("summary", {}).get("avg_difficulty"),
+                    "num_ratings": prof.get("summary", {}).get("num_ratings"),
+                    "verdict": prof.get("verdict"),
+                    "bayesian_good_prob": (prof.get("bayesian_analysis", {})
+                                                 .get("rating_posteriors", {})
+                                                 .get("good", {}).get("mean")),
+                    "sections": [],
+                }
+            per_prof[key]["sections"].append(s)
+
+    # Sort matched first (by rating desc), then unmatched
+    matched = [v for k, v in per_prof.items() if k[0] == "matched"]
+    unmatched = [v for k, v in per_prof.items() if k[0] == "unmatched"]
+    matched.sort(key=lambda v: -(v.get("avg_rating") or 0))
+
+    return {
+        "school": school,
+        "course_code": course_code,
+        "term": sched.get("term"),
+        "term_label": sched.get("term_label"),
+        "n_sections": len(sections),
+        "n_sections_tba": tba_sections,
+        "matched": matched,
+        "unmatched": unmatched,
+    }
+
+
+@app.get("/api/{school}/schedule_status")
+def schedule_status(school: str):
+    """Whether this school has scraped schedule data, and how much coverage."""
+    sched = _load_schedule(school)
+    if not sched:
+        return {"school": school, "available": False}
+    stats = sched.get("match_stats", {})
+    return {
+        "school": school,
+        "available": True,
+        "term": sched.get("term"),
+        "term_label": sched.get("term_label"),
+        "scraped_at": sched.get("scraped_at"),
+        "n_courses": sched.get("n_courses"),
+        "n_sections": sched.get("n_sections"),
+        "matched_instructor_assignments": stats.get("matched_instructor_assignments", 0),
+        "distinct_profs_teaching": stats.get("distinct_profs_teaching", 0),
+        "n_unmatched_instructors": stats.get("n_unmatched_total", 0),
+    }
 
 
 @app.get("/api/{school}/departments")
