@@ -372,6 +372,75 @@ function RecencyNote({ recency }) {
   )
 }
 
+// Honest-quality strip: shows the grade-inflation-adjusted rating alongside
+// the raw rating, so a prof with a 4.9 raw score who only gives A's doesn't
+// fool the user. Quiet when the delta is small.
+function HonestQuality({ quality }) {
+  if (!quality || quality.n_reviews_used < 5) return null
+  const delta = quality.grade_inflation_effect
+  if (Math.abs(delta) < 0.1) return null  // no meaningful correction
+
+  const adjustedLabel = delta > 0
+    ? 'adjusted for grade inflation'
+    : 'adjusted for this prof\'s tough grading'
+  const emoji = delta > 0.3 ? '⚠' : '·'
+  const tone = delta > 0.3 ? 'var(--orange)' : 'var(--text-2)'
+
+  return (
+    <div className="card p-4 flex items-center gap-4 flex-wrap">
+      <div>
+        <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-3)' }}>Honest rating</div>
+        <div className="text-2xl font-bold" style={{ color: 'var(--text-1)', fontFamily: 'Iowan Old Style, Palatino Linotype, Georgia, serif' }}>
+          {quality.adjusted_rating.toFixed(2)}<span className="text-sm font-normal" style={{ color: 'var(--text-3)' }}>/5</span>
+        </div>
+      </div>
+      <div style={{ color: 'var(--text-3)', flex: 1, minWidth: 0 }}>
+        <div className="text-xs leading-relaxed" style={{ color: tone }}>
+          <span className="mr-1">{emoji}</span>
+          Raw rating <strong style={{ color: 'var(--text-2)' }}>{quality.raw_mean.toFixed(2)}</strong>, {adjustedLabel} by <strong style={{ color: 'var(--text-2)' }}>{Math.abs(delta).toFixed(2)}</strong>.
+        </div>
+        <div className="text-[11px] mt-1" style={{ color: 'var(--text-3)' }}>
+          Higher grades tend to produce higher reviews. This number asks: how would an average-grade student rate them?
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// Concrete "what class is actually like" checklist extracted from review text.
+// Each row: label, polarity color, confidence tag. Hidden when no attributes
+// were detected — which is a feature, not a bug: students know to check
+// elsewhere rather than us making stuff up.
+function AttributesCard({ attributes }) {
+  if (!attributes?.length) return null
+  const colorFor = (polarity) =>
+    polarity === 'good' ? 'var(--green)' :
+    polarity === 'neutral' ? 'var(--text-2)' :
+    polarity === 'bad' ? 'var(--red)' : 'var(--text-2)'
+  const confLabel = {
+    likely: 'Likely',
+    probably: 'Probably',
+    maybe: 'Mentioned',
+    unsupported: 'Rare',
+  }
+  return (
+    <div className="card p-5">
+      <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>What this class is actually like</h3>
+      <p className="text-[11px] mb-3" style={{ color: 'var(--text-3)' }}>Pulled from what students wrote in reviews.</p>
+      <div className="space-y-2">
+        {attributes.slice(0, 8).map(a => (
+          <div key={a.name} className="flex items-center justify-between">
+            <span className="text-sm" style={{ color: colorFor(a.polarity) }}>{a.label}</span>
+            <span className="text-[11px]" style={{ color: 'var(--text-3)' }}>
+              {confLabel[a.confidence] || a.confidence} · <span style={{ opacity: 0.7 }}>{a.hits}/{a.n_reviews}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // Share button
 
 function ShareBtn() {
@@ -505,6 +574,10 @@ export default function ProfessorDetail({ professor, school }) {
       {/* Plain-language reliability note */}
       <ReliabilityCard calibrated={p.calibrated_analysis} numRatings={p.summary?.num_ratings} />
 
+      {/* Grade-inflation-adjusted quality — only renders when the correction
+          is large enough to matter. */}
+      <HonestQuality quality={p.quality_adjusted} />
+
       {/* Surfaces "recent reviews disagree with the all-time read" when it
           matters. Silent otherwise. */}
       <RecencyNote recency={p.recency} />
@@ -522,6 +595,7 @@ export default function ProfessorDetail({ professor, school }) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <ProfVibe sentiment={p.category_sentiment} />
         <ReviewHighlights reviews={p.review_highlights} />
+        <AttributesCard attributes={p.attributes} />
         <TrendChart gp={p.gp_trend} />
         <GradeChart grades={p.grade_distribution} />
         <CourseBreakdown classes={p.class_breakdown} />
