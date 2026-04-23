@@ -1,0 +1,87 @@
+name: UMD Schedule — nightly refresh
+
+# Scrapes UMD's Testudo Schedule of Classes for the current term and commits
+# data/umd_schedule.json + the updated instructor→professor join. The commit
+# triggers Vercel + Render auto-deploys so the live site picks up "Teaching
+# now" data the next morning.
+
+on:
+  schedule:
+    # 04:30 UTC nightly — 30 min after the main data refresh so the analyzed
+    # JSON is already up to date when the matcher runs.
+    - cron: '30 4 * * *'
+  workflow_dispatch:
+    inputs:
+      term:
+        description: 'Term code YYYYMM (e.g. 202608). Blank = Testudo current.'
+        required: false
+        default: ''
+
+concurrency:
+  group: umd-schedule
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install deps
+        run: |
+          pip install -r requirements.txt
+          pip install curl_cffi beautifulsoup4 rapidfuzz
+
+      - name: Scrape Testudo + join instructors
+        env:
+          TERM: ${{ github.event.inputs.term }}
+        run: |
+          if [ -n "$TERM" ]; then
+            python umd_scheduler.py --term "$TERM"
+          else
+            python umd_scheduler.py
+          fi
+
+      - name: Sanity check output
+        run: |
+          python - <<'PY'
+          import json, sys
+          try:
+              d = json.load(open('data/umd_schedule.json'))
+          except Exception as e:
+              print('SANITY FAIL: schedule JSON invalid:', e); sys.exit(1)
+          if d.get('n_sections', 0) < 100:
+              print(f"SANITY FAIL: only {d.get('n_sections')} sections — Testudo likely blocked us"); sys.exit(1)
+          print(f"OK: {d['n_sections']} sections in {d['term_label']}.")
+          PY
+
+      - name: Detect changes
+        id: check
+        run: |
+          if git diff --quiet data/umd_schedule.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit + push
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          git add data/umd_schedule.json
+          git commit -m "data: refresh UMD Testudo schedule $(date -u +%Y-%m-%d)"
+          for i in 1 2 3; do
+            git push && break
+            git pull --rebase --autostash origin main
+            sleep 5
+          done

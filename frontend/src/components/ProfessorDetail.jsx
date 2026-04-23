@@ -441,6 +441,33 @@ function AttributesCard({ attributes }) {
   )
 }
 
+// "Teaching this term" badge. Renders when the backend attached schedule
+// data to the professor payload (currently UMD only; other schools fall back
+// gracefully). This is the "binding agent" that turns the page from a history
+// lookup into a registration-time decision tool.
+function TeachingNow({ teaching }) {
+  if (!teaching || !teaching.courses?.length) return null
+  const courses = teaching.courses
+  return (
+    <div className="card p-4 flex items-start gap-3" style={{ borderLeft: '3px solid var(--green)' }}>
+      <span style={{ color: 'var(--green)' }} className="text-lg leading-none">●</span>
+      <div className="flex-1">
+        <div className="font-semibold text-sm" style={{ color: 'var(--text-1)' }}>
+          Teaching {teaching.term_label || 'this term'}
+        </div>
+        <div className="flex flex-wrap gap-1.5 mt-1.5">
+          {courses.map(c => (
+            <span key={c} className="text-[11px] px-2 py-0.5 rounded-md"
+              style={{ background: 'var(--green-bg)', color: 'var(--green)', border: '1.5px solid rgba(154, 178, 92, 0.3)' }}>
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // Share button
 
 function ShareBtn() {
@@ -567,6 +594,10 @@ export default function ProfessorDetail({ professor, school }) {
 
       {/* Verdict */}
       <VerdictBanner verdict={p.verdict} emoji={p.verdict_emoji} confidence={p.confidence_level} detail={p.confidence_detail} trend={p.trend_summary} flags={flags} />
+
+      {/* "Teaching X this term" — shown only when a current-term schedule
+          has been scraped for this school and this prof is in it. */}
+      <TeachingNow teaching={p.teaching_now} />
 
       {/* The Bottom Line */}
       <BottomLine summary={p.summary} gradeProbs={p.grade_probabilities} />
