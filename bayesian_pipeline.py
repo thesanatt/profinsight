@@ -32,6 +32,12 @@ from bayesian_calibration import (
     group_by_department,
     posterior_from_counts,
 )
+from bayesian_advanced import (
+    flag_outlier_reviews,
+    personal_grade_forecast,
+    recency_vs_plain_delta,
+    recency_weighted_counts,
+)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -774,6 +780,127 @@ def _tag_posteriors(professor: dict, tag_base_rate: float = 0.2, concentration: 
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# Essentials layer helpers — grade forecast baseline, recency-weighted read,
+# outlier flagging. See bayesian_advanced.py for the underlying math.
+# ═══════════════════════════════════════════════════════════════════════════════
+
+def _grade_forecast_block(grade_probabilities: dict) -> dict:
+    """Base-rate forecast (no student GPA) in a frontend-friendly shape.
+
+    The frontend's "Your probable grade" card takes these base-rate fields and
+    re-runs the forecast client-side (or via API) once a student enters their
+    GPA. Embedding the baseline makes first-paint cheap and gives downstream
+    callers a sane default when the student skips the input.
+    """
+    if not grade_probabilities or not any(grade_probabilities.values()):
+        return None
+    n_total = sum(max(0, v) for v in grade_probabilities.values())
+    forecast = personal_grade_forecast(
+        grade_probabilities,
+        student_gpa=None,
+        n_reviews=int(n_total),
+    )
+    return forecast.as_dict()
+
+
+def _recency_block(prof: dict, priors: dict) -> dict:
+    """Recency-weighted view of the two headline posteriors (good-rating and
+    take-again). Each observation contributes exponentially-decaying pseudocount
+    mass so a prof who *used* to be great but has been slipping shows the
+    slippage on the headline number, not just in the GP trend chart.
+    """
+    reviews = prof.get("reviews", [])
+    if not reviews:
+        return None
+
+    dept = (prof.get("department") or "Unknown").strip() or "Unknown"
+    good_prior = _pick_prior(priors, dept, "good_rating")
+    wta_prior = _pick_prior(priors, dept, "take_again")
+
+    # Stamp each review with its average-score "good" bit (threshold 3.5)
+    stamped = []
+    for r in reviews:
+        c = r.get("clarity_rating")
+        h = r.get("helpful_rating")
+        if c is None or h is None:
+            continue
+        avg = (c + h) / 2
+        stamped.append({
+            "date": r.get("date", ""),
+            "good": avg >= 3.5,
+            "take_again": r.get("would_take_again"),
+        })
+
+    good_s, good_t = recency_weighted_counts(stamped, "good")
+    wta_s, wta_t = recency_weighted_counts(
+        stamped, "take_again",
+        success_values={1}, non_success_values={0},
+    )
+
+    # Fractional posterior update — Beta(α + Σw·x, β + Σw·(1-x))
+    good_mean = (good_prior.alpha + good_s) / (good_prior.alpha + good_prior.beta + good_t) if good_t > 0 else good_prior.mean
+    wta_mean = (wta_prior.alpha + wta_s) / (wta_prior.alpha + wta_prior.beta + wta_t) if wta_t > 0 else wta_prior.mean
+
+    # Compare against the non-recency version so the UI can surface any shift.
+    plain_good = prof_good_plain(prof, threshold=3.5)
+    plain_wta = prof_wta_plain(prof)
+
+    return {
+        "good_rating_recent": {
+            "mean": round(good_mean, 4),
+            "effective_n": round(good_t, 2),
+            "plain_mean": round(plain_good, 4) if plain_good is not None else None,
+            "note": recency_vs_plain_delta(good_mean, plain_good) if plain_good is not None else None,
+        },
+        "take_again_recent": {
+            "mean": round(wta_mean, 4),
+            "effective_n": round(wta_t, 2),
+            "plain_mean": round(plain_wta, 4) if plain_wta is not None else None,
+            "note": recency_vs_plain_delta(wta_mean, plain_wta) if plain_wta is not None else None,
+        },
+        "half_life_days": int(3 * 365.25),
+    }
+
+
+def prof_good_plain(prof: dict, threshold: float = 3.5) -> Optional[float]:
+    """Unweighted MLE for "fraction of reviews with avg ≥ threshold"."""
+    ok, total = 0, 0
+    for r in prof.get("reviews", []):
+        c = r.get("clarity_rating")
+        h = r.get("helpful_rating")
+        if c is None or h is None:
+            continue
+        total += 1
+        if (c + h) / 2 >= threshold:
+            ok += 1
+    return ok / total if total else None
+
+
+def prof_wta_plain(prof: dict) -> Optional[float]:
+    """Unweighted MLE for take-again proportion."""
+    yes = sum(1 for r in prof.get("reviews", []) if r.get("would_take_again") == 1)
+    no = sum(1 for r in prof.get("reviews", []) if r.get("would_take_again") == 0)
+    return yes / (yes + no) if (yes + no) else None
+
+
+def _review_quality_block(reviews: list) -> dict:
+    """Flag reviews whose sentiment is inconsistent with the rest (potential
+    trolls or malicious downvotes). Returned as per-review probabilities so
+    the frontend can choose to dim, move, or hide them."""
+    if not reviews:
+        return None
+    out = flag_outlier_reviews(reviews)
+    # Attach review_id for stable referencing (the frontend uses ids in review_highlights).
+    ids = [r.get("id") for r in reviews]
+    return {
+        "n_reviews": len(reviews),
+        "n_flagged": out["n_flagged"],
+        "flagged_ids": [ids[i] for i in out["flagged_indices"] if i < len(ids)],
+        "per_review_probabilities": out["per_review"],
+    }
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # ANALYSIS PIPELINE
 # ═══════════════════════════════════════════════════════════════════════════════
 
@@ -846,10 +973,15 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional
     }
 
     # --- Review Highlights (top 3 most useful) ---
+    # Build highlights — and filter out reviews the outlier detector flagged,
+    # so we never surface a likely troll as "what students say".
+    _flagged_ids_set = set((_review_quality_block(reviews) or {}).get("flagged_ids", []))
     scored_reviews = []
     for r in reviews:
         comment = r.get("comment", "").strip()
         if not comment or len(comment) < 30:
+            continue
+        if r.get("id") in _flagged_ids_set:
             continue
         # Score: upvotes + length bonus + recency bonus
         score = (r.get("thumbs_up", 0) - r.get("thumbs_down", 0))
@@ -861,6 +993,7 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional
         except (ValueError, TypeError):
             pass
         scored_reviews.append({
+            "id": r.get("id"),
             "comment": comment[:500],  # cap length
             "class_name": r.get("class_name", ""),
             "grade": r.get("grade", ""),
@@ -1008,6 +1141,11 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional
             _calibrated_block(prof, priors) if priors is not None else None
         ),
         "tag_posteriors": _tag_posteriors(prof),
+        # Essentials layer (personal grade forecast baseline, recency read,
+        # outlier flags). Purely additive — frontend falls back when absent.
+        "grade_forecast": _grade_forecast_block(grade_probabilities),
+        "recency": _recency_block(prof, priors) if priors is not None else None,
+        "review_quality": _review_quality_block(reviews),
         "category_sentiment": category_sentiment,
         "gp_trend": gp_trend,
         "grade_distribution": dict(grade_counts.most_common()),

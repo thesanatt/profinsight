@@ -7,7 +7,7 @@
     "scraped_at": "2026-04-19T06:21:38.793238+00:00",
     "total_professors": 5,
     "total_reviews": 18,
-    "analyzed_at": "2026-04-23T05:23:20.444088"
+    "analyzed_at": "2026-04-23T06:09:25.702949"
   },
   "analysis": [
     {
@@ -34,6 +34,7 @@
       },
       "review_highlights": [
         {
+          "id": "UmF0aW5nLTQyNDkxOTQ2",
           "comment": "I didn't take HIST 105, I took HIST 434: History of Film\n\nDr. Rouleau was an amazing professor, incredibly knowledgeable and passionate over the topic. I'm lucky enough to be taking him again before I graduate, and I would encourage you to take him if you can. He's very funny, what's expected of you is clearly laid out, and he wants you to succeed.",
           "class_name": "History-105",
           "grade": "B+",
@@ -44,6 +45,7 @@
           "score": 4.476027397260274
         },
         {
+          "id": "UmF0aW5nLTQyNTI2ODk4",
           "comment": "Just attend lectures and blindly take notes. What he speaks is what appears on the exam. Don't miss a single lecture no content posted online make note taking friends if missing. Questions are straight forward and easy. 40 out of 50 questions are just lecture content. 10 are from readings for which 2-3 youtube summaries is enough.",
           "class_name": "History-105",
           "grade": "A+",
@@ -54,6 +56,7 @@
           "score": 4.407945205479452
         },
         {
+          "id": "UmF0aW5nLTQyMzY5MDU5",
           "comment": "Amazing prof! I loved his class. It was almost like he was telling a story. Very engaging and passionate! Tests are fairly easy if you pay attention and take notes. Graded on 3 exams and one essay. He offers extra credit at the end. The final is not cumulative. If you show up to class, pay attention, and take notes you will do well.",
           "class_name": "History-105",
           "grade": "A+",
@@ -241,6 +244,43 @@
         }
       },
       "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 66.7,
+          "B range": 33.3
+        },
+        "expected_gpa": 3.53,
+        "ci_lower": 2.79,
+        "ci_upper": 4.0,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.9445,
+          "effective_n": 2.81,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.7062,
+          "effective_n": 2.81,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -403,6 +443,7 @@
       },
       "review_highlights": [
         {
+          "id": "UmF0aW5nLTQxODEyMzEx",
           "comment": "Professor Morvant is a great professor. I have/had her for math 140 and while the subject is difficult she is amazing at teaching the problems step by step.",
           "class_name": "MATH-140",
           "grade": "B",
@@ -413,6 +454,7 @@
           "score": 3.3197260273972606
         },
         {
+          "id": "UmF0aW5nLTQwMjg4OTg1",
           "comment": "I had her for Math 140 and really enjoyed her class! There was one in-class quiz each week, which was usually pretty difficult. We also had two homework assignments due at the end of each week. She responds to emails quickly and is helpful during her office hours. No extra credit and she uses iClicker so attendance is important.",
           "class_name": "MATH-140",
           "grade": "A",
@@ -423,6 +465,7 @@
           "score": 3.293835616438356
         },
         {
+          "id": "UmF0aW5nLTQwMDA3OTgx",
           "comment": "She is adorable! I had her for her first semester teaching a non-summer class and she was awesome. Her lectures were very helpful, and she responded to emails so quickly and gave great feedback. I would recommend her to anyone who is taking math 140!",
           "class_name": "MATH-140",
           "grade": "B",
@@ -433,6 +476,7 @@
           "score": 2.830821917808219
         },
         {
+          "id": "UmF0aW5nLTQwNjYxMzcy",
           "comment": "She was awesome! One quiz each week (rotated between group and individual quizzes) weren't too hard as long as you understood the material. Exams are straightforward. I would highly reccomend!",
           "class_name": "MATH-140",
           "grade": "A",
@@ -620,6 +664,44 @@
         }
       },
       "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 50.0,
+          "B range": 50.0
+        },
+        "expected_gpa": 3.4,
+        "ci_lower": 2.62,
+        "ci_upper": 4.0,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.9478,
+          "effective_n": 3.11,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.7187,
+          "effective_n": 3.11,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 4,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.02,
+          0.02,
+          0.02,
+          0.02
+        ]
+      },
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -789,6 +871,7 @@
       },
       "review_highlights": [
         {
+          "id": "UmF0aW5nLTQyNzkwNTgw",
           "comment": "She is super kind, caring, and smart, and she prepares you well for classes. This class is hard as it is, but she helped us understand the material better and ensured we could get our questions answered.",
           "class_name": "ACCT-229",
           "grade": "A-",
@@ -799,6 +882,7 @@
           "score": 3.9711643835616437
         },
         {
+          "id": "UmF0aW5nLTQyNjY2NjY4",
           "comment": "Best professor to take for Accounting 229, she is Super nice and understanding. She is also great at teaching her students the material and it makes the tests way easier. Definitely take this professor and go to class",
           "class_name": "ACCT-229",
           "grade": "A",
@@ -809,6 +893,7 @@
           "score": 3.948013698630137
         },
         {
+          "id": "UmF0aW5nLTQyNzY4ODQ1",
           "comment": "Excellent Professor! Makes a challenging class easy and is always willing to help.",
           "class_name": "ACCT-229",
           "grade": "A+",
@@ -819,6 +904,7 @@
           "score": 3.3497260273972604
         },
         {
+          "id": "UmF0aW5nLTQxODM4MzEz",
           "comment": "She was patient and understanding. The content was of course hard but she was always willing to explain. Heavily recommend!",
           "class_name": "ACCT-229",
           "grade": "A",
@@ -1007,6 +1093,44 @@
         }
       },
       "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 100.0
+        },
+        "expected_gpa": 3.8,
+        "ci_lower": 3.8,
+        "ci_upper": 3.8,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.961,
+          "effective_n": 4.83,
+          "plain_mean": 1.0,
+          "note": null
+        },
+        "take_again_recent": {
+          "mean": 0.7736,
+          "effective_n": 4.83,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 5,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.02,
+          0.02,
+          0.02,
+          0.02,
+          0.02
+        ]
+      },
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -1174,6 +1298,7 @@
       },
       "review_highlights": [
         {
+          "id": "UmF0aW5nLTQyNDg4MTc1",
           "comment": "SPAN 350 was my number one favorite class here at A&M! We learned about each individual sound of the Spanish language, as well as the dialectal differences, and I had so much fun learning how to write phonetic transcriptions.  I've taken 3 classes w/ Dr. McKinnon, and he is super kind, friendly, and really cares about his students.  100% recommend!",
           "class_name": "SPAN350",
           "grade": "A+",
@@ -1184,6 +1309,7 @@
           "score": 4.476027397260274
         },
         {
+          "id": "UmF0aW5nLTQwOTA3MTMw",
           "comment": "Crazy workload for this course - you must participate and attend, there are frequent quizzes, daily homework, and 20 page take home exams that take hours. He is a kind prof that teaches interesting content well, but the amount of work is unreasonable and hard to manage. Don't recommend unless you genuinely want to learn linguistics.",
           "class_name": "SPAN350",
           "grade": "A",
@@ -1194,6 +1320,7 @@
           "score": 3.631643835616438
         },
         {
+          "id": "UmF0aW5nLTQxNzQzNDE1",
           "comment": "Super weird, makes people uncomfortable, and unreasonable grader.",
           "class_name": "SPAN350",
           "grade": "B",
@@ -1382,6 +1509,43 @@
         }
       },
       "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 66.7,
+          "B range": 33.3
+        },
+        "expected_gpa": 3.53,
+        "ci_lower": 2.79,
+        "ci_upper": 4.0,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.5788,
+          "effective_n": 2.62,
+          "plain_mean": 0.3333,
+          "note": "Recent reviews are noticeably better than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.5951,
+          "effective_n": 0.94,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -1550,6 +1714,7 @@
       },
       "review_highlights": [
         {
+          "id": "UmF0aW5nLTQxODE1MzMw",
           "comment": "Great professor! I highly recommend him for 420. It is coding heavy but he and his TA's are very accessible outside of class to help you. 3 Coding assignments, 5 quizzes on canvas which are super easy, 4 discussion post on persuall and a cumulative final on canvas. Overall a very kind professor.",
           "class_name": "420",
           "grade": "A",
@@ -1560,6 +1725,7 @@
           "score": 4.01972602739726
         },
         {
+          "id": "UmF0aW5nLTQwNjYyMDc5",
           "comment": "Dr Marlow's first semester here was great - he is very understanding and helpful with assignments, emails quickly, and has clear expectations. I really enjoyed his 420 class, which is coding and lecture heavy but he works through it really well! Amazing prof, highly recommend",
           "class_name": "420",
           "grade": "A+",
@@ -1570,6 +1736,7 @@
           "score": 3.1854794520547944
         },
         {
+          "id": "UmF0aW5nLTQwNjYyMDg5",
           "comment": "Currently taking Dr Marlow for environmental, he's very helpful with assignments and clear with his expectations Lecture heavy but interesting and funny",
           "class_name": "328",
           "grade": "Not sure yet",
@@ -1757,6 +1924,42 @@
         }
       },
       "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 100.0
+        },
+        "expected_gpa": 3.8,
+        "ci_lower": 3.8,
+        "ci_upper": 3.8,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.9396,
+          "effective_n": 2.42,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.6884,
+          "effective_n": 2.42,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
