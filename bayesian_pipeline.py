@@ -20,6 +20,19 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from typing import Optional
 
+from bayesian_calibration import (
+    BetaPrior,
+    DEFAULT_PRIOR_ALPHA,
+    DEFAULT_PRIOR_BETA,
+    beta_credible_interval,
+    build_good_rating_pairs,
+    build_take_again_pairs,
+    decision_summary,
+    fit_empirical_bayes_beta,
+    group_by_department,
+    posterior_from_counts,
+)
+
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # MODEL 1: Beta-Binomial Rating Posterior
@@ -87,12 +100,12 @@ class BetaBinomialModel:
 
         mean = alpha_post / (alpha_post + beta_post)
         variance = self._beta_variance(alpha_post, beta_post)
-
-        # 95% credible interval using normal approximation
-        # (exact would use scipy.stats.beta.ppf, but we avoid the dependency)
         std = math.sqrt(variance)
-        ci_lower = max(0.0, mean - 1.96 * std)
-        ci_upper = min(1.0, mean + 1.96 * std)
+
+        # Exact equal-tailed 95% credible interval via numerical CDF inversion.
+        # Previously this used a normal approximation, which overflows [0, 1]
+        # and is wrong for skewed Betas (small n or extreme ratings).
+        ci_lower, ci_upper = beta_credible_interval(alpha_post, beta_post, 0.95)
 
         return {
             "alpha": alpha_post,
@@ -619,10 +632,152 @@ class GaussianProcessRegression:
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# MODEL 4: Empirical-Bayes calibration layer
+# ═══════════════════════════════════════════════════════════════════════════════
+#
+# Lectures 2-4 (especially Lecture 2 p.3 on pseudocounts) motivate *where*
+# the prior comes from. Instead of a fixed Beta(2, 2) for every professor
+# regardless of school or department, we fit α, β by method of moments from
+# the population of professors themselves.
+#
+# This is the fix for the "5.0 rating from 2 reviews" artifact: a small-n
+# professor's posterior is now pulled toward their department's (or school's)
+# observed mean, with the strength of pooling automatically determined by
+# the between-professor variance.
+
+def build_calibration_priors(professors: list) -> dict:
+    """
+    Fit school-level and per-department empirical-Bayes Beta priors.
+
+    Returns:
+        {
+          "school":     {"good_rating": BetaPrior, "take_again": BetaPrior},
+          "department": {<dept>: {"good_rating": BetaPrior, "take_again": BetaPrior}},
+        }
+    """
+    # School-level priors
+    school_good_pairs = build_good_rating_pairs(professors, threshold=3.5)
+    school_wta_pairs = build_take_again_pairs(professors)
+    school_priors = {
+        "good_rating": fit_empirical_bayes_beta(school_good_pairs),
+        "take_again": fit_empirical_bayes_beta(school_wta_pairs),
+    }
+
+    # Per-department priors (falls back to school prior if the department has
+    # too few professors for a stable moment match).
+    dept_priors: dict = {}
+    for dept, profs in group_by_department(professors).items():
+        if len(profs) < 10:
+            # Too few to trust; use school prior
+            dept_priors[dept] = school_priors
+            continue
+        good_pairs = build_good_rating_pairs(profs, threshold=3.5)
+        wta_pairs = build_take_again_pairs(profs)
+        dept_priors[dept] = {
+            "good_rating": fit_empirical_bayes_beta(good_pairs),
+            "take_again": fit_empirical_bayes_beta(wta_pairs),
+        }
+
+    return {"school": school_priors, "department": dept_priors}
+
+
+def _pick_prior(priors: dict, department: str, key: str) -> BetaPrior:
+    dept_map = priors["department"].get(department)
+    if dept_map and key in dept_map:
+        return dept_map[key]
+    return priors["school"][key]
+
+
+def _calibrated_block(professor: dict, priors: dict) -> dict:
+    """
+    Compute the calibrated posteriors + decision summaries for a single
+    professor. Shape is stable so the frontend can rely on all subfields
+    existing (with None where the underlying data is absent).
+    """
+    reviews = professor.get("reviews", [])
+    dept = (professor.get("department") or "Unknown").strip() or "Unknown"
+
+    # --- Good-rating posterior (rating ≥ 3.5 as "good") ---
+    good_pairs = build_good_rating_pairs([professor], threshold=3.5)
+    good_pair = good_pairs[0] if good_pairs else (0, 0)
+    good_prior = _pick_prior(priors, dept, "good_rating")
+    good_post = posterior_from_counts(good_pair[0], good_pair[1], good_prior)
+
+    # --- Would-take-again posterior ---
+    wta_pairs = build_take_again_pairs([professor])
+    wta_prior = _pick_prior(priors, dept, "take_again")
+    if wta_pairs:
+        wta_post = posterior_from_counts(wta_pairs[0][0], wta_pairs[0][1], wta_prior)
+    else:
+        # No usable take-again data — degenerate to pure prior
+        wta_post = posterior_from_counts(0, 0, wta_prior)
+
+    return {
+        "version": 1,
+        "department_used": dept,
+        "priors": {
+            "good_rating": good_prior.as_dict(),
+            "take_again": wta_prior.as_dict(),
+        },
+        "good_rating": {
+            **good_post.as_dict(),
+            "decision": decision_summary(good_post).as_dict(),
+        },
+        "take_again": {
+            **wta_post.as_dict(),
+            "decision": decision_summary(wta_post).as_dict(),
+        },
+    }
+
+
+def _tag_posteriors(professor: dict, tag_base_rate: float = 0.2, concentration: float = 5.0) -> list:
+    """
+    Per-tag Beta-Binomial posterior.
+
+    Each tag's (count, num_ratings) is treated as (successes, trials) against a
+    mild Beta(α, β) prior centered at a `tag_base_rate`. This produces
+    shrinkage-aware per-tag probabilities with honest credible bands — so tags
+    from 3-review professors don't get confidently listed as "this prof is
+    definitely a tough grader".
+
+    We use a fixed weakly-informative prior here rather than a per-tag empirical
+    Bayes fit because the cross-professor distribution of tags is extremely
+    zero-inflated (most profs don't have most tags), which breaks the MoM fit.
+    """
+    num_ratings = max(0, int(professor.get("num_ratings") or 0))
+    tag_alpha = concentration * tag_base_rate
+    tag_beta = concentration * (1.0 - tag_base_rate)
+    prior = BetaPrior(tag_alpha, tag_beta, source="fixed_tag_prior")
+
+    rows = []
+    for entry in (professor.get("top_tags") or []):
+        name = entry.get("tag") or entry.get("name")
+        count = int(entry.get("count") or 0)
+        if not name:
+            continue
+        # Guard: some data has more tag applications than num_ratings (RMP
+        # sometimes lets a reviewer pick multiple tags). Cap at num_ratings
+        # so the posterior interpretation stays clean.
+        cap = max(count, num_ratings)
+        post = posterior_from_counts(count, cap, prior)
+        rows.append({
+            "tag": name,
+            "count": count,
+            "n": cap,
+            "mean": round(post.mean, 4),
+            "ci_lower": round(post.credible_interval(0.95)[0], 4),
+            "ci_upper": round(post.credible_interval(0.95)[1], 4),
+            "shrinkage": round(post.shrinkage_toward_prior(), 4),
+        })
+    rows.sort(key=lambda r: -r["mean"])
+    return rows
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # ANALYSIS PIPELINE
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def analyze_professor(prof: dict, bb_model, nb_model, gp_model) -> dict:
+def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional[dict] = None) -> dict:
     """Run all three Bayesian models on a single professor."""
     reviews = prof.get("reviews", [])
 
@@ -846,6 +1001,13 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model) -> dict:
             "sub_rating_posteriors": sub_rating_posteriors,
             "would_take_again_posterior": wta_posterior,
         },
+        # Calibrated layer (empirical-Bayes priors + decision-theoretic summaries)
+        # Stable v1 shape so the frontend can rely on subfields; absent when
+        # priors aren't passed in (e.g. callers using the pre-calibration path).
+        "calibrated_analysis": (
+            _calibrated_block(prof, priors) if priors is not None else None
+        ),
+        "tag_posteriors": _tag_posteriors(prof),
         "category_sentiment": category_sentiment,
         "gp_trend": gp_trend,
         "grade_distribution": dict(grade_counts.most_common()),
@@ -876,18 +1038,37 @@ def run_pipeline(input_path: str, output_path: str):
     print(f"Training Naive Bayes on {len(all_reviews)} reviews...")
     nb_model.train_on_reviews(all_reviews)
 
+    # Fit empirical-Bayes priors across the whole school (and per department).
+    # This is the Lecture-2-p.3 pseudocount framing operationalized: the
+    # strength of pooling is inferred from the between-professor variance
+    # rather than being hand-picked.
+    print("Fitting empirical-Bayes priors...")
+    priors = build_calibration_priors(professors)
+    school_good = priors["school"]["good_rating"]
+    school_wta = priors["school"]["take_again"]
+    print(f"  school good-rating prior: Beta({school_good.alpha:.2f}, {school_good.beta:.2f}) [{school_good.source}]")
+    print(f"  school take-again prior:  Beta({school_wta.alpha:.2f}, {school_wta.beta:.2f}) [{school_wta.source}]")
+    print(f"  per-department priors fit: {len(priors['department'])} departments")
+
     # Analyze each professor
     print("Running Bayesian analysis...")
     results = []
     for i, prof in enumerate(professors):
         name = f"{prof['first_name']} {prof['last_name']}"
         print(f"  [{i+1}/{len(professors)}] {name}...")
-        analysis = analyze_professor(prof, bb_model, nb_model, gp_model)
+        analysis = analyze_professor(prof, bb_model, nb_model, gp_model, priors=priors)
         results.append(analysis)
 
     output = {
         "metadata": data.get("metadata", {}),
         "analysis": results,
+        "calibration": {
+            "school_priors": {
+                "good_rating": school_good.as_dict(),
+                "take_again": school_wta.as_dict(),
+            },
+            "n_departments": len(priors["department"]),
+        },
     }
     output["metadata"]["analyzed_at"] = datetime.now().isoformat()
 

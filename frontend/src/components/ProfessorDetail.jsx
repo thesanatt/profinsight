@@ -290,7 +290,7 @@ function BayesianDetails({ analysis }) {
       {open && (
         <div className="px-5 pb-4 space-y-2" style={{ borderTop: '1px solid var(--border)' }}>
           <p className="text-[11px] pt-3 mb-2" style={{ color: 'var(--text-3)' }}>
-            These are Beta-Binomial posterior probabilities. The confidence interval shows the range where the true value likely falls.
+            Beta-Binomial posteriors. The 95% credible interval is the range where the true value lies with 95% posterior probability.
           </p>
           {Object.entries(posteriors).map(([level, p]) => (
             <div key={level}>
@@ -305,6 +305,144 @@ function BayesianDetails({ analysis }) {
           ))}
         </div>
       )}
+    </div>
+  )
+}
+
+// Calibrated Bayesian Card: shows the empirical-Bayes posterior mean and a
+// Conservative / Expected / Optimistic toggle driven by posterior quantiles
+// (Bayesian decision theory — Lecture 4). The key user story: a prof with
+// few reviews but all five-star gets automatically pulled toward their
+// department's baseline; the amount of pulling ("shrinkage") is surfaced.
+function CalibratedCard({ calibrated }) {
+  const [mode, setMode] = useState('expected') // conservative | expected | optimistic
+  if (!calibrated) return null
+  const good = calibrated.good_rating
+  const wta = calibrated.take_again
+  if (!good) return null
+
+  const pick = (metric) => {
+    if (!metric || !metric.decision) return null
+    return metric.decision[mode] ?? metric.decision.expected
+  }
+
+  const goodValue = pick(good)
+  const wtaValue = pick(wta)
+  const shrink = Math.round((good.shrinkage || 0) * 100)
+  const prior = good.prior || {}
+
+  const modeLabel = {
+    conservative: 'Under-promise (lower quartile)',
+    expected: 'Expected (posterior mean)',
+    optimistic: 'Upper quartile (best case)',
+  }[mode]
+
+  return (
+    <div className="card p-5">
+      <div className="flex items-start justify-between mb-2">
+        <div>
+          <h3 className="font-semibold text-sm" style={{ color: 'var(--text-1)' }}>Calibrated Bayesian read</h3>
+          <p className="text-[11px]" style={{ color: 'var(--text-3)' }}>
+            Prior fit from {calibrated.department_used || 'school'} — {modeLabel}
+          </p>
+        </div>
+        <div className="flex gap-1">
+          {['conservative','expected','optimistic'].map(m => (
+            <button key={m} onClick={() => setMode(m)}
+              className="px-2 py-1 text-[10px] rounded-md"
+              style={{
+                background: mode===m ? 'var(--accent-bg)' : 'transparent',
+                color: mode===m ? 'var(--accent)' : 'var(--text-3)',
+                border: `1px solid ${mode===m ? 'var(--accent-border)' : 'var(--border)'}`,
+              }}>
+              {m[0].toUpperCase()+m.slice(1,4)}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 mt-3">
+        <CalibratedStat
+          label="P(rating ≥ 3.5)"
+          value={goodValue}
+          ci={[good.ci_lower, good.ci_upper]}
+          n={good.n}
+        />
+        <CalibratedStat
+          label="Would take again"
+          value={wtaValue}
+          ci={wta ? [wta.ci_lower, wta.ci_upper] : null}
+          n={wta?.n || 0}
+        />
+      </div>
+      {shrink > 5 && (
+        <p className="text-[11px] mt-3" style={{ color: 'var(--text-3)' }}>
+          Shrunk {shrink}% toward the department baseline
+          {prior.mean != null ? ` (${Math.round(prior.mean*100)}%)` : ''} because of limited sample.
+        </p>
+      )}
+    </div>
+  )
+}
+
+function CalibratedStat({ label, value, ci, n }) {
+  if (value == null) {
+    return (
+      <div>
+        <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-3)' }}>{label}</div>
+        <div className="text-sm mt-1" style={{ color: 'var(--text-3)' }}>No data</div>
+      </div>
+    )
+  }
+  const pct = value * 100
+  return (
+    <div>
+      <div className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--text-3)' }}>{label}</div>
+      <div className="text-xl font-bold mt-0.5" style={{ color: 'var(--text-1)' }}>
+        {pct.toFixed(0)}<span className="text-sm font-normal" style={{ color: 'var(--text-3)' }}>%</span>
+      </div>
+      {ci && ci[0] != null && (
+        <div className="text-[11px] mt-0.5" style={{ color: 'var(--text-3)' }}>
+          95% credible: {(ci[0]*100).toFixed(0)}–{(ci[1]*100).toFixed(0)}%
+        </div>
+      )}
+      <div className="text-[10px] mt-0.5" style={{ color: 'var(--text-3)' }}>n = {n}</div>
+    </div>
+  )
+}
+
+// Calibrated per-tag posteriors: shows tags with their credible bands, so a
+// "Tough grader (3)" with only 5 reviews behind it is visibly less certain
+// than one with 200 reviews behind it. Replaces the raw-count tag chip cloud
+// when calibrated data is available.
+function CalibratedTags({ tagPosteriors }) {
+  if (!tagPosteriors?.length) return null
+  return (
+    <div className="card p-5">
+      <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>Students describe them as</h3>
+      <p className="text-[11px] mb-3" style={{ color: 'var(--text-3)' }}>
+        Each bar shows the 95% credible interval — wider means we're less sure.
+      </p>
+      <div className="space-y-1.5">
+        {tagPosteriors.slice(0, 8).map(t => {
+          const mean = t.mean * 100
+          const lo = t.ci_lower * 100
+          const hi = t.ci_upper * 100
+          return (
+            <div key={t.tag}>
+              <div className="flex justify-between text-xs">
+                <span style={{ color: 'var(--text-2)' }}>{t.tag}</span>
+                <span style={{ color: 'var(--text-3)' }}>
+                  {mean.toFixed(0)}% <span style={{ opacity: 0.6 }}>[{lo.toFixed(0)}, {hi.toFixed(0)}]</span>
+                </span>
+              </div>
+              <div className="relative h-1.5 rounded-full mt-1" style={{ background: 'var(--bg-3)' }}>
+                <div className="absolute h-full rounded-full" style={{ left: `${lo}%`, width: `${hi - lo}%`, background: 'var(--accent)', opacity: 0.25 }} />
+                <div className="absolute w-[2px] h-full" style={{ left: `${mean}%`, background: 'var(--accent)' }} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
@@ -339,6 +477,9 @@ export default function ProfessorDetail({ professor }) {
       {/* The Bottom Line */}
       <BottomLine summary={p.summary} gradeProbs={p.grade_probabilities} />
 
+      {/* Calibrated Bayesian card (empirical-Bayes priors + decision-theoretic toggle) */}
+      <CalibratedCard calibrated={p.calibrated_analysis} />
+
       {/* Content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         <ProfVibe sentiment={p.category_sentiment} />
@@ -346,7 +487,9 @@ export default function ProfessorDetail({ professor }) {
         <TrendChart gp={p.gp_trend} />
         <GradeChart grades={p.grade_distribution} />
         <CourseBreakdown classes={p.class_breakdown} />
-        <Tags tags={p.top_tags} />
+        {p.tag_posteriors?.length
+          ? <CalibratedTags tagPosteriors={p.tag_posteriors} />
+          : <Tags tags={p.top_tags} />}
       </div>
 
       {/* Nerdy details (collapsed) */}
