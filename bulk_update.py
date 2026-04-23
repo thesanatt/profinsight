@@ -47,7 +47,11 @@ DEFAULT_SCHOOLS = {
     "columbia":     ("Columbia University", 1500, None),
     "upenn":        ("University of Pennsylvania", 1500, None),
     "cornell":      ("Cornell University", 1500, None),
-    "umd":          ("University of Maryland", 1500, None),
+    # UMD College Park: the unqualified RMP search returns UMBC first, so pin
+    # the school_id to College Park (U2Nob29sLTEyNzA=). UMBC lives on its own
+    # slug below so we don't lose that data.
+    "umd":          ("University of Maryland", 1500, "U2Nob29sLTEyNzA="),
+    "umbc":         ("University of Maryland, Baltimore County", 1500, "U2Nob29sLTEyNDQ="),
     "uw":           ("University of Washington", 1500, None),
     "ucla":         ("University of California Los Angeles", 1500, None),
     "ucsd":         ("University of California San Diego", 1500, None),
