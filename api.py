@@ -403,19 +403,20 @@ def head_to_head(school: str, a: str = Query(...), b: str = Query(...)):
 
 
 def _verdict_from_p(p: float, a_name: str, b_name: str, what: str) -> str:
+    """Human-readable head-to-head sentence for a win probability `p = P(A > B)`."""
     if p >= 0.95:
-        return f"Very likely {a_name} is better on {what} ({p*100:.0f}% posterior probability)"
+        return f"Students clearly rate {a_name} higher on {what}."
     if p >= 0.80:
-        return f"Likely {a_name} is better on {what} ({p*100:.0f}%)"
+        return f"{a_name} usually comes out ahead on {what}."
     if p >= 0.60:
-        return f"{a_name} is somewhat more likely to be better on {what} ({p*100:.0f}%)"
+        return f"{a_name} has a slight edge on {what}."
     if p >= 0.40:
-        return f"Basically a coin flip on {what} ({p*100:.0f}% for {a_name})"
+        return f"Pretty much a toss-up on {what}."
     if p >= 0.20:
-        return f"{b_name} is somewhat more likely to be better on {what} ({(1-p)*100:.0f}%)"
+        return f"{b_name} has a slight edge on {what}."
     if p >= 0.05:
-        return f"Likely {b_name} is better on {what} ({(1-p)*100:.0f}%)"
-    return f"Very likely {b_name} is better on {what} ({(1-p)*100:.0f}%)"
+        return f"{b_name} usually comes out ahead on {what}."
+    return f"Students clearly rate {b_name} higher on {what}."
 
 
 @app.get("/api/{school}/fit")

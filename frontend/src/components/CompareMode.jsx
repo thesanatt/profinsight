@@ -139,22 +139,24 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
         <div className="space-y-3">
           {h2h?.comparisons && (
             <div className="card p-5">
-              <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>Bayesian head-to-head</h3>
+              <h3 className="font-semibold text-sm mb-1" style={{ color: 'var(--text-1)' }}>Who comes out on top?</h3>
               <p className="text-[11px] mb-3" style={{ color: 'var(--text-3)' }}>
-                Probability that {h2h.a.name} scores higher than {h2h.b.name}, from their calibrated Beta posteriors.
+                How likely {h2h.a.name} is rated higher than {h2h.b.name}, based on all their reviews.
               </p>
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {Object.entries(h2h.comparisons).map(([dim, info]) => {
                   const pct = Math.round(info.p_a_gt_b * 100)
                   const aSide = pct >= 50
+                  const leaderPct = aSide ? pct : 100 - pct
                   return (
                     <div key={dim}>
                       <div className="flex justify-between text-xs mb-1">
                         <span style={{ color: 'var(--text-2)' }}>
                           {dim === 'overall_good_rating' ? 'Overall quality' : 'Would take again'}
                         </span>
-                        <span className="font-mono" style={{ color: 'var(--text-1)' }}>
-                          {aSide ? h2h.a.name : h2h.b.name}: {aSide ? pct : 100 - pct}%
+                        <span style={{ color: 'var(--text-1)' }}>
+                          <strong>{aSide ? h2h.a.name : h2h.b.name}</strong>
+                          <span style={{ color: 'var(--text-3)' }}> · {leaderPct}%</span>
                         </span>
                       </div>
                       <div className="relative h-2 rounded-full overflow-hidden" style={{ background: 'var(--bg-3)' }}>
