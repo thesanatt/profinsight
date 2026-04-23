@@ -7,7 +7,7 @@
     "scraped_at": "2026-04-19T06:21:38.793238+00:00",
     "total_professors": 5,
     "total_reviews": 18,
-    "analyzed_at": "2026-04-19T06:21:38.868565"
+    "analyzed_at": "2026-04-23T05:23:20.444088"
   },
   "analysis": [
     {
@@ -41,7 +41,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 4.486986301369863
+          "score": 4.476027397260274
         },
         {
           "comment": "Just attend lectures and blindly take notes. What he speaks is what appears on the exam. Don't miss a single lecture no content posted online make note taking friends if missing. Questions are straight forward and easy. 40 out of 50 questions are just lecture content. 10 are from readings for which 2-3 youtube summaries is enough.",
@@ -51,7 +51,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.418904109589041
+          "score": 4.407945205479452
         },
         {
           "comment": "Amazing prof! I loved his class. It was almost like he was telling a story. Very engaging and passionate! Tests are fairly easy if you pay attention and take notes. Graded on 3 exams and one essay. He offers extra credit at the end. The final is not cumulative. If you show up to class, pay attention, and take notes you will do well.",
@@ -61,7 +61,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 4.343972602739726
+          "score": 4.333013698630137
         }
       ],
       "class_breakdown": [
@@ -83,8 +83,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 4.5
@@ -95,8 +95,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5
@@ -107,8 +107,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 2.5
@@ -121,8 +121,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5,
@@ -134,8 +134,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5,
@@ -147,8 +147,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 1.5,
@@ -161,13 +161,86 @@
           "mean": 0.7143,
           "variance": 0.02551,
           "std": 0.1597,
-          "ci_lower": 0.4012,
-          "ci_upper": 1.0,
+          "ci_lower": 0.3588,
+          "ci_upper": 0.9567,
           "n_ratings": 3,
           "n_above_threshold": 3,
           "threshold": 3.0
         }
       },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "History",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          }
+        },
+        "good_rating": {
+          "alpha": 4.7333,
+          "beta": 0.2667,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.9467,
+          "variance": 0.008415,
+          "ci_lower": 0.6665,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.9363,
+            "expected": 0.9467,
+            "typical": 0.988,
+            "most_likely": null,
+            "optimistic": 0.9991
+          }
+        },
+        "take_again": {
+          "alpha": 5.0,
+          "beta": 2.0,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.7143,
+          "variance": 0.02551,
+          "ci_lower": 0.3588,
+          "ci_upper": 0.9567,
+          "ci_level": 0.95,
+          "shrinkage": 0.5714,
+          "prior": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          },
+          "decision": {
+            "conservative": 0.6105,
+            "expected": 0.7143,
+            "typical": 0.7356,
+            "most_likely": 0.8,
+            "optimistic": 0.8388
+          }
+        }
+      },
+      "tag_posteriors": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -337,7 +410,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 3.330684931506849
+          "score": 3.3197260273972606
         },
         {
           "comment": "I had her for Math 140 and really enjoyed her class! There was one in-class quiz each week, which was usually pretty difficult. We also had two homework assignments due at the end of each week. She responds to emails quickly and is helpful during her office hours. No extra credit and she uses iClicker so attendance is important.",
@@ -347,7 +420,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 3.3047945205479454
+          "score": 3.293835616438356
         },
         {
           "comment": "She is adorable! I had her for her first semester teaching a non-summer class and she was awesome. Her lectures were very helpful, and she responded to emails so quickly and gave great feedback. I would recommend her to anyone who is taking math 140!",
@@ -357,7 +430,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.8417808219178085
+          "score": 2.830821917808219
         },
         {
           "comment": "She was awesome! One quiz each week (rotated between group and individual quizzes) weren't too hard as long as you understood the material. Exams are straightforward. I would highly reccomend!",
@@ -367,7 +440,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 2.7764383561643835
+          "score": 2.7654794520547945
         }
       ],
       "class_breakdown": [
@@ -389,8 +462,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 4.5
@@ -401,8 +474,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 3.5
@@ -413,8 +486,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 2.5
@@ -427,8 +500,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 3.5,
@@ -440,8 +513,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 3.5,
@@ -453,8 +526,8 @@
             "mean": 0.75,
             "variance": 0.020833,
             "std": 0.1443,
-            "ci_lower": 0.4671,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4213,
+            "ci_upper": 0.9633,
             "n_ratings": 4,
             "n_above_threshold": 4,
             "threshold": 1.5,
@@ -467,13 +540,86 @@
           "mean": 0.75,
           "variance": 0.020833,
           "std": 0.1443,
-          "ci_lower": 0.4671,
-          "ci_upper": 1.0,
+          "ci_lower": 0.4213,
+          "ci_upper": 0.9633,
           "n_ratings": 4,
           "n_above_threshold": 4,
           "threshold": 3.0
         }
       },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Mathematics",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          }
+        },
+        "good_rating": {
+          "alpha": 5.7333,
+          "beta": 0.2667,
+          "n": 4,
+          "successes": 4,
+          "mean": 0.9556,
+          "variance": 0.006067,
+          "ci_lower": 0.7185,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.3333,
+          "prior": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.9478,
+            "expected": 0.9556,
+            "typical": 0.9902,
+            "most_likely": null,
+            "optimistic": 0.9993
+          }
+        },
+        "take_again": {
+          "alpha": 6.0,
+          "beta": 2.0,
+          "n": 4,
+          "successes": 4,
+          "mean": 0.75,
+          "variance": 0.020833,
+          "ci_lower": 0.4213,
+          "ci_upper": 0.9633,
+          "ci_level": 0.95,
+          "shrinkage": 0.5,
+          "prior": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          },
+          "decision": {
+            "conservative": 0.6593,
+            "expected": 0.75,
+            "typical": 0.7715,
+            "most_likely": 0.8333,
+            "optimistic": 0.862
+          }
+        }
+      },
+      "tag_posteriors": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -650,7 +796,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 3.982123287671233
+          "score": 3.9711643835616437
         },
         {
           "comment": "Best professor to take for Accounting 229, she is Super nice and understanding. She is also great at teaching her students the material and it makes the tests way easier. Definitely take this professor and go to class",
@@ -660,7 +806,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 3.958972602739726
+          "score": 3.948013698630137
         },
         {
           "comment": "Excellent Professor! Makes a challenging class easy and is always willing to help.",
@@ -670,7 +816,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 3.3606849315068494
+          "score": 3.3497260273972604
         },
         {
           "comment": "She was patient and understanding. The content was of course hard but she was always willing to explain. Heavily recommend!",
@@ -680,7 +826,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 4,
-          "score": 3.179383561643836
+          "score": 3.1684246575342465
         }
       ],
       "class_breakdown": [
@@ -703,8 +849,8 @@
             "mean": 0.7778,
             "variance": 0.017284,
             "std": 0.1315,
-            "ci_lower": 0.5201,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4735,
+            "ci_upper": 0.9681,
             "n_ratings": 5,
             "n_above_threshold": 5,
             "threshold": 4.5
@@ -715,8 +861,8 @@
             "mean": 0.7778,
             "variance": 0.017284,
             "std": 0.1315,
-            "ci_lower": 0.5201,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4735,
+            "ci_upper": 0.9681,
             "n_ratings": 5,
             "n_above_threshold": 5,
             "threshold": 3.5
@@ -727,8 +873,8 @@
             "mean": 0.7778,
             "variance": 0.017284,
             "std": 0.1315,
-            "ci_lower": 0.5201,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4735,
+            "ci_upper": 0.9681,
             "n_ratings": 5,
             "n_above_threshold": 5,
             "threshold": 2.5
@@ -741,8 +887,8 @@
             "mean": 0.7778,
             "variance": 0.017284,
             "std": 0.1315,
-            "ci_lower": 0.5201,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4735,
+            "ci_upper": 0.9681,
             "n_ratings": 5,
             "n_above_threshold": 5,
             "threshold": 3.5,
@@ -754,8 +900,8 @@
             "mean": 0.7778,
             "variance": 0.017284,
             "std": 0.1315,
-            "ci_lower": 0.5201,
-            "ci_upper": 1.0,
+            "ci_lower": 0.4735,
+            "ci_upper": 0.9681,
             "n_ratings": 5,
             "n_above_threshold": 5,
             "threshold": 3.5,
@@ -767,8 +913,8 @@
             "mean": 0.6667,
             "variance": 0.022222,
             "std": 0.1491,
-            "ci_lower": 0.3745,
-            "ci_upper": 0.9588,
+            "ci_lower": 0.3491,
+            "ci_upper": 0.9148,
             "n_ratings": 5,
             "n_above_threshold": 4,
             "threshold": 1.5,
@@ -781,13 +927,86 @@
           "mean": 0.7778,
           "variance": 0.017284,
           "std": 0.1315,
-          "ci_lower": 0.5201,
-          "ci_upper": 1.0,
+          "ci_lower": 0.4735,
+          "ci_upper": 0.9681,
           "n_ratings": 5,
           "n_above_threshold": 5,
           "threshold": 3.0
         }
       },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Accounting",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          }
+        },
+        "good_rating": {
+          "alpha": 6.7333,
+          "beta": 0.2667,
+          "n": 5,
+          "successes": 5,
+          "mean": 0.9619,
+          "variance": 0.00458,
+          "ci_lower": 0.7566,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.2857,
+          "prior": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.9558,
+            "expected": 0.9619,
+            "typical": 0.9917,
+            "most_likely": null,
+            "optimistic": 0.9994
+          }
+        },
+        "take_again": {
+          "alpha": 7.0,
+          "beta": 2.0,
+          "n": 5,
+          "successes": 5,
+          "mean": 0.7778,
+          "variance": 0.017284,
+          "ci_lower": 0.4735,
+          "ci_upper": 0.9681,
+          "ci_level": 0.95,
+          "shrinkage": 0.4444,
+          "prior": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          },
+          "decision": {
+            "conservative": 0.6973,
+            "expected": 0.7778,
+            "typical": 0.7989,
+            "most_likely": 0.8571,
+            "optimistic": 0.8794
+          }
+        }
+      },
+      "tag_posteriors": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -962,7 +1181,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.486986301369863
+          "score": 4.476027397260274
         },
         {
           "comment": "Crazy workload for this course - you must participate and attend, there are frequent quizzes, daily homework, and 20 page take home exams that take hours. He is a kind prof that teaches interesting content well, but the amount of work is unreasonable and hard to manage. Don't recommend unless you genuinely want to learn linguistics.",
@@ -972,7 +1191,7 @@
           "clarity": 3,
           "helpful": 3,
           "difficulty": 5,
-          "score": 3.642602739726027
+          "score": 3.631643835616438
         },
         {
           "comment": "Super weird, makes people uncomfortable, and unreasonable grader.",
@@ -982,7 +1201,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 2.8345890410958905
+          "score": 2.8236301369863015
         }
       ],
       "class_breakdown": [
@@ -1005,8 +1224,8 @@
             "mean": 0.4286,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.0856,
-            "ci_upper": 0.7715,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
             "n_ratings": 3,
             "n_above_threshold": 1,
             "threshold": 4.5
@@ -1017,8 +1236,8 @@
             "mean": 0.4286,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.0856,
-            "ci_upper": 0.7715,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
             "n_ratings": 3,
             "n_above_threshold": 1,
             "threshold": 3.5
@@ -1029,8 +1248,8 @@
             "mean": 0.5714,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.2285,
-            "ci_upper": 0.9144,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
             "n_ratings": 3,
             "n_above_threshold": 2,
             "threshold": 2.5
@@ -1043,8 +1262,8 @@
             "mean": 0.4286,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.0856,
-            "ci_upper": 0.7715,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
             "n_ratings": 3,
             "n_above_threshold": 1,
             "threshold": 3.5,
@@ -1056,8 +1275,8 @@
             "mean": 0.4286,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.0856,
-            "ci_upper": 0.7715,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
             "n_ratings": 3,
             "n_above_threshold": 1,
             "threshold": 3.5,
@@ -1069,8 +1288,8 @@
             "mean": 0.4286,
             "variance": 0.030612,
             "std": 0.175,
-            "ci_lower": 0.0856,
-            "ci_upper": 0.7715,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
             "n_ratings": 3,
             "n_above_threshold": 1,
             "threshold": 1.5,
@@ -1083,13 +1302,86 @@
           "mean": 0.6,
           "variance": 0.04,
           "std": 0.2,
-          "ci_lower": 0.208,
-          "ci_upper": 0.992,
+          "ci_lower": 0.1941,
+          "ci_upper": 0.9324,
           "n_ratings": 1,
           "n_above_threshold": 1,
           "threshold": 3.0
         }
       },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Languages",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          }
+        },
+        "good_rating": {
+          "alpha": 2.7333,
+          "beta": 2.2667,
+          "n": 3,
+          "successes": 1,
+          "mean": 0.5467,
+          "variance": 0.041304,
+          "ci_lower": 0.154,
+          "ci_upper": 0.905,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.3962,
+            "expected": 0.5467,
+            "typical": 0.5533,
+            "most_likely": 0.5778,
+            "optimistic": 0.7034
+          }
+        },
+        "take_again": {
+          "alpha": 3.0,
+          "beta": 2.0,
+          "n": 1,
+          "successes": 1,
+          "mean": 0.6,
+          "variance": 0.04,
+          "ci_lower": 0.1941,
+          "ci_upper": 0.9324,
+          "ci_level": 0.95,
+          "shrinkage": 0.8,
+          "prior": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          },
+          "decision": {
+            "conservative": 0.4563,
+            "expected": 0.6,
+            "typical": 0.6143,
+            "most_likely": 0.6667,
+            "optimistic": 0.757
+          }
+        }
+      },
+      "tag_posteriors": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 4.0,
@@ -1265,7 +1557,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 4.030684931506849
+          "score": 4.01972602739726
         },
         {
           "comment": "Dr Marlow's first semester here was great - he is very understanding and helpful with assignments, emails quickly, and has clear expectations. I really enjoyed his 420 class, which is coding and lecture heavy but he works through it really well! Amazing prof, highly recommend",
@@ -1275,7 +1567,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 3.1964383561643834
+          "score": 3.1854794520547944
         },
         {
           "comment": "Currently taking Dr Marlow for environmental, he's very helpful with assignments and clear with his expectations Lecture heavy but interesting and funny",
@@ -1285,7 +1577,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.5764383561643838
+          "score": 2.5654794520547943
         }
       ],
       "class_breakdown": [
@@ -1307,8 +1599,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 4.5
@@ -1319,8 +1611,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5
@@ -1331,8 +1623,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 2.5
@@ -1345,8 +1637,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5,
@@ -1358,8 +1650,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 3.5,
@@ -1371,8 +1663,8 @@
             "mean": 0.7143,
             "variance": 0.02551,
             "std": 0.1597,
-            "ci_lower": 0.4012,
-            "ci_upper": 1.0,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
             "n_ratings": 3,
             "n_above_threshold": 3,
             "threshold": 1.5,
@@ -1385,13 +1677,86 @@
           "mean": 0.7143,
           "variance": 0.02551,
           "std": 0.1597,
-          "ci_lower": 0.4012,
-          "ci_upper": 1.0,
+          "ci_lower": 0.3588,
+          "ci_upper": 0.9567,
           "n_ratings": 3,
           "n_above_threshold": 3,
           "threshold": 3.0
         }
       },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Sociology",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          }
+        },
+        "good_rating": {
+          "alpha": 4.7333,
+          "beta": 0.2667,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.9467,
+          "variance": 0.008415,
+          "ci_lower": 0.6665,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.7333,
+            "beta": 0.2667,
+            "mean": 0.8667,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.9363,
+            "expected": 0.9467,
+            "typical": 0.988,
+            "most_likely": null,
+            "optimistic": 0.9991
+          }
+        },
+        "take_again": {
+          "alpha": 5.0,
+          "beta": 2.0,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.7143,
+          "variance": 0.02551,
+          "ci_lower": 0.3588,
+          "ci_upper": 0.9567,
+          "ci_level": 0.95,
+          "shrinkage": 0.5714,
+          "prior": {
+            "alpha": 2.0,
+            "beta": 2.0,
+            "mean": 0.5,
+            "concentration": 4.0,
+            "source": "fallback_weak"
+          },
+          "decision": {
+            "conservative": 0.6105,
+            "expected": 0.7143,
+            "typical": 0.7356,
+            "most_likely": 0.8,
+            "optimistic": 0.8388
+          }
+        }
+      },
+      "tag_posteriors": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -1530,5 +1895,24 @@
       },
       "top_tags": []
     }
-  ]
+  ],
+  "calibration": {
+    "school_priors": {
+      "good_rating": {
+        "alpha": 1.7333,
+        "beta": 0.2667,
+        "mean": 0.8667,
+        "concentration": 2.0,
+        "source": "empirical_bayes_mom"
+      },
+      "take_again": {
+        "alpha": 2.0,
+        "beta": 2.0,
+        "mean": 0.5,
+        "concentration": 4.0,
+        "source": "fallback_weak"
+      }
+    },
+    "n_departments": 5
+  }
 }
