@@ -9,7 +9,9 @@
 #   ./deploy.sh serve         # serve API + built frontend on :8000 (prod-like)
 #   ./deploy.sh deploy        # full: setup → analyze → build → serve
 #   ./deploy.sh scrape <slug> <"School Name">   # scrape a new school, then analyze
-#   ./deploy.sh refresh       # refresh every already-scraped school
+#   ./deploy.sh refresh       # refresh every already-scraped school (capped default)
+#   ./deploy.sh scrape-all    # scrape *every* school in bulk_update's list
+#   ./deploy.sh scrape-batch i/N  # scrape one rotation slice (e.g. 0/3)
 #   ./deploy.sh status        # quick sanity check
 #   ./deploy.sh help          # print this
 #
@@ -136,6 +138,21 @@ cmd_refresh() {
   "$PYTHON" bulk_update.py --refresh --max-professors "$MAX_PROFESSORS"
 }
 
+cmd_scrape_all() {
+  activate_venv
+  log "Scraping every school in the default list (this will take a while)"
+  log "Tip: set MAX_PROFESSORS=0 for unlimited coverage"
+  "$PYTHON" bulk_update.py --all --max-professors "$MAX_PROFESSORS"
+}
+
+cmd_scrape_batch() {
+  activate_venv
+  local spec="${1:-}"
+  if [[ -z "$spec" ]]; then err "usage: deploy.sh scrape-batch i/N"; exit 1; fi
+  log "Scraping batch $spec of the default list"
+  "$PYTHON" bulk_update.py --all --batch "$spec" --max-professors "$MAX_PROFESSORS"
+}
+
 cmd_status() {
   log "Project root: $ROOT"
   log "Python:       $($PYTHON --version 2>&1 || echo missing)"
@@ -167,8 +184,10 @@ main() {
     build)    cmd_build "$@";;
     dev)      cmd_dev "$@";;
     serve)    cmd_serve "$@";;
-    scrape)   cmd_scrape "$@";;
-    refresh)  cmd_refresh "$@";;
+    scrape)       cmd_scrape "$@";;
+    refresh)      cmd_refresh "$@";;
+    scrape-all)   cmd_scrape_all "$@";;
+    scrape-batch) cmd_scrape_batch "$@";;
     status)   cmd_status "$@";;
     deploy)   cmd_deploy "$@";;
     help|-h|--help) cmd_help;;

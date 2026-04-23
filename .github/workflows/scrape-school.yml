@@ -1,0 +1,91 @@
+name: Scrape One School (on-demand)
+
+# Run this manually from the Actions tab when you want to:
+#   - add a brand-new school to the site
+#   - force-refresh a single school before its nightly slot
+#   - do a full deep-scrape of one school with no professor cap
+# Triggers a commit to main, which auto-redeploys Vercel + Render.
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Short slug used for the JSON filenames (e.g. "harvard")'
+        required: true
+      school_name:
+        description: 'Full school name as RMP knows it (e.g. "Harvard University")'
+        required: true
+      max_professors:
+        description: 'Cap on professors scraped (0 = all, default 1500)'
+        required: false
+        default: '1500'
+
+concurrency:
+  group: data-refresh   # same group as nightly to avoid commit races
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 1 }
+
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12', cache: pip }
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Scrape + analyze
+        env:
+          SLUG: ${{ github.event.inputs.slug }}
+          NAME: ${{ github.event.inputs.school_name }}
+          MAX:  ${{ github.event.inputs.max_professors }}
+        run: |
+          set -euo pipefail
+          mkdir -p data
+          RAW="data/${SLUG}.json"
+          ANALYZED="data/${SLUG}_analyzed.json"
+          CAP_FLAG=""
+          if [ "$MAX" != "0" ]; then
+            CAP_FLAG="--max-professors $MAX"
+          fi
+          echo "Scraping $NAME -> $RAW"
+          python rmp_scraper.py --school "$NAME" --output "$RAW" $CAP_FLAG
+          echo "Analyzing -> $ANALYZED"
+          python bayesian_pipeline.py --input "$RAW" --output "$ANALYZED"
+
+      - name: Sanity check
+        run: |
+          python - <<PY
+          import json, sys, os
+          slug = "${{ github.event.inputs.slug }}"
+          f = f"data/{slug}_analyzed.json"
+          d = json.load(open(f))
+          if not d.get("calibration") or not d.get("analysis"):
+              print(f"FAIL: {f} missing calibration or analysis"); sys.exit(1)
+          print(f"OK: {slug} -> {d['metadata'].get('total_professors')} profs, "
+                f"{d['metadata'].get('total_reviews')} reviews")
+          PY
+
+      - name: Commit + push
+        env:
+          SLUG: ${{ github.event.inputs.slug }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          git add "data/${SLUG}.json" "data/${SLUG}_analyzed.json"
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "data: scrape ${SLUG} (on-demand)"
+          for i in 1 2 3; do
+            git push && break
+            git pull --rebase --autostash origin main
+            sleep 5
+          done
