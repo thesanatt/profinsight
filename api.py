@@ -25,6 +25,7 @@ from bayesian_calibration import (
     posterior_predictive_match,
     prob_a_gt_b_mc,
 )
+from bayesian_advanced import personal_grade_forecast
 
 app = FastAPI(title="ProfInsight API", version="0.3.0")
 
@@ -400,6 +401,56 @@ def head_to_head(school: str, a: str = Query(...), b: str = Query(...)):
               "department": prof_b.get("department")},
         "comparisons": comparisons,
     }
+
+
+@app.get("/api/{school}/forecast/{professor_id}")
+def personalized_forecast(
+    school: str,
+    professor_id: str,
+    gpa: Optional[float] = Query(None, ge=0.0, le=4.0,
+                                 description="Your cumulative GPA, 0–4. Omit for the base-rate forecast."),
+):
+    """
+    Personal grade forecast.
+
+    Takes the professor's historical grade distribution as the prior and updates
+    with the student's GPA via a Gaussian likelihood, returning a posterior over
+    letter-grade buckets plus an expected GPA with a 95% credible interval.
+    Without a `gpa` param the response is the base-rate forecast.
+    """
+    profs = load_school(school).get("analysis", [])
+    prof = next((p for p in profs if p.get("professor_id") == professor_id), None)
+    if prof is None:
+        raise HTTPException(status_code=404, detail="Professor not found")
+
+    grade_probs = prof.get("grade_probabilities") or {}
+    if not grade_probs or not any(grade_probs.values()):
+        raise HTTPException(
+            status_code=409,
+            detail="This professor doesn't have enough self-reported grade data for a forecast.",
+        )
+
+    n_reviews = int(sum(max(0, v) for v in grade_probs.values()))
+    forecast = personal_grade_forecast(grade_probs, student_gpa=gpa, n_reviews=n_reviews)
+    return {
+        "professor": {"id": prof.get("professor_id"), "name": prof.get("name"),
+                      "department": prof.get("department")},
+        "forecast": forecast.as_dict(),
+        "explanation": _forecast_explanation(forecast, prof.get("name"), gpa),
+    }
+
+
+def _forecast_explanation(forecast, prof_name: str, gpa: Optional[float]) -> str:
+    """One-sentence explanation the UI shows verbatim."""
+    eg = forecast.expected_gpa
+    grade = forecast.most_likely.replace(" range", "")
+    if gpa is None:
+        return (f"Looking at {prof_name}'s past grades, the most common outcome is "
+                f"around a {grade} (average GPA {eg:.2f}).")
+    pct = forecast.posterior_pct.get(forecast.most_likely, 0)
+    return (f"With a {gpa:.2f} GPA, you're most likely to land in the {grade} range "
+            f"with {prof_name} (about {pct:.0f}% probability). Expected GPA in this "
+            f"class: {eg:.2f} (usually {forecast.ci_lower:.2f}–{forecast.ci_upper:.2f}).")
 
 
 def _verdict_from_p(p: float, a_name: str, b_name: str, what: str) -> str:
