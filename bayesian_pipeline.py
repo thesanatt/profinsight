@@ -38,6 +38,11 @@ from bayesian_advanced import (
     recency_vs_plain_delta,
     recency_weighted_counts,
 )
+from bayesian_honest import (
+    extract_teaching_attributes,
+    fit_grade_inflation_beta,
+    grade_adjusted_quality,
+)
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -904,7 +909,14 @@ def _review_quality_block(reviews: list) -> dict:
 # ANALYSIS PIPELINE
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional[dict] = None) -> dict:
+def analyze_professor(
+    prof: dict,
+    bb_model,
+    nb_model,
+    gp_model,
+    priors: Optional[dict] = None,
+    grade_inflation_beta: float = 0.0,
+) -> dict:
     """Run all three Bayesian models on a single professor."""
     reviews = prof.get("reviews", [])
 
@@ -1146,6 +1158,14 @@ def analyze_professor(prof: dict, bb_model, nb_model, gp_model, priors: Optional
         "grade_forecast": _grade_forecast_block(grade_probabilities),
         "recency": _recency_block(prof, priors) if priors is not None else None,
         "review_quality": _review_quality_block(reviews),
+        # Honest-signals layer: grade-inflation-adjusted quality (separates
+        # teaching from grade generosity) + concrete teaching-style attributes
+        # extracted from review text (slides online, attendance, exam format).
+        "quality_adjusted": (
+            grade_adjusted_quality(prof, grade_inflation_beta).as_dict()
+            if grade_adjusted_quality(prof, grade_inflation_beta) is not None else None
+        ),
+        "attributes": [s.as_dict() for s in extract_teaching_attributes(reviews)],
         "category_sentiment": category_sentiment,
         "gp_trend": gp_trend,
         "grade_distribution": dict(grade_counts.most_common()),
@@ -1188,13 +1208,26 @@ def run_pipeline(input_path: str, output_path: str):
     print(f"  school take-again prior:  Beta({school_wta.alpha:.2f}, {school_wta.beta:.2f}) [{school_wta.source}]")
     print(f"  per-department priors fit: {len(priors['department'])} departments")
 
+    # Fit the school-wide grade-inflation slope β. Pooled fixed-effects OLS on
+    # (rating, grade) pairs across every professor; captures how much of a
+    # student's rating is explained by the grade they received rather than the
+    # prof's teaching. Reused across every prof in this school.
+    print("Fitting school-wide grade-inflation slope...")
+    grade_inflation_beta = fit_grade_inflation_beta(professors)
+    print(f"  β = {grade_inflation_beta:+.3f}  "
+          f"(students who got one GP higher rated this prof {grade_inflation_beta:+.2f} points higher on avg)")
+
     # Analyze each professor
     print("Running Bayesian analysis...")
     results = []
     for i, prof in enumerate(professors):
         name = f"{prof['first_name']} {prof['last_name']}"
         print(f"  [{i+1}/{len(professors)}] {name}...")
-        analysis = analyze_professor(prof, bb_model, nb_model, gp_model, priors=priors)
+        analysis = analyze_professor(
+            prof, bb_model, nb_model, gp_model,
+            priors=priors,
+            grade_inflation_beta=grade_inflation_beta,
+        )
         results.append(analysis)
 
     output = {
@@ -1206,6 +1239,7 @@ def run_pipeline(input_path: str, output_path: str):
                 "take_again": school_wta.as_dict(),
             },
             "n_departments": len(priors["department"]),
+            "grade_inflation_beta": round(grade_inflation_beta, 4),
         },
     }
     output["metadata"]["analyzed_at"] = datetime.now().isoformat()
