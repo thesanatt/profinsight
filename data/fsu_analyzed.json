@@ -7,7 +7,7 @@
     "scraped_at": "2026-04-19T06:17:46.388153+00:00",
     "total_professors": 119,
     "total_reviews": 1569,
-    "analyzed_at": "2026-04-23T06:09:22.220470"
+    "analyzed_at": "2026-04-23T06:24:16.526371"
   },
   "analysis": [
     {
@@ -320,6 +320,24 @@
           0.163
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.846,
+        "adjusted_rating": 2.081,
+        "grade_inflation_effect": 0.765,
+        "n_reviews_used": 13,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.69,
@@ -762,6 +780,33 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.667,
+        "adjusted_rating": 3.921,
+        "grade_inflation_effect": 0.746,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 3,
+          "posterior_mean": 0.231,
+          "confidence": "probably"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.67,
@@ -1158,6 +1203,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -1566,6 +1623,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.67,
@@ -2048,6 +2107,42 @@
           0.144
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.641,
+        "grade_inflation_effect": 0.359,
+        "n_reviews_used": 12,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 19,
+          "posterior_mean": 0.103,
+          "confidence": "maybe"
+        },
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 19,
+          "posterior_mean": 0.069,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 19,
+          "posterior_mean": 0.069,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.08,
@@ -2501,6 +2596,33 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.333,
+        "adjusted_rating": 1.974,
+        "grade_inflation_effect": 0.359,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 2,
+          "n_reviews": 3,
+          "posterior_mean": 0.231,
+          "confidence": "probably"
+        },
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.33,
@@ -3050,6 +3172,51 @@
           0.938
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.57,
+        "adjusted_rating": 3.92,
+        "grade_inflation_effect": 0.649,
+        "n_reviews_used": 43,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 5,
+          "n_reviews": 54,
+          "posterior_mean": 0.094,
+          "confidence": "probably"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 54,
+          "posterior_mean": 0.062,
+          "confidence": "probably"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 54,
+          "posterior_mean": 0.031,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 54,
+          "posterior_mean": 0.031,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.43,
@@ -3589,6 +3756,14 @@
           0.128
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.75,
+        "adjusted_rating": 2.129,
+        "grade_inflation_effect": 0.621,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.0,
@@ -4085,6 +4260,42 @@
           0.061
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.673,
+        "adjusted_rating": 3.892,
+        "grade_inflation_effect": 0.781,
+        "n_reviews_used": 26,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 9,
+          "n_reviews": 41,
+          "posterior_mean": 0.196,
+          "confidence": "likely"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 4,
+          "n_reviews": 41,
+          "posterior_mean": 0.098,
+          "confidence": "probably"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 41,
+          "posterior_mean": 0.059,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.62,
@@ -4613,6 +4824,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.172,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 9,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -5068,6 +5287,24 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.268,
+        "grade_inflation_effect": 0.732,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -5483,6 +5720,24 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.172,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 2,
+          "n_reviews": 3,
+          "posterior_mean": 0.231,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -5945,6 +6200,33 @@
           0.103
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.056,
+        "adjusted_rating": 3.466,
+        "grade_inflation_effect": 0.589,
+        "n_reviews_used": 9,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 13,
+          "posterior_mean": 0.087,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 13,
+          "posterior_mean": 0.087,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.19,
@@ -6420,6 +6702,24 @@
           0.09
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.0,
+        "adjusted_rating": 3.503,
+        "grade_inflation_effect": 0.497,
+        "n_reviews_used": 5,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 13,
+          "posterior_mean": 0.13,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.58,
@@ -6863,6 +7163,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -7309,6 +7621,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.316,
+        "grade_inflation_effect": 0.684,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 5.0,
@@ -7787,6 +8107,33 @@
           0.231
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.941,
+        "adjusted_rating": 2.4,
+        "grade_inflation_effect": 0.541,
+        "n_reviews_used": 17,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 20,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 20,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.95,
@@ -8242,6 +8589,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.172,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
@@ -8726,6 +9081,24 @@
           0.073
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.571,
+        "adjusted_rating": 3.477,
+        "grade_inflation_effect": 0.095,
+        "n_reviews_used": 7,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 19,
+          "posterior_mean": 0.103,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.38,
@@ -9216,6 +9589,33 @@
           0.144
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.667,
+        "adjusted_rating": 2.105,
+        "grade_inflation_effect": 0.562,
+        "n_reviews_used": 9,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 14,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 14,
+          "posterior_mean": 0.083,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.36,
@@ -9678,6 +10078,42 @@
           0.151
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.5,
+        "adjusted_rating": 3.32,
+        "grade_inflation_effect": 0.18,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.71,
@@ -10138,6 +10574,33 @@
           0.091
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.667,
+        "adjusted_rating": 1.943,
+        "grade_inflation_effect": -0.276,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.67,
@@ -10564,6 +11027,24 @@
           0.078
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.254,
+        "grade_inflation_effect": 0.746,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.5,
@@ -10973,6 +11454,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 1.0,
@@ -11418,6 +11901,33 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.718,
+        "grade_inflation_effect": 0.282,
+        "n_reviews_used": 5,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -11856,6 +12366,8 @@
           0.084
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.17,
@@ -12246,6 +12758,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.83,
@@ -12667,6 +13181,24 @@
           0.233
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.0,
+        "adjusted_rating": 4.0,
+        "grade_inflation_effect": 0.0,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.25,
@@ -13096,6 +13628,45 @@
           0.103
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 15,
+          "posterior_mean": 0.08,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.14,
@@ -13519,6 +14090,18 @@
           0.13
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "participation_graded",
+          "label": "Participation counts",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.62,
@@ -13998,6 +14581,42 @@
           0.143
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.875,
+        "adjusted_rating": 3.751,
+        "grade_inflation_effect": 0.124,
+        "n_reviews_used": 16,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 5,
+          "n_reviews": 20,
+          "posterior_mean": 0.2,
+          "confidence": "probably"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.65,
@@ -14574,6 +15193,33 @@
           0.361
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.852,
+        "adjusted_rating": 2.573,
+        "grade_inflation_effect": 0.279,
+        "n_reviews_used": 27,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 12,
+          "n_reviews": 53,
+          "posterior_mean": 0.206,
+          "confidence": "likely"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 53,
+          "posterior_mean": 0.063,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "grading": {
           "mean_sentiment": 1.0,
@@ -15167,6 +15813,24 @@
           0.024
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.923,
+        "adjusted_rating": 4.114,
+        "grade_inflation_effect": 0.809,
+        "n_reviews_used": 13,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 20,
+          "posterior_mean": 0.133,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.88,
@@ -15622,6 +16286,8 @@
           0.127
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "exams": {
           "mean_sentiment": 2.75,
@@ -16041,6 +16707,8 @@
           0.497
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -16711,6 +17379,78 @@
           0.238
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.795,
+        "adjusted_rating": 2.531,
+        "grade_inflation_effect": 0.264,
+        "n_reviews_used": 112,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 22,
+          "n_reviews": 181,
+          "posterior_mean": 0.12,
+          "confidence": "likely"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 9,
+          "n_reviews": 181,
+          "posterior_mean": 0.052,
+          "confidence": "likely"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 5,
+          "n_reviews": 181,
+          "posterior_mean": 0.031,
+          "confidence": "probably"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 3,
+          "n_reviews": 181,
+          "posterior_mean": 0.021,
+          "confidence": "probably"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 181,
+          "posterior_mean": 0.016,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 181,
+          "posterior_mean": 0.01,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 181,
+          "posterior_mean": 0.01,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.68,
@@ -17522,6 +18262,24 @@
           0.034
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.75,
+        "adjusted_rating": 3.984,
+        "grade_inflation_effect": 0.766,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.8,
@@ -18061,6 +18819,51 @@
           0.057
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.882,
+        "adjusted_rating": 4.339,
+        "grade_inflation_effect": 0.543,
+        "n_reviews_used": 34,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 17,
+          "n_reviews": 44,
+          "posterior_mean": 0.333,
+          "confidence": "likely"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 44,
+          "posterior_mean": 0.056,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 44,
+          "posterior_mean": 0.037,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 44,
+          "posterior_mean": 0.037,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.82,
@@ -18555,6 +19358,24 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.254,
+        "grade_inflation_effect": 0.746,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -18964,6 +19785,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -19408,6 +20231,51 @@
           0.097
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.018,
+        "grade_inflation_effect": 0.649,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 6,
+          "posterior_mean": 0.188,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.67,
@@ -19883,6 +20751,33 @@
           0.173
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.222,
+        "adjusted_rating": 3.817,
+        "grade_inflation_effect": 0.405,
+        "n_reviews_used": 9,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 21,
+          "posterior_mean": 0.097,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 21,
+          "posterior_mean": 0.065,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.45,
@@ -20362,6 +21257,24 @@
           0.16
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 2.976,
+        "grade_inflation_effect": 0.69,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.67,
@@ -20824,6 +21737,51 @@
           0.085
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.667,
+        "adjusted_rating": 2.584,
+        "grade_inflation_effect": 0.083,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 11,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.22,
@@ -21384,6 +22342,60 @@
           0.125
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.993,
+        "adjusted_rating": 2.298,
+        "grade_inflation_effect": 0.695,
+        "n_reviews_used": 70,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 14,
+          "n_reviews": 106,
+          "posterior_mean": 0.129,
+          "confidence": "likely"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 4,
+          "n_reviews": 106,
+          "posterior_mean": 0.043,
+          "confidence": "probably"
+        },
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 2,
+          "n_reviews": 106,
+          "posterior_mean": 0.026,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 106,
+          "posterior_mean": 0.026,
+          "confidence": "maybe"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 106,
+          "posterior_mean": 0.017,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 1.0,
@@ -22074,6 +23086,24 @@
           0.153
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.524,
+        "adjusted_rating": 2.971,
+        "grade_inflation_effect": 0.552,
+        "n_reviews_used": 21,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 24,
+          "posterior_mean": 0.118,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.33,
@@ -22572,6 +23602,33 @@
           0.105
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.75,
+        "adjusted_rating": 2.957,
+        "grade_inflation_effect": -0.207,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.6,
@@ -22971,7 +24028,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5702,
+          "mean": 0.5703,
           "effective_n": 0.77,
           "plain_mean": 0.75,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -22997,6 +24054,18 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.12,
@@ -23472,6 +24541,33 @@
           0.132
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.357,
+        "adjusted_rating": 3.239,
+        "grade_inflation_effect": 0.118,
+        "n_reviews_used": 7,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 27,
+          "posterior_mean": 0.054,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 27,
+          "posterior_mean": 0.054,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.28,
@@ -23965,6 +25061,18 @@
           0.115
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.3,
@@ -24379,6 +25487,14 @@
           0.263
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.0,
+        "adjusted_rating": 2.461,
+        "grade_inflation_effect": 0.539,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.33,
@@ -24917,6 +26033,51 @@
           0.117
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.667,
+        "adjusted_rating": 3.139,
+        "grade_inflation_effect": 0.528,
+        "n_reviews_used": 27,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 6,
+          "n_reviews": 34,
+          "posterior_mean": 0.159,
+          "confidence": "probably"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 34,
+          "posterior_mean": 0.068,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 34,
+          "posterior_mean": 0.045,
+          "confidence": "maybe"
+        },
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 34,
+          "posterior_mean": 0.045,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.29,
@@ -25490,6 +26651,42 @@
           0.072
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.75,
+        "adjusted_rating": 4.004,
+        "grade_inflation_effect": 0.746,
+        "n_reviews_used": 10,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 27,
+          "posterior_mean": 0.054,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 27,
+          "posterior_mean": 0.054,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 27,
+          "posterior_mean": 0.054,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.58,
@@ -25945,6 +27142,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.5,
@@ -26417,6 +27616,42 @@
           0.107
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.923,
+        "adjusted_rating": 2.687,
+        "grade_inflation_effect": 0.236,
+        "n_reviews_used": 13,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 5,
+          "n_reviews": 20,
+          "posterior_mean": 0.2,
+          "confidence": "probably"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        },
+        {
+          "name": "problem_sets",
+          "label": "Regular problem sets",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 20,
+          "posterior_mean": 0.067,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.6,
@@ -26907,6 +28142,14 @@
           0.124
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 4.024,
+        "grade_inflation_effect": 0.476,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.9,
@@ -27393,6 +28636,51 @@
           0.108
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.0,
+        "adjusted_rating": 1.0,
+        "grade_inflation_effect": 0.0,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 17,
+          "posterior_mean": 0.148,
+          "confidence": "probably"
+        },
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 17,
+          "posterior_mean": 0.074,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.7,
@@ -27879,6 +29167,33 @@
           0.157
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.9,
+        "adjusted_rating": 2.121,
+        "grade_inflation_effect": 0.779,
+        "n_reviews_used": 5,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 13,
+          "posterior_mean": 0.13,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 13,
+          "posterior_mean": 0.087,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 1.0,
@@ -28307,6 +29622,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -28704,6 +30021,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.75,
@@ -29182,6 +30511,42 @@
           0.118
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.476,
+        "adjusted_rating": 2.766,
+        "grade_inflation_effect": 0.71,
+        "n_reviews_used": 21,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 4,
+          "n_reviews": 24,
+          "posterior_mean": 0.147,
+          "confidence": "probably"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 24,
+          "posterior_mean": 0.059,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 24,
+          "posterior_mean": 0.059,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.5,
@@ -29619,6 +30984,18 @@
           0.204
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.62,
@@ -30051,6 +31428,24 @@
           0.066
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.4,
+        "adjusted_rating": 3.737,
+        "grade_inflation_effect": 0.663,
+        "n_reviews_used": 5,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.4,
@@ -30454,6 +31849,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.67,
@@ -30897,6 +32294,24 @@
           0.205
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.375,
+        "adjusted_rating": 2.785,
+        "grade_inflation_effect": 0.59,
+        "n_reviews_used": 8,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 12,
+          "posterior_mean": 0.091,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.54,
@@ -31363,6 +32778,42 @@
           0.099
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.286,
+        "adjusted_rating": 1.647,
+        "grade_inflation_effect": 0.639,
+        "n_reviews_used": 7,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 11,
+          "posterior_mean": 0.19,
+          "confidence": "probably"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 11,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.91,
@@ -31778,6 +33229,27 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.0,
@@ -32202,6 +33674,24 @@
           0.125
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 2.333,
+        "adjusted_rating": 2.25,
+        "grade_inflation_effect": 0.083,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 5,
+          "posterior_mean": 0.133,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.8,
@@ -32623,6 +34113,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -33039,6 +34531,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.807,
+        "grade_inflation_effect": 0.193,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -33473,6 +34973,18 @@
           0.171
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.33,
@@ -33908,6 +35420,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -34351,6 +35875,42 @@
           0.212
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.143,
+        "adjusted_rating": 2.906,
+        "grade_inflation_effect": 0.237,
+        "n_reviews_used": 7,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 7,
+          "posterior_mean": 0.176,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.14,
@@ -34803,6 +36363,33 @@
           0.087
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 3.879,
+        "grade_inflation_effect": 0.621,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 6,
+          "posterior_mean": 0.125,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.33,
@@ -35206,6 +36793,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.33,
@@ -35604,6 +37193,18 @@
           0.112
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 4,
+          "posterior_mean": 0.214,
+          "confidence": "probably"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.0,
@@ -36051,6 +37652,14 @@
           0.103
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.333,
+        "adjusted_rating": 3.505,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.92,
@@ -36465,6 +38074,8 @@
           0.191
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.2,
@@ -36997,6 +38608,60 @@
           0.063
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.633,
+        "adjusted_rating": 3.932,
+        "grade_inflation_effect": 0.701,
+        "n_reviews_used": 45,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 8,
+          "n_reviews": 67,
+          "posterior_mean": 0.117,
+          "confidence": "likely"
+        },
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 5,
+          "n_reviews": 67,
+          "posterior_mean": 0.078,
+          "confidence": "probably"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 67,
+          "posterior_mean": 0.052,
+          "confidence": "probably"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 67,
+          "posterior_mean": 0.039,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 67,
+          "posterior_mean": 0.026,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.45,
@@ -37590,6 +39255,18 @@
           0.053
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.36,
@@ -38015,6 +39692,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.17,
@@ -38402,6 +40081,14 @@
           0.0
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.254,
+        "grade_inflation_effect": 0.746,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -38850,6 +40537,24 @@
           0.097
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 3.865,
+        "grade_inflation_effect": 0.635,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "attendance_mandatory",
+          "label": "Attendance mandatory",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 12,
+          "posterior_mean": 0.091,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.72,
@@ -39341,7 +41046,7 @@
       "recency": {
         "good_rating_recent": {
           "mean": 0.8329,
-          "effective_n": 33.8,
+          "effective_n": 33.79,
           "plain_mean": 0.8898,
           "note": "Recent reviews are noticeably worse than older ones."
         },
@@ -39495,6 +41200,60 @@
           0.066
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.517,
+        "adjusted_rating": 4.017,
+        "grade_inflation_effect": 0.5,
+        "n_reviews_used": 87,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 22,
+          "n_reviews": 127,
+          "posterior_mean": 0.168,
+          "confidence": "likely"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 6,
+          "n_reviews": 127,
+          "posterior_mean": 0.051,
+          "confidence": "probably"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 3,
+          "n_reviews": 127,
+          "posterior_mean": 0.029,
+          "confidence": "probably"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 127,
+          "posterior_mean": 0.022,
+          "confidence": "maybe"
+        },
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 127,
+          "posterior_mean": 0.015,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.49,
@@ -40158,6 +41917,8 @@
           0.024
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.83,
@@ -40527,6 +42288,8 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.0,
@@ -41004,6 +42767,14 @@
           0.172
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 3.5,
+        "adjusted_rating": 3.086,
+        "grade_inflation_effect": 0.414,
+        "n_reviews_used": 10,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.62,
@@ -41411,6 +43182,18 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.0,
@@ -41823,6 +43606,8 @@
           0.077
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.9,
@@ -42223,6 +44008,8 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.62,
@@ -42671,6 +44458,33 @@
           0.067
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.833,
+        "adjusted_rating": 4.005,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 6,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        },
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 9,
+          "posterior_mean": 0.105,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.56,
@@ -43114,6 +44928,14 @@
           0.021
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.833,
+        "adjusted_rating": 4.005,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.92,
@@ -43547,6 +45369,14 @@
           0.02
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.172,
+        "grade_inflation_effect": 0.828,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -43965,6 +45795,8 @@
           0.024
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.57,
@@ -44350,6 +46182,18 @@
           0.114
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.62,
@@ -44834,6 +46678,60 @@
           0.142
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 1.929,
+        "adjusted_rating": 1.568,
+        "grade_inflation_effect": 0.361,
+        "n_reviews_used": 14,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 4,
+          "n_reviews": 23,
+          "posterior_mean": 0.152,
+          "confidence": "probably"
+        },
+        {
+          "name": "essay_exams",
+          "label": "Essay/free-response exams",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 23,
+          "posterior_mean": 0.061,
+          "confidence": "maybe"
+        },
+        {
+          "name": "open_book",
+          "label": "Open-note / take-home exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 23,
+          "posterior_mean": 0.061,
+          "confidence": "maybe"
+        },
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 23,
+          "posterior_mean": 0.061,
+          "confidence": "maybe"
+        },
+        {
+          "name": "responsive_office_hours",
+          "label": "Responsive / office hours helpful",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 23,
+          "posterior_mean": 0.061,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.76,
@@ -45294,6 +47192,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -45736,6 +47636,24 @@
           0.032
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.234,
+        "grade_inflation_effect": 0.766,
+        "n_reviews_used": 4,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "group_projects",
+          "label": "Group projects / work",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 7,
+          "posterior_mean": 0.118,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.83,
@@ -46149,6 +48067,8 @@
           0.194
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.5,
@@ -46528,6 +48448,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.75,
@@ -46941,6 +48863,8 @@
           0.133
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.67,
@@ -47379,6 +49303,18 @@
           0.044
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 10,
+          "posterior_mean": 0.1,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.81,
@@ -47785,6 +49721,8 @@
           0.996
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.5,
@@ -48184,6 +50122,8 @@
           0.024
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.88,
@@ -48585,6 +50525,8 @@
           0.484
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.5,
@@ -49049,6 +50991,14 @@
           0.062
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 4.5,
+        "adjusted_rating": 4.141,
+        "grade_inflation_effect": 0.359,
+        "n_reviews_used": 3,
+        "beta_used": 0.8285
+      },
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.54,
@@ -49483,6 +51433,8 @@
           1.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.25,
@@ -49890,6 +51842,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.33,
@@ -50273,6 +52227,18 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 3,
+          "posterior_mean": 0.154,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.67,
@@ -50715,6 +52681,33 @@
           0.021
         ]
       },
+      "quality_adjusted": {
+        "raw_mean": 5.0,
+        "adjusted_rating": 4.207,
+        "grade_inflation_effect": 0.793,
+        "n_reviews_used": 7,
+        "beta_used": 0.8285
+      },
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 11,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        },
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -51156,6 +53149,18 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "graded_on_curve",
+          "label": "Graded on a curve",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 1.0,
@@ -51526,6 +53531,8 @@
           0.059
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.25,
@@ -51952,6 +53959,8 @@
           0.13
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.44,
@@ -52344,6 +54353,18 @@
           0.077
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "slides_online",
+          "label": "Slides / recordings available",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.88,
@@ -52709,6 +54730,8 @@
           0.02
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 5.0,
@@ -53111,6 +55134,18 @@
           0.057
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "multiple_choice",
+          "label": "Multiple-choice exams",
+          "polarity": "good",
+          "hits": 1,
+          "n_reviews": 4,
+          "posterior_mean": 0.143,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.62,
@@ -53519,6 +55554,8 @@
           0.077
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 4.88,
@@ -53894,6 +55931,8 @@
           0.0
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 2.25,
@@ -54305,6 +56344,18 @@
           0.209
         ]
       },
+      "quality_adjusted": null,
+      "attributes": [
+        {
+          "name": "attendance_optional",
+          "label": "Attendance optional",
+          "polarity": "good",
+          "hits": 2,
+          "n_reviews": 6,
+          "posterior_mean": 0.188,
+          "confidence": "maybe"
+        }
+      ],
       "category_sentiment": {
         "workload": {
           "mean_sentiment": 3.17,
@@ -54464,6 +56515,7 @@
         "source": "empirical_bayes_mom"
       }
     },
-    "n_departments": 39
+    "n_departments": 39,
+    "grade_inflation_beta": 0.8285
   }
 }
