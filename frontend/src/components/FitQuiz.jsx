@@ -53,13 +53,16 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
         </div>
         <div className="space-y-1.5">
           {results.results.map((p, i) => {
-            // Bayesian credible band on the fit score, from posterior-predictive
-            // moderation over the per-category Beta posteriors (Lecture 8 p.3).
-            // Thin-data profs automatically get wider bands, so the UI shows
-            // "could be anywhere from 45% to 85%" instead of a misleading point.
+            // Plain-language reliability tag derived from the posterior
+            // variance. Wider band = thinner data = "Low reviews".
             const mp = p.match_posterior
-            const bandLo = mp ? Math.round(mp.ci_lower * 100) : null
-            const bandHi = mp ? Math.round(mp.ci_upper * 100) : null
+            let reliability = null
+            if (mp) {
+              const width = (mp.ci_upper - mp.ci_lower)
+              if (p.num_ratings >= 30 && width < 0.25) reliability = { label: 'Lots of data', tone: 'var(--green)' }
+              else if (p.num_ratings >= 10 && width < 0.45) reliability = { label: 'Enough data', tone: 'var(--text-3)' }
+              else reliability = { label: 'Few reviews', tone: 'var(--orange)' }
+            }
             return (
             <div key={p.id} onClick={() => onSelect(p.id)} className="card-hover px-5 py-3.5">
               <div className="flex items-center gap-4">
@@ -69,9 +72,9 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
                   <div className="font-semibold" style={{ color: 'var(--text-1)' }}>{p.name}</div>
                   <div className="text-xs" style={{ color: 'var(--text-3)' }}>
                     {p.department}
-                    {bandLo != null && bandHi != null && (
-                      <span className="ml-2" style={{ opacity: 0.8 }}>
-                        · 95% credible {bandLo}–{bandHi}%
+                    {reliability && (
+                      <span className="ml-2" style={{ color: reliability.tone }}>
+                        · {reliability.label}
                       </span>
                     )}
                   </div>
