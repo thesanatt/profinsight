@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, Tooltip,
   ResponsiveContainer, CartesianGrid, Cell, ReferenceLine,
 } from 'recharts'
+import { API_BASE } from '../config'
 
 // Helpers
 
@@ -244,6 +245,133 @@ function CourseBreakdown({ classes }) {
   )
 }
 
+// Personal grade forecast — the headline decision-support feature. Student
+// enters their GPA; we hit the forecast endpoint and show the posterior
+// (most-likely grade + credible band + plain sentence). Without a GPA the
+// card shows the base rate from the prof's historical distribution.
+function ForecastCard({ profId, school, baseForecast }) {
+  const [gpa, setGpa] = useState('')
+  const [forecast, setForecast] = useState(baseForecast ? { forecast: baseForecast, explanation: null } : null)
+  const [loading, setLoading] = useState(false)
+
+  // Resolve school slug: prefer prop, fallback to URL hash pattern /school/<slug>/...
+  const schoolSlug = school || (window.location.hash.match(/\/school\/([^/]+)/) || [])[1]
+
+  const fetchForecast = (gpaValue) => {
+    if (!schoolSlug || !profId) return
+    setLoading(true)
+    const q = gpaValue !== '' && gpaValue != null ? `?gpa=${gpaValue}` : ''
+    fetch(`${API_BASE}/api/${schoolSlug}/forecast/${encodeURIComponent(profId)}${q}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d) setForecast(d); setLoading(false) })
+      .catch(() => setLoading(false))
+  }
+
+  const onGpaChange = (v) => {
+    setGpa(v)
+    if (v === '') {
+      fetchForecast(null)
+      return
+    }
+    const n = parseFloat(v)
+    if (!isNaN(n) && n >= 0 && n <= 4) fetchForecast(n)
+  }
+
+  // Initial fetch if we didn't have a base forecast embedded in the prof JSON.
+  useEffect(() => {
+    if (!baseForecast && profId && schoolSlug) fetchForecast(null)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [profId, schoolSlug])
+
+  if (!forecast?.forecast) return null
+  const f = forecast.forecast
+  const explanation = forecast.explanation
+
+  // Posterior bars
+  const bars = Object.entries(f.posterior_pct || {}).sort((a, b) => b[1] - a[1])
+  const maxPct = Math.max(...bars.map(([, v]) => v), 1)
+
+  return (
+    <div className="card p-5">
+      <div className="flex items-start justify-between mb-3 flex-wrap gap-3">
+        <div>
+          <h3 className="font-semibold text-sm" style={{ color: 'var(--text-1)' }}>What grade would you likely get?</h3>
+          <p className="text-[11px]" style={{ color: 'var(--text-3)' }}>
+            Uses this professor's past grade distribution and your GPA. Not a guarantee.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs" style={{ color: 'var(--text-3)' }}>Your GPA:</span>
+          <input
+            type="number"
+            min="0" max="4" step="0.01"
+            placeholder="e.g. 3.5"
+            value={gpa}
+            onChange={e => onGpaChange(e.target.value)}
+            className="input-dark w-24 text-sm py-1.5"
+          />
+        </div>
+      </div>
+
+      <div className="flex items-baseline gap-3 flex-wrap">
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-bold" style={{ color: 'var(--text-1)', fontFamily: 'Iowan Old Style, Palatino Linotype, Georgia, serif' }}>
+            {f.expected_gpa?.toFixed(2)}
+          </span>
+          <span className="text-xs" style={{ color: 'var(--text-3)' }}>expected GPA</span>
+        </div>
+        <div className="text-xs" style={{ color: 'var(--text-3)' }}>
+          usually {f.ci_lower?.toFixed(2)}–{f.ci_upper?.toFixed(2)}
+        </div>
+        {loading && <span className="text-[11px]" style={{ color: 'var(--text-3)' }}>updating…</span>}
+      </div>
+
+      {explanation && (
+        <p className="text-xs mt-2 leading-relaxed" style={{ color: 'var(--text-2)' }}>{explanation}</p>
+      )}
+
+      <div className="mt-4 space-y-1.5">
+        {bars.map(([g, pct]) => (
+          <div key={g}>
+            <div className="flex justify-between text-[11px] mb-0.5">
+              <span style={{ color: 'var(--text-2)' }}>{g}</span>
+              <span style={{ color: 'var(--text-3)' }}>{pct}%</span>
+            </div>
+            <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--bg-3)' }}>
+              <div className="h-full rounded-full" style={{
+                width: `${(pct / maxPct) * 100}%`,
+                background: g === 'A range' ? 'var(--green)' : g === 'B range' ? 'var(--yellow)' : g === 'C range' ? 'var(--orange)' : 'var(--red)',
+              }} />
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// Small note that surfaces when the recency-weighted read disagrees with the
+// all-time read. e.g. "Heads up: recent reviews are noticeably worse than older ones."
+function RecencyNote({ recency }) {
+  const good = recency?.good_rating_recent
+  const wta = recency?.take_again_recent
+  const notes = [good?.note, wta?.note].filter(Boolean)
+  if (!notes.length) return null
+  // Deduplicate — both signals often agree.
+  const unique = [...new Set(notes)]
+  return (
+    <div className="card p-4 flex items-start gap-3" style={{ borderLeft: '3px solid var(--orange)' }}>
+      <span style={{ color: 'var(--orange)' }} className="text-lg leading-none">↯</span>
+      <div>
+        <div className="font-semibold text-sm" style={{ color: 'var(--text-1)' }}>Pay attention to the trend</div>
+        {unique.map((n, i) => (
+          <p key={i} className="text-xs mt-0.5" style={{ color: 'var(--text-2)' }}>{n}</p>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // Share button
 
 function ShareBtn() {
@@ -328,8 +456,8 @@ function Tags({ tagPosteriors, topTags }) {
           return (
             <span key={t.name} className="inline-flex items-center px-2.5 py-1 rounded-lg"
               style={{
-                background: `rgba(180, 83, 46, ${0.06 + s * 0.14})`,
-                border: `1.5px solid rgba(180, 83, 46, ${0.15 + s * 0.25})`,
+                background: `rgba(224, 139, 63, ${0.08 + s * 0.15})`,
+                border: `1.5px solid rgba(224, 139, 63, ${0.18 + s * 0.32})`,
                 color: 'var(--text-1)',
                 fontSize: sizePx,
                 fontWeight: 500,
@@ -346,7 +474,7 @@ function Tags({ tagPosteriors, topTags }) {
 
 // Main
 
-export default function ProfessorDetail({ professor }) {
+export default function ProfessorDetail({ professor, school }) {
   if (!professor) return null
   const p = professor
   const flags = getRedFlags(p)
@@ -376,6 +504,19 @@ export default function ProfessorDetail({ professor }) {
 
       {/* Plain-language reliability note */}
       <ReliabilityCard calibrated={p.calibrated_analysis} numRatings={p.summary?.num_ratings} />
+
+      {/* Surfaces "recent reviews disagree with the all-time read" when it
+          matters. Silent otherwise. */}
+      <RecencyNote recency={p.recency} />
+
+      {/* Personal grade forecast — student enters their GPA and sees their
+          probable grade with this prof, driven by a Bayes update of the
+          prof's historical grade distribution. */}
+      <ForecastCard
+        profId={p.professor_id}
+        school={school}
+        baseForecast={p.grade_forecast}
+      />
 
       {/* Content grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
