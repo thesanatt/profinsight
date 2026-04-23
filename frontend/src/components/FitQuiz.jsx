@@ -52,14 +52,29 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
           </div>
         </div>
         <div className="space-y-1.5">
-          {results.results.map((p, i) => (
+          {results.results.map((p, i) => {
+            // Bayesian credible band on the fit score, from posterior-predictive
+            // moderation over the per-category Beta posteriors (Lecture 8 p.3).
+            // Thin-data profs automatically get wider bands, so the UI shows
+            // "could be anywhere from 45% to 85%" instead of a misleading point.
+            const mp = p.match_posterior
+            const bandLo = mp ? Math.round(mp.ci_lower * 100) : null
+            const bandHi = mp ? Math.round(mp.ci_upper * 100) : null
+            return (
             <div key={p.id} onClick={() => onSelect(p.id)} className="card-hover px-5 py-3.5">
               <div className="flex items-center gap-4">
                 <span className="text-lg font-bold w-6 text-right" style={{ color: 'var(--text-3)' }}>#{i+1}</span>
                 <FitRing score={p.fit_score} />
                 <div className="flex-1 min-w-0">
                   <div className="font-semibold" style={{ color: 'var(--text-1)' }}>{p.name}</div>
-                  <div className="text-xs" style={{ color: 'var(--text-3)' }}>{p.department}</div>
+                  <div className="text-xs" style={{ color: 'var(--text-3)' }}>
+                    {p.department}
+                    {bandLo != null && bandHi != null && (
+                      <span className="ml-2" style={{ opacity: 0.8 }}>
+                        · 95% credible {bandLo}–{bandHi}%
+                      </span>
+                    )}
+                  </div>
                   {p.fit_reasons?.length > 0 && (
                     <div className="flex flex-wrap gap-1.5 mt-1.5">
                       {p.fit_reasons.map((r, j) => (
@@ -81,7 +96,8 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     )
