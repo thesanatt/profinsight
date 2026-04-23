@@ -2,50 +2,56 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cream, luxury-cartoon palette. Warm off-white background, deep warm-black
-   text, one muted terracotta accent. Borders are slightly thicker and corners
-   slightly more rounded so cards feel hand-drawn rather than software-gray. */
+/* Courage-at-night palette:
+   Deep chocolate page, warm sepia/parchment text, rust-ochre accent. No black,
+   no purple. Reads like a farmhouse interior at dusk — dark enough to not
+   burn your eyes, warm enough to feel cozy. Serif headlines on sans body
+   preserve the hand-drawn feel from the cream version. */
 
 @layer base {
   :root {
-    --bg-0: #F6ECDB;       /* page cream */
-    --bg-1: #FBF4E5;       /* card cream, a touch lighter than page */
-    --bg-2: #F0E4CC;       /* subtle panel */
-    --bg-3: #E8DABD;       /* deeper panel, inputs */
-    --bg-hover: #EEDFC2;
+    --bg-0:     #1B1411;   /* page: deep chocolate-night */
+    --bg-1:     #24190F;   /* card: candle-warm, slightly lifted */
+    --bg-2:     #2C2012;   /* panel */
+    --bg-3:     #34261A;   /* input surface */
+    --bg-hover: #3B2C1E;
 
-    --border: #D9C7A6;
-    --border-hover: #C3AE89;
-    --border-strong: #2A1F14;   /* used sparingly for that cartoon outline */
+    --border:         #4A3827;
+    --border-hover:   #6A5038;
+    --border-strong:  #8A6A45;
 
-    --text-1: #1E160E;     /* headline black, warm */
-    --text-2: #4A3B28;     /* body warm brown */
-    --text-3: #8A7958;     /* muted warm gray */
+    --text-1: #F2E4C7;   /* headlines: warm parchment */
+    --text-2: #D4BF95;   /* body: sepia wheat */
+    --text-3: #8F7B5D;   /* muted: dusty tan */
 
-    --accent: #B4532E;      /* terracotta */
-    --accent-bright: #D26B3F;
-    --accent-dim: #9A4627;
-    --accent-bg: rgba(180, 83, 46, 0.10);
-    --accent-border: rgba(180, 83, 46, 0.30);
+    --accent:         #E08B3F;   /* ochre-terracotta, glows on dark */
+    --accent-bright:  #F0A85C;
+    --accent-dim:     #B86424;
+    --accent-bg:      rgba(224, 139, 63, 0.12);
+    --accent-border:  rgba(224, 139, 63, 0.35);
 
-    --green: #5D7A3A;       /* olive */
-    --green-bright: #789B4A;
-    --green-bg: rgba(93, 122, 58, 0.12);
+    --green:        #9AB25C;
+    --green-bright: #B4CC78;
+    --green-bg:     rgba(154, 178, 92, 0.14);
 
-    --yellow: #C89323;      /* honey */
-    --yellow-bg: rgba(200, 147, 35, 0.14);
+    --yellow:    #E0B04A;
+    --yellow-bg: rgba(224, 176, 74, 0.14);
 
-    --red: #A6412C;         /* warm rust */
-    --red-bg: rgba(166, 65, 44, 0.12);
+    --red:    #C9583F;
+    --red-bg: rgba(201, 88, 63, 0.14);
 
-    --orange: #C66B2E;
-    --orange-bg: rgba(198, 107, 46, 0.12);
+    --orange:    #E0793B;
+    --orange-bg: rgba(224, 121, 59, 0.14);
 
-    --shadow-soft: 0 2px 0 rgba(42, 31, 20, 0.08), 0 6px 18px rgba(42, 31, 20, 0.06);
-    --shadow-card: 0 1px 0 rgba(42, 31, 20, 0.06), 0 3px 10px rgba(42, 31, 20, 0.04);
+    --shadow-card: 0 1px 0 rgba(0, 0, 0, 0.25), 0 4px 14px rgba(0, 0, 0, 0.35);
+    --shadow-soft: 0 2px 0 rgba(0, 0, 0, 0.3),  0 8px 22px rgba(0, 0, 0, 0.45);
   }
+
   body {
-    background: var(--bg-0);
+    /* faint warm vignette so the page feels candle-lit rather than software-dark */
+    background:
+      radial-gradient(ellipse at top, rgba(224, 139, 63, 0.05) 0%, transparent 55%),
+      var(--bg-0);
     color: var(--text-1);
     font-family: ui-sans-serif, 'Inter', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'ss01' on, 'cv11' on;
@@ -58,19 +64,25 @@
 }
 
 @layer components {
-  /* Cards: cream surface, slightly thicker warm-brown border, soft shadow.
-     Rounded 14px so it reads as playful but not childish. */
   .card {
     background: var(--bg-1);
     border: 1.5px solid var(--border);
     border-radius: 14px;
     box-shadow: var(--shadow-card);
   }
-  .card-hover { @apply card; transition: transform 0.12s ease, border-color 0.12s, box-shadow 0.12s; cursor: pointer; }
-  .card-hover:hover { border-color: var(--border-hover); transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+  .card-hover {
+    @apply card;
+    transition: transform 0.12s ease, border-color 0.12s, box-shadow 0.12s;
+    cursor: pointer;
+  }
+  .card-hover:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+  }
 
   .input-dark {
-    background: var(--bg-1);
+    background: var(--bg-3);
     border: 1.5px solid var(--border);
     color: var(--text-1);
     border-radius: 10px;
@@ -86,7 +98,7 @@
   .input-dark::placeholder { color: var(--text-3); }
 
   .select-dark {
-    background: var(--bg-1);
+    background: var(--bg-3);
     border: 1.5px solid var(--border);
     color: var(--text-2);
     border-radius: 10px;
@@ -95,12 +107,11 @@
     cursor: pointer;
   }
 
-  /* Primary button: inked-in terracotta with a tiny "sit on a shadow" drop to
-     give it a hand-drawn, button-you-can-press feel. */
+  /* Primary button: bright terracotta on warm-dark page. Dark text for contrast. */
   .btn-primary {
     background: var(--accent);
-    color: #FBF4E5;
-    font-weight: 600;
+    color: #1B1411;
+    font-weight: 700;
     font-size: 0.8125rem;
     padding: 0.55rem 1.1rem;
     border-radius: 10px;
@@ -110,11 +121,18 @@
     gap: 0.45rem;
     box-shadow: 0 2px 0 var(--accent-dim);
   }
-  .btn-primary:hover { background: var(--accent-bright); transform: translateY(-1px); box-shadow: 0 3px 0 var(--accent-dim); }
-  .btn-primary:active { transform: translateY(1px); box-shadow: 0 1px 0 var(--accent-dim); }
+  .btn-primary:hover {
+    background: var(--accent-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 0 var(--accent-dim);
+  }
+  .btn-primary:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 0 var(--accent-dim);
+  }
 
   .btn-secondary {
-    background: var(--bg-1);
+    background: var(--bg-2);
     border: 1.5px solid var(--border);
     color: var(--text-2);
     font-weight: 500;
@@ -126,17 +144,21 @@
     align-items: center;
     gap: 0.45rem;
   }
-  .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-1); background: var(--bg-hover); }
+  .btn-secondary:hover {
+    border-color: var(--border-hover);
+    color: var(--text-1);
+    background: var(--bg-hover);
+  }
 
-  .badge-green { background: var(--green-bg); color: var(--green); font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 6px; }
+  .badge-green  { background: var(--green-bg);  color: var(--green);  font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 6px; }
   .badge-yellow { background: var(--yellow-bg); color: var(--yellow); font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 6px; }
-  .badge-red { background: var(--red-bg); color: var(--red); font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 6px; }
+  .badge-red    { background: var(--red-bg);    color: var(--red);    font-size: 0.6875rem; font-weight: 600; padding: 0.15rem 0.55rem; border-radius: 6px; }
 }
 
 .recharts-cartesian-grid line { stroke: var(--border) !important; }
 .recharts-text { fill: var(--text-3) !important; }
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background: var(--bg-1) !important;
+  background: var(--bg-2) !important;
   border: 1.5px solid var(--border) !important;
   border-radius: 10px !important;
   color: var(--text-1) !important;
@@ -145,9 +167,8 @@
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-select option { background: var(--bg-1); color: var(--text-1); }
+select option { background: var(--bg-2); color: var(--text-1); }
 
-/* Mobile responsive */
 @media (max-width: 640px) {
   .card-hover { padding-left: 1rem; padding-right: 1rem; }
   .btn-primary, .btn-secondary { padding: 0.5rem 0.75rem; font-size: 0.75rem; }

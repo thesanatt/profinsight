@@ -456,8 +456,8 @@ function Tags({ tagPosteriors, topTags }) {
           return (
             <span key={t.name} className="inline-flex items-center px-2.5 py-1 rounded-lg"
               style={{
-                background: `rgba(180, 83, 46, ${0.06 + s * 0.14})`,
-                border: `1.5px solid rgba(180, 83, 46, ${0.15 + s * 0.25})`,
+                background: `rgba(224, 139, 63, ${0.08 + s * 0.15})`,
+                border: `1.5px solid rgba(224, 139, 63, ${0.18 + s * 0.32})`,
                 color: 'var(--text-1)',
                 fontSize: sizePx,
                 fontWeight: 500,
