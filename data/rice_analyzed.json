@@ -4,12 +4,406 @@
     "school_id": "U2Nob29sLTc5OQ==",
     "city": "Houston",
     "state": "TX",
-    "scraped_at": "2026-06-29T11:03:19.128643+00:00",
+    "scraped_at": "2026-07-02T09:45:00.990167+00:00",
     "total_professors": 98,
     "total_reviews": 658,
-    "analyzed_at": "2026-06-29T11:03:19.780886"
+    "analyzed_at": "2026-07-02T09:45:01.658307"
   },
   "analysis": [
+    {
+      "professor_id": "VGVhY2hlci0xMDAyNjU4",
+      "legacy_id": 1002658,
+      "name": "Ashutosh Sabharwal",
+      "department": "Engineering",
+      "summary": {
+        "avg_rating": 5,
+        "avg_difficulty": 3.3,
+        "num_ratings": 3,
+        "would_take_again_pct": 100
+      },
+      "verdict": "Good teaching but expect to put in the work, and ratings have been declining",
+      "verdict_emoji": "good",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
+      "trend_summary": "Declining over time",
+      "grade_probabilities": {
+        "A range": 0,
+        "B range": 0,
+        "C range": 0,
+        "D/F": 0
+      },
+      "review_highlights": [
+        {
+          "id": "UmF0aW5nLTM5ODU2ODEx",
+          "comment": "Ashu is really a nice person and a great researcher. As an advisor, he was a great force in helping me choose good research problems and improving as a scientist.",
+          "class_name": "EE301",
+          "grade": "",
+          "date": "2024-10-26",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 3.1278082191780823
+        },
+        {
+          "id": "UmF0aW5nLTM3NDU3MjM4",
+          "comment": "Amazing, down-to-earth, approachable, and brilliant in research! I recommend him as an advisor.",
+          "class_name": "EE301",
+          "grade": "",
+          "date": "2023-02-25",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 2.475
+        },
+        {
+          "id": "UmF0aW5nLTM3NDk0MTc0",
+          "comment": "Ashu is a good mentor and is a top-rated researcher. He brings practical problems to his research and also an industry perspective. I totally recommend him as a PhD guide.",
+          "class_name": "EE301",
+          "grade": "",
+          "date": "2023-03-10",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 1.855
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "EE301",
+          "num_reviews": 3,
+          "avg_rating": 5.0,
+          "grades": {}
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 3.5,
+            "raw_mean": 5.0
+          },
+          "helpfulness": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 3.5,
+            "raw_mean": 5.0
+          },
+          "difficulty": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 1.5,
+            "raw_mean": 3.33
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 5.0,
+          "beta": 2.0,
+          "mean": 0.7143,
+          "variance": 0.02551,
+          "std": 0.1597,
+          "ci_lower": 0.3588,
+          "ci_upper": 0.9567,
+          "n_ratings": 3,
+          "n_above_threshold": 3,
+          "threshold": 3.0
+        }
+      },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Engineering",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          }
+        },
+        "good_rating": {
+          "alpha": 4.3974,
+          "beta": 0.6026,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.8795,
+          "variance": 0.017665,
+          "ci_lower": 0.517,
+          "ci_upper": 0.9996,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.8234,
+            "expected": 0.8795,
+            "typical": 0.9272,
+            "most_likely": null,
+            "optimistic": 0.9793
+          }
+        },
+        "take_again": {
+          "alpha": 4.5758,
+          "beta": 0.4242,
+          "n": 3,
+          "successes": 3,
+          "mean": 0.9152,
+          "variance": 0.012942,
+          "ci_lower": 0.5867,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.8813,
+            "expected": 0.9152,
+            "typical": 0.9625,
+            "most_likely": null,
+            "optimistic": 0.9932
+          }
+        }
+      },
+      "tag_posteriors": [],
+      "grade_forecast": null,
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.8328,
+          "effective_n": 1.6,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.8823,
+          "effective_n": 1.6,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "quality_adjusted": null,
+      "attributes": [],
+      "category_sentiment": {
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 3,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2023-02",
+          "2023-03",
+          "2024-10"
+        ],
+        "train_ratings": [
+          5.0,
+          5.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2023-02",
+          "2023-03",
+          "2023-04",
+          "2023-06",
+          "2023-07",
+          "2023-08",
+          "2023-09",
+          "2023-10",
+          "2023-11",
+          "2023-12",
+          "2024-01",
+          "2024-02",
+          "2024-03",
+          "2024-04",
+          "2024-05",
+          "2024-06",
+          "2024-07",
+          "2024-08",
+          "2024-09",
+          "2024-10"
+        ],
+        "pred_mean": [
+          3.572,
+          3.547,
+          3.42,
+          3.209,
+          2.936,
+          2.631,
+          2.324,
+          2.047,
+          1.823,
+          1.673,
+          1.606,
+          1.623,
+          1.719,
+          1.876,
+          2.074,
+          2.286,
+          2.487,
+          2.65,
+          2.754,
+          2.785
+        ],
+        "pred_std": [
+          0.535,
+          0.548,
+          0.595,
+          0.663,
+          0.736,
+          0.805,
+          0.862,
+          0.906,
+          0.936,
+          0.953,
+          0.958,
+          0.95,
+          0.931,
+          0.901,
+          0.861,
+          0.812,
+          0.761,
+          0.713,
+          0.679,
+          0.667
+        ],
+        "pred_ci_lower": [
+          2.523,
+          2.473,
+          2.254,
+          1.91,
+          1.493,
+          1.053,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.253,
+          1.423,
+          1.478
+        ],
+        "pred_ci_upper": [
+          4.621,
+          4.621,
+          4.586,
+          4.508,
+          4.379,
+          4.209,
+          4.014,
+          3.823,
+          3.658,
+          3.541,
+          3.484,
+          3.485,
+          3.544,
+          3.642,
+          3.762,
+          3.878,
+          3.979,
+          4.047,
+          4.085,
+          4.092
+        ],
+        "n_data_points": 3,
+        "date_range": "2023-02 to 2024-10"
+      },
+      "grade_distribution": {},
+      "top_tags": []
+    },
     {
       "professor_id": "VGVhY2hlci00NjYzNDA=",
       "legacy_id": 466340,
@@ -278,13 +672,13 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5636,
+          "mean": 0.5638,
           "effective_n": 0.49,
           "plain_mean": 0.0909,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.6887,
+          "mean": 0.6889,
           "effective_n": 0.29,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -334,23 +728,23 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 1.5,
-          "n_reviews": 8,
+          "mean_sentiment": 1.33,
+          "n_reviews": 6,
           "pct_positive": 0.0
+        },
+        "approachability": {
+          "mean_sentiment": 2.5,
+          "n_reviews": 3,
+          "pct_positive": 33.3
         },
         "exams": {
           "mean_sentiment": 1.0,
           "n_reviews": 1,
           "pct_positive": 0.0
         },
-        "approachability": {
-          "mean_sentiment": 3.5,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        },
         "workload": {
-          "mean_sentiment": 1.5,
-          "n_reviews": 1,
+          "mean_sentiment": 1.75,
+          "n_reviews": 2,
           "pct_positive": 0.0
         }
       },
@@ -499,20 +893,20 @@
       "top_tags": []
     },
     {
-      "professor_id": "VGVhY2hlci0xMDAyNjU4",
-      "legacy_id": 1002658,
-      "name": "Ashutosh Sabharwal",
-      "department": "Engineering",
+      "professor_id": "VGVhY2hlci00OTgyODc=",
+      "legacy_id": 498287,
+      "name": "Andrew Barron",
+      "department": "Chemistry",
       "summary": {
-        "avg_rating": 5,
-        "avg_difficulty": 3.3,
-        "num_ratings": 3,
-        "would_take_again_pct": 100
+        "avg_rating": 3.9,
+        "avg_difficulty": 3.7,
+        "num_ratings": 4,
+        "would_take_again_pct": 0
       },
-      "verdict": "Good teaching but expect to put in the work, and ratings have been declining",
-      "verdict_emoji": "good",
+      "verdict": "Mixed reviews. Student experiences vary quite a bit, and ratings have been declining",
+      "verdict_emoji": "mixed",
       "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
+      "confidence_detail": "Only 4 reviews so far, take these numbers with a grain of salt",
       "trend_summary": "Declining over time",
       "grade_probabilities": {
         "A range": 0,
@@ -522,44 +916,22 @@
       },
       "review_highlights": [
         {
-          "id": "UmF0aW5nLTM5ODU2ODEx",
-          "comment": "Ashu is really a nice person and a great researcher. As an advisor, he was a great force in helping me choose good research problems and improving as a scientist.",
-          "class_name": "EE301",
+          "id": "UmF0aW5nLTE4MTMyNTIx",
+          "comment": "exams are tough but you learn a lot -dunno if he is still teaching (I took Inorganic with him)",
+          "class_name": "CHEMINOR",
           "grade": "",
-          "date": "2024-10-26",
+          "date": "2011-01-13",
           "clarity": 5,
-          "helpful": 5,
+          "helpful": 4,
           "difficulty": 4,
-          "score": 3.136027397260274
-        },
-        {
-          "id": "UmF0aW5nLTM3NDU3MjM4",
-          "comment": "Amazing, down-to-earth, approachable, and brilliant in research! I recommend him as an advisor.",
-          "class_name": "EE301",
-          "grade": "",
-          "date": "2023-02-25",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 2.475
-        },
-        {
-          "id": "UmF0aW5nLTM3NDk0MTc0",
-          "comment": "Ashu is a good mentor and is a top-rated researcher. He brings practical problems to his research and also an industry perspective. I totally recommend him as a PhD guide.",
-          "class_name": "EE301",
-          "grade": "",
-          "date": "2023-03-10",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 1.855
+          "score": 1.47
         }
       ],
       "class_breakdown": [
         {
-          "class_name": "EE301",
-          "num_reviews": 3,
-          "avg_rating": 5.0,
+          "class_name": "CHEM360",
+          "num_reviews": 2,
+          "avg_rating": 3.0,
           "grades": {}
         }
       ],
@@ -567,37 +939,37 @@
         "rating_posteriors": {
           "excellent": {
             "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
+            "beta": 3.0,
+            "mean": 0.625,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.2904,
+            "ci_upper": 0.901,
+            "n_ratings": 4,
             "n_above_threshold": 3,
             "threshold": 4.5
           },
           "good": {
             "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
+            "beta": 3.0,
+            "mean": 0.625,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.2904,
+            "ci_upper": 0.901,
+            "n_ratings": 4,
             "n_above_threshold": 3,
             "threshold": 3.5
           },
           "acceptable": {
             "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
+            "beta": 3.0,
+            "mean": 0.625,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.2904,
+            "ci_upper": 0.901,
+            "n_ratings": 4,
             "n_above_threshold": 3,
             "threshold": 2.5
           }
@@ -605,60 +977,60 @@
         "sub_rating_posteriors": {
           "clarity": {
             "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
+            "beta": 3.0,
+            "mean": 0.625,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.2904,
+            "ci_upper": 0.901,
+            "n_ratings": 4,
             "n_above_threshold": 3,
             "threshold": 3.5,
-            "raw_mean": 5.0
+            "raw_mean": 4.0
           },
           "helpfulness": {
             "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
+            "beta": 3.0,
+            "mean": 0.625,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.2904,
+            "ci_upper": 0.901,
+            "n_ratings": 4,
             "n_above_threshold": 3,
             "threshold": 3.5,
-            "raw_mean": 5.0
+            "raw_mean": 3.75
           },
           "difficulty": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
+            "alpha": 3.0,
+            "beta": 5.0,
+            "mean": 0.375,
+            "variance": 0.026042,
+            "std": 0.1614,
+            "ci_lower": 0.099,
+            "ci_upper": 0.7096,
+            "n_ratings": 4,
+            "n_above_threshold": 1,
             "threshold": 1.5,
-            "raw_mean": 3.33
+            "raw_mean": 3.75
           }
         },
         "would_take_again_posterior": {
-          "alpha": 5.0,
-          "beta": 2.0,
-          "mean": 0.7143,
-          "variance": 0.02551,
-          "std": 0.1597,
-          "ci_lower": 0.3588,
-          "ci_upper": 0.9567,
-          "n_ratings": 3,
-          "n_above_threshold": 3,
+          "alpha": 2.0,
+          "beta": 3.0,
+          "mean": 0.4,
+          "variance": 0.04,
+          "std": 0.2,
+          "ci_lower": 0.0676,
+          "ci_upper": 0.8059,
+          "n_ratings": 1,
+          "n_above_threshold": 0,
           "threshold": 3.0
         }
       },
       "calibrated_analysis": {
         "version": 1,
-        "department_used": "Engineering",
+        "department_used": "Chemistry",
         "priors": {
           "good_rating": {
             "alpha": 1.3974,
@@ -677,15 +1049,15 @@
         },
         "good_rating": {
           "alpha": 4.3974,
-          "beta": 0.6026,
-          "n": 3,
+          "beta": 1.6026,
+          "n": 4,
           "successes": 3,
-          "mean": 0.8795,
-          "variance": 0.017665,
-          "ci_lower": 0.517,
-          "ci_upper": 0.9996,
+          "mean": 0.7329,
+          "variance": 0.027965,
+          "ci_lower": 0.3521,
+          "ci_upper": 0.9723,
           "ci_level": 0.95,
-          "shrinkage": 0.4,
+          "shrinkage": 0.3333,
           "prior": {
             "alpha": 1.3974,
             "beta": 0.6026,
@@ -694,24 +1066,24 @@
             "source": "empirical_bayes_mom"
           },
           "decision": {
-            "conservative": 0.8234,
-            "expected": 0.8795,
-            "typical": 0.9272,
-            "most_likely": null,
-            "optimistic": 0.9793
+            "conservative": 0.6263,
+            "expected": 0.7329,
+            "typical": 0.7599,
+            "most_likely": 0.8494,
+            "optimistic": 0.8654
           }
         },
         "take_again": {
-          "alpha": 4.5758,
-          "beta": 0.4242,
-          "n": 3,
-          "successes": 3,
-          "mean": 0.9152,
-          "variance": 0.012942,
-          "ci_lower": 0.5867,
-          "ci_upper": 1.0,
+          "alpha": 1.5758,
+          "beta": 1.4242,
+          "n": 1,
+          "successes": 0,
+          "mean": 0.5253,
+          "variance": 0.062341,
+          "ci_lower": 0.0721,
+          "ci_upper": 0.9493,
           "ci_level": 0.95,
-          "shrinkage": 0.4,
+          "shrinkage": 0.6667,
           "prior": {
             "alpha": 1.5758,
             "beta": 0.4242,
@@ -720,11 +1092,11 @@
             "source": "empirical_bayes_mom"
           },
           "decision": {
-            "conservative": 0.8813,
-            "expected": 0.9152,
-            "typical": 0.9625,
-            "most_likely": null,
-            "optimistic": 0.9932
+            "conservative": 0.3262,
+            "expected": 0.5253,
+            "typical": 0.5315,
+            "most_likely": 0.5758,
+            "optimistic": 0.7294
           }
         }
       },
@@ -732,128 +1104,134 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.833,
-          "effective_n": 1.61,
-          "plain_mean": 1.0,
+          "mean": 0.6614,
+          "effective_n": 0.2,
+          "plain_mean": 0.75,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8824,
-          "effective_n": 1.61,
-          "plain_mean": 1.0,
-          "note": "Recent reviews are noticeably worse than older ones."
+          "mean": 0.735,
+          "effective_n": 0.14,
+          "plain_mean": 0.0,
+          "note": "Recent reviews are noticeably better than older ones."
         },
         "half_life_days": 1095
       },
       "review_quality": {
-        "n_reviews": 3,
-        "n_flagged": 0,
-        "flagged_ids": [],
+        "n_reviews": 4,
+        "n_flagged": 1,
+        "flagged_ids": [
+          "UmF0aW5nLTI5NTU0Mjg2"
+        ],
         "per_review_probabilities": [
-          0.0,
-          0.0,
-          0.0
+          1.0,
+          0.126,
+          0.15,
+          0.15
         ]
       },
       "quality_adjusted": null,
       "attributes": [],
       "category_sentiment": {
         "approachability": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 3,
-          "pct_positive": 100.0
+          "mean_sentiment": 1.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
         },
         "lectures": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
+          "mean_sentiment": 4.83,
+          "n_reviews": 3,
           "pct_positive": 100.0
         }
       },
       "gp_trend": {
         "insufficient_data": false,
         "train_dates": [
-          "2023-02",
-          "2023-03",
-          "2024-10"
+          "2007-12",
+          "2009-04",
+          "2011-01",
+          "2018-02"
         ],
         "train_ratings": [
           5.0,
           5.0,
-          5.0
+          4.5,
+          1.0
         ],
         "pred_dates": [
-          "2023-02",
-          "2023-03",
-          "2023-04",
-          "2023-06",
-          "2023-07",
-          "2023-08",
-          "2023-09",
-          "2023-10",
-          "2023-11",
-          "2023-12",
-          "2024-01",
-          "2024-02",
-          "2024-03",
-          "2024-04",
-          "2024-05",
-          "2024-06",
-          "2024-07",
-          "2024-08",
-          "2024-09",
-          "2024-10"
+          "2007-12",
+          "2008-07",
+          "2009-01",
+          "2009-08",
+          "2010-02",
+          "2010-08",
+          "2011-03",
+          "2011-09",
+          "2012-04",
+          "2012-10",
+          "2013-04",
+          "2013-11",
+          "2014-05",
+          "2014-11",
+          "2015-06",
+          "2015-12",
+          "2016-07",
+          "2017-01",
+          "2017-07",
+          "2018-02"
         ],
         "pred_mean": [
-          3.572,
-          3.547,
-          3.42,
-          3.209,
-          2.936,
-          2.631,
-          2.324,
-          2.047,
-          1.823,
-          1.673,
-          1.606,
-          1.623,
-          1.719,
-          1.876,
-          2.074,
-          2.286,
-          2.487,
-          2.65,
-          2.754,
-          2.785
+          2.819,
+          2.383,
+          2.721,
+          2.334,
+          1.152,
+          1.928,
+          2.389,
+          0.983,
+          0.13,
+          0.006,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.003,
+          0.057,
+          0.315,
+          0.556
         ],
         "pred_std": [
-          0.535,
-          0.548,
-          0.595,
-          0.663,
-          0.736,
-          0.805,
-          0.862,
+          0.667,
+          0.879,
+          0.742,
+          0.781,
+          0.972,
+          0.831,
+          0.702,
+          0.956,
+          0.999,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.997,
           0.906,
-          0.936,
-          0.953,
-          0.958,
-          0.95,
-          0.931,
-          0.901,
-          0.861,
-          0.812,
-          0.761,
-          0.713,
-          0.679,
           0.667
         ],
         "pred_ci_lower": [
-          2.523,
-          2.473,
-          2.254,
-          1.91,
-          1.493,
-          1.053,
+          1.512,
+          1.0,
+          1.267,
+          1.0,
+          1.0,
+          1.0,
+          1.013,
           1.0,
           1.0,
           1.0,
@@ -865,34 +1243,33 @@
           1.0,
           1.0,
           1.0,
-          1.253,
-          1.423,
-          1.478
+          1.0,
+          1.0
         ],
         "pred_ci_upper": [
-          4.621,
-          4.621,
-          4.586,
-          4.508,
-          4.379,
-          4.209,
-          4.014,
-          3.823,
-          3.658,
-          3.541,
-          3.484,
-          3.485,
-          3.544,
-          3.642,
-          3.762,
-          3.878,
-          3.979,
-          4.047,
-          4.085,
-          4.092
+          4.126,
+          4.106,
+          4.175,
+          3.865,
+          3.057,
+          3.557,
+          3.765,
+          2.857,
+          2.088,
+          1.966,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.963,
+          2.011,
+          2.091,
+          1.863
         ],
-        "n_data_points": 3,
-        "date_range": "2023-02 to 2024-10"
+        "n_data_points": 4,
+        "date_range": "2007-12 to 2018-02"
       },
       "grade_distribution": {},
       "top_tags": []
@@ -1330,802 +1707,6 @@
       "top_tags": []
     },
     {
-      "professor_id": "VGVhY2hlci00OTgyODc=",
-      "legacy_id": 498287,
-      "name": "Andrew Barron",
-      "department": "Chemistry",
-      "summary": {
-        "avg_rating": 3.9,
-        "avg_difficulty": 3.7,
-        "num_ratings": 4,
-        "would_take_again_pct": 0
-      },
-      "verdict": "Mixed reviews. Student experiences vary quite a bit, and ratings have been declining",
-      "verdict_emoji": "mixed",
-      "confidence_level": "Low",
-      "confidence_detail": "Only 4 reviews so far, take these numbers with a grain of salt",
-      "trend_summary": "Declining over time",
-      "grade_probabilities": {
-        "A range": 0,
-        "B range": 0,
-        "C range": 0,
-        "D/F": 0
-      },
-      "review_highlights": [
-        {
-          "id": "UmF0aW5nLTE4MTMyNTIx",
-          "comment": "exams are tough but you learn a lot -dunno if he is still teaching (I took Inorganic with him)",
-          "class_name": "CHEMINOR",
-          "grade": "",
-          "date": "2011-01-13",
-          "clarity": 5,
-          "helpful": 4,
-          "difficulty": 4,
-          "score": 1.47
-        }
-      ],
-      "class_breakdown": [
-        {
-          "class_name": "CHEM360",
-          "num_reviews": 2,
-          "avg_rating": 3.0,
-          "grades": {}
-        }
-      ],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 5.0,
-            "beta": 3.0,
-            "mean": 0.625,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.2904,
-            "ci_upper": 0.901,
-            "n_ratings": 4,
-            "n_above_threshold": 3,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 5.0,
-            "beta": 3.0,
-            "mean": 0.625,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.2904,
-            "ci_upper": 0.901,
-            "n_ratings": 4,
-            "n_above_threshold": 3,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 5.0,
-            "beta": 3.0,
-            "mean": 0.625,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.2904,
-            "ci_upper": 0.901,
-            "n_ratings": 4,
-            "n_above_threshold": 3,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 5.0,
-            "beta": 3.0,
-            "mean": 0.625,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.2904,
-            "ci_upper": 0.901,
-            "n_ratings": 4,
-            "n_above_threshold": 3,
-            "threshold": 3.5,
-            "raw_mean": 4.0
-          },
-          "helpfulness": {
-            "alpha": 5.0,
-            "beta": 3.0,
-            "mean": 0.625,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.2904,
-            "ci_upper": 0.901,
-            "n_ratings": 4,
-            "n_above_threshold": 3,
-            "threshold": 3.5,
-            "raw_mean": 3.75
-          },
-          "difficulty": {
-            "alpha": 3.0,
-            "beta": 5.0,
-            "mean": 0.375,
-            "variance": 0.026042,
-            "std": 0.1614,
-            "ci_lower": 0.099,
-            "ci_upper": 0.7096,
-            "n_ratings": 4,
-            "n_above_threshold": 1,
-            "threshold": 1.5,
-            "raw_mean": 3.75
-          }
-        },
-        "would_take_again_posterior": {
-          "alpha": 2.0,
-          "beta": 3.0,
-          "mean": 0.4,
-          "variance": 0.04,
-          "std": 0.2,
-          "ci_lower": 0.0676,
-          "ci_upper": 0.8059,
-          "n_ratings": 1,
-          "n_above_threshold": 0,
-          "threshold": 3.0
-        }
-      },
-      "calibrated_analysis": {
-        "version": 1,
-        "department_used": "Chemistry",
-        "priors": {
-          "good_rating": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "take_again": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          }
-        },
-        "good_rating": {
-          "alpha": 4.3974,
-          "beta": 1.6026,
-          "n": 4,
-          "successes": 3,
-          "mean": 0.7329,
-          "variance": 0.027965,
-          "ci_lower": 0.3521,
-          "ci_upper": 0.9723,
-          "ci_level": 0.95,
-          "shrinkage": 0.3333,
-          "prior": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.6263,
-            "expected": 0.7329,
-            "typical": 0.7599,
-            "most_likely": 0.8494,
-            "optimistic": 0.8654
-          }
-        },
-        "take_again": {
-          "alpha": 1.5758,
-          "beta": 1.4242,
-          "n": 1,
-          "successes": 0,
-          "mean": 0.5253,
-          "variance": 0.062341,
-          "ci_lower": 0.0721,
-          "ci_upper": 0.9493,
-          "ci_level": 0.95,
-          "shrinkage": 0.6667,
-          "prior": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.3262,
-            "expected": 0.5253,
-            "typical": 0.5315,
-            "most_likely": 0.5758,
-            "optimistic": 0.7294
-          }
-        }
-      },
-      "tag_posteriors": [],
-      "grade_forecast": null,
-      "recency": {
-        "good_rating_recent": {
-          "mean": 0.6613,
-          "effective_n": 0.21,
-          "plain_mean": 0.75,
-          "note": "Recent reviews are noticeably worse than older ones."
-        },
-        "take_again_recent": {
-          "mean": 0.7349,
-          "effective_n": 0.14,
-          "plain_mean": 0.0,
-          "note": "Recent reviews are noticeably better than older ones."
-        },
-        "half_life_days": 1095
-      },
-      "review_quality": {
-        "n_reviews": 4,
-        "n_flagged": 1,
-        "flagged_ids": [
-          "UmF0aW5nLTI5NTU0Mjg2"
-        ],
-        "per_review_probabilities": [
-          1.0,
-          0.126,
-          0.15,
-          0.15
-        ]
-      },
-      "quality_adjusted": null,
-      "attributes": [],
-      "category_sentiment": {
-        "approachability": {
-          "mean_sentiment": 1.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
-        },
-        "lectures": {
-          "mean_sentiment": 4.83,
-          "n_reviews": 3,
-          "pct_positive": 100.0
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2007-12",
-          "2009-04",
-          "2011-01",
-          "2018-02"
-        ],
-        "train_ratings": [
-          5.0,
-          5.0,
-          4.5,
-          1.0
-        ],
-        "pred_dates": [
-          "2007-12",
-          "2008-07",
-          "2009-01",
-          "2009-08",
-          "2010-02",
-          "2010-08",
-          "2011-03",
-          "2011-09",
-          "2012-04",
-          "2012-10",
-          "2013-04",
-          "2013-11",
-          "2014-05",
-          "2014-11",
-          "2015-06",
-          "2015-12",
-          "2016-07",
-          "2017-01",
-          "2017-07",
-          "2018-02"
-        ],
-        "pred_mean": [
-          2.819,
-          2.383,
-          2.721,
-          2.334,
-          1.152,
-          1.928,
-          2.389,
-          0.983,
-          0.13,
-          0.006,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.003,
-          0.057,
-          0.315,
-          0.556
-        ],
-        "pred_std": [
-          0.667,
-          0.879,
-          0.742,
-          0.781,
-          0.972,
-          0.831,
-          0.702,
-          0.956,
-          0.999,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          0.997,
-          0.906,
-          0.667
-        ],
-        "pred_ci_lower": [
-          1.512,
-          1.0,
-          1.267,
-          1.0,
-          1.0,
-          1.0,
-          1.013,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "pred_ci_upper": [
-          4.126,
-          4.106,
-          4.175,
-          3.865,
-          3.057,
-          3.557,
-          3.765,
-          2.857,
-          2.088,
-          1.966,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.963,
-          2.011,
-          2.091,
-          1.863
-        ],
-        "n_data_points": 4,
-        "date_range": "2007-12 to 2018-02"
-      },
-      "grade_distribution": {},
-      "top_tags": []
-    },
-    {
-      "professor_id": "VGVhY2hlci03NjYzNTQ=",
-      "legacy_id": 766354,
-      "name": "Alexander Byrd",
-      "department": "History",
-      "summary": {
-        "avg_rating": 4.4,
-        "avg_difficulty": 3.7,
-        "num_ratings": 6,
-        "would_take_again_pct": -1
-      },
-      "verdict": "Good teaching but expect to put in the work, and ratings have been declining",
-      "verdict_emoji": "good",
-      "confidence_level": "Low",
-      "confidence_detail": "Only 6 reviews so far, take these numbers with a grain of salt",
-      "trend_summary": "Declining over time",
-      "grade_probabilities": {
-        "A range": 0,
-        "B range": 0,
-        "C range": 0,
-        "D/F": 0
-      },
-      "review_highlights": [
-        {
-          "id": "UmF0aW5nLTE5Njg1MjE0",
-          "comment": "Prof. Byrd was one of the best professors I had at Rice. He was my honors history thesis advisor and he was very helpful and informed. My experience at Rice would have been completely different had I not had him as a teacher. He will challenge you intellectually and support your academic growth. TAKE HIS CLASSES.",
-          "class_name": "HIST106",
-          "grade": "",
-          "date": "2012-01-07",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 2.5700000000000003
-        },
-        {
-          "id": "UmF0aW5nLTEyMzY5NTky",
-          "comment": "Really good lectures and interesting class discussions.",
-          "class_name": "HIST117",
-          "grade": "",
-          "date": "2006-11-06",
-          "clarity": 5,
-          "helpful": 4,
-          "difficulty": 4,
-          "score": 0.275
-        },
-        {
-          "id": "UmF0aW5nLTExMDAwODI3",
-          "comment": "definitely take any class that he teaches! he is so understanding and helpful, and really challenges you to think more analytically, asks really thought-provoking questions.",
-          "class_name": "FSEMHIST163",
-          "grade": "",
-          "date": "2005-11-29",
-          "clarity": 4,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": -0.135
-        },
-        {
-          "id": "UmF0aW5nLTExODc5MDQ3",
-          "comment": "Helps students become better writers.  Very accessible.",
-          "class_name": "HIST",
-          "grade": "",
-          "date": "2006-05-12",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": -0.725
-        },
-        {
-          "id": "UmF0aW5nLTEyNDIxODQy",
-          "comment": "I took a FSEM with Prof. Byrd and it was one of the best classes I've taken at Rice.  He keep classes interesting and challenging without making you, the student, feel overwhelmed.  Great professor and great guy.  Definitely take his class, whatever it is!",
-          "class_name": "FSEM163",
-          "grade": "",
-          "date": "2006-11-15",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": -1.72
-        }
-      ],
-      "class_breakdown": [],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 7.0,
-            "beta": 3.0,
-            "mean": 0.7,
-            "variance": 0.019091,
-            "std": 0.1382,
-            "ci_lower": 0.3999,
-            "ci_upper": 0.9251,
-            "n_ratings": 6,
-            "n_above_threshold": 5,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 7.0,
-            "beta": 3.0,
-            "mean": 0.7,
-            "variance": 0.019091,
-            "std": 0.1382,
-            "ci_lower": 0.3999,
-            "ci_upper": 0.9251,
-            "n_ratings": 6,
-            "n_above_threshold": 5,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 8.0,
-            "beta": 2.0,
-            "mean": 0.8,
-            "variance": 0.014545,
-            "std": 0.1206,
-            "ci_lower": 0.5175,
-            "ci_upper": 0.9719,
-            "n_ratings": 6,
-            "n_above_threshold": 6,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 7.0,
-            "beta": 3.0,
-            "mean": 0.7,
-            "variance": 0.019091,
-            "std": 0.1382,
-            "ci_lower": 0.3999,
-            "ci_upper": 0.9251,
-            "n_ratings": 6,
-            "n_above_threshold": 5,
-            "threshold": 3.5,
-            "raw_mean": 4.33
-          },
-          "helpfulness": {
-            "alpha": 7.0,
-            "beta": 3.0,
-            "mean": 0.7,
-            "variance": 0.019091,
-            "std": 0.1382,
-            "ci_lower": 0.3999,
-            "ci_upper": 0.9251,
-            "n_ratings": 6,
-            "n_above_threshold": 5,
-            "threshold": 3.5,
-            "raw_mean": 4.5
-          },
-          "difficulty": {
-            "alpha": 4.0,
-            "beta": 6.0,
-            "mean": 0.4,
-            "variance": 0.021818,
-            "std": 0.1477,
-            "ci_lower": 0.137,
-            "ci_upper": 0.7007,
-            "n_ratings": 6,
-            "n_above_threshold": 2,
-            "threshold": 1.5,
-            "raw_mean": 3.67
-          }
-        },
-        "would_take_again_posterior": null
-      },
-      "calibrated_analysis": {
-        "version": 1,
-        "department_used": "History",
-        "priors": {
-          "good_rating": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "take_again": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          }
-        },
-        "good_rating": {
-          "alpha": 6.3974,
-          "beta": 1.6026,
-          "n": 6,
-          "successes": 5,
-          "mean": 0.7997,
-          "variance": 0.017799,
-          "ci_lower": 0.4823,
-          "ci_upper": 0.9805,
-          "ci_level": 0.95,
-          "shrinkage": 0.25,
-          "prior": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.7208,
-            "expected": 0.7997,
-            "typical": 0.8252,
-            "most_likely": 0.8996,
-            "optimistic": 0.9037
-          }
-        },
-        "take_again": {
-          "alpha": 1.5758,
-          "beta": 0.4242,
-          "n": 0,
-          "successes": 0,
-          "mean": 0.7879,
-          "variance": 0.055709,
-          "ci_lower": 0.1823,
-          "ci_upper": 0.9999,
-          "ci_level": 0.95,
-          "shrinkage": 1.0,
-          "prior": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.663,
-            "expected": 0.7879,
-            "typical": 0.8826,
-            "most_likely": null,
-            "optimistic": 0.978
-          }
-        }
-      },
-      "tag_posteriors": [],
-      "grade_forecast": null,
-      "recency": {
-        "good_rating_recent": {
-          "mean": 0.6806,
-          "effective_n": 0.16,
-          "plain_mean": 0.8333,
-          "note": "Recent reviews are noticeably worse than older ones."
-        },
-        "take_again_recent": {
-          "mean": 0.7879,
-          "effective_n": 0.0,
-          "plain_mean": null,
-          "note": null
-        },
-        "half_life_days": 1095
-      },
-      "review_quality": {
-        "n_reviews": 6,
-        "n_flagged": 1,
-        "flagged_ids": [
-          "UmF0aW5nLTI1ODM0MDIw"
-        ],
-        "per_review_probabilities": [
-          1.0,
-          0.079,
-          0.079,
-          0.064,
-          0.079,
-          0.064
-        ]
-      },
-      "quality_adjusted": null,
-      "attributes": [],
-      "category_sentiment": {
-        "lectures": {
-          "mean_sentiment": 4.3,
-          "n_reviews": 5,
-          "pct_positive": 80.0
-        },
-        "approachability": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2005-11",
-          "2006-05",
-          "2006-11",
-          "2006-11",
-          "2012-01",
-          "2015-12"
-        ],
-        "train_ratings": [
-          4.5,
-          5.0,
-          4.5,
-          5.0,
-          5.0,
-          2.5
-        ],
-        "pred_dates": [
-          "2005-11",
-          "2006-06",
-          "2006-12",
-          "2007-07",
-          "2008-01",
-          "2008-07",
-          "2009-02",
-          "2009-08",
-          "2010-02",
-          "2010-09",
-          "2011-03",
-          "2011-09",
-          "2012-04",
-          "2012-10",
-          "2013-05",
-          "2013-11",
-          "2014-05",
-          "2014-12",
-          "2015-06",
-          "2015-12"
-        ],
-        "pred_mean": [
-          3.055,
-          4.091,
-          3.357,
-          1.274,
-          0.177,
-          0.008,
-          0.0,
-          0.0,
-          0.003,
-          0.08,
-          0.766,
-          2.395,
-          2.432,
-          0.802,
-          0.086,
-          0.003,
-          0.009,
-          0.147,
-          0.792,
-          1.389
-        ],
-        "pred_std": [
-          0.622,
-          0.558,
-          0.564,
-          0.924,
-          0.998,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          0.979,
-          0.766,
-          0.758,
-          0.977,
-          1.0,
-          1.0,
-          1.0,
-          0.997,
-          0.905,
-          0.667
-        ],
-        "pred_ci_lower": [
-          1.836,
-          2.997,
-          2.252,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "pred_ci_upper": [
-          4.274,
-          5.0,
-          4.462,
-          3.085,
-          2.133,
-          1.968,
-          1.96,
-          1.96,
-          1.963,
-          2.04,
-          2.685,
-          3.896,
-          3.918,
-          2.717,
-          2.046,
-          1.963,
-          1.969,
-          2.101,
-          2.566,
-          2.696
-        ],
-        "n_data_points": 6,
-        "date_range": "2005-11 to 2015-12"
-      },
-      "grade_distribution": {},
-      "top_tags": []
-    },
-    {
       "professor_id": "VGVhY2hlci04NTE2NzY=",
       "legacy_id": 851676,
       "name": "Maher Awad",
@@ -2409,13 +1990,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.624,
+          "mean": 0.6241,
           "effective_n": 0.59,
           "plain_mean": 0.4615,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.7207,
+          "mean": 0.7208,
           "effective_n": 0.36,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
@@ -2617,6 +2198,420 @@
         "B": 1,
         "A-": 1
       },
+      "top_tags": []
+    },
+    {
+      "professor_id": "VGVhY2hlci03NjYzNTQ=",
+      "legacy_id": 766354,
+      "name": "Alexander Byrd",
+      "department": "History",
+      "summary": {
+        "avg_rating": 4.4,
+        "avg_difficulty": 3.7,
+        "num_ratings": 6,
+        "would_take_again_pct": -1
+      },
+      "verdict": "Good teaching but expect to put in the work, and ratings have been declining",
+      "verdict_emoji": "good",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 6 reviews so far, take these numbers with a grain of salt",
+      "trend_summary": "Declining over time",
+      "grade_probabilities": {
+        "A range": 0,
+        "B range": 0,
+        "C range": 0,
+        "D/F": 0
+      },
+      "review_highlights": [
+        {
+          "id": "UmF0aW5nLTE5Njg1MjE0",
+          "comment": "Prof. Byrd was one of the best professors I had at Rice. He was my honors history thesis advisor and he was very helpful and informed. My experience at Rice would have been completely different had I not had him as a teacher. He will challenge you intellectually and support your academic growth. TAKE HIS CLASSES.",
+          "class_name": "HIST106",
+          "grade": "",
+          "date": "2012-01-07",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 2.5700000000000003
+        },
+        {
+          "id": "UmF0aW5nLTEyMzY5NTky",
+          "comment": "Really good lectures and interesting class discussions.",
+          "class_name": "HIST117",
+          "grade": "",
+          "date": "2006-11-06",
+          "clarity": 5,
+          "helpful": 4,
+          "difficulty": 4,
+          "score": 0.275
+        },
+        {
+          "id": "UmF0aW5nLTExMDAwODI3",
+          "comment": "definitely take any class that he teaches! he is so understanding and helpful, and really challenges you to think more analytically, asks really thought-provoking questions.",
+          "class_name": "FSEMHIST163",
+          "grade": "",
+          "date": "2005-11-29",
+          "clarity": 4,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": -0.135
+        },
+        {
+          "id": "UmF0aW5nLTExODc5MDQ3",
+          "comment": "Helps students become better writers.  Very accessible.",
+          "class_name": "HIST",
+          "grade": "",
+          "date": "2006-05-12",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": -0.725
+        },
+        {
+          "id": "UmF0aW5nLTEyNDIxODQy",
+          "comment": "I took a FSEM with Prof. Byrd and it was one of the best classes I've taken at Rice.  He keep classes interesting and challenging without making you, the student, feel overwhelmed.  Great professor and great guy.  Definitely take his class, whatever it is!",
+          "class_name": "FSEM163",
+          "grade": "",
+          "date": "2006-11-15",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": -1.72
+        }
+      ],
+      "class_breakdown": [],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 7.0,
+            "beta": 3.0,
+            "mean": 0.7,
+            "variance": 0.019091,
+            "std": 0.1382,
+            "ci_lower": 0.3999,
+            "ci_upper": 0.9251,
+            "n_ratings": 6,
+            "n_above_threshold": 5,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 7.0,
+            "beta": 3.0,
+            "mean": 0.7,
+            "variance": 0.019091,
+            "std": 0.1382,
+            "ci_lower": 0.3999,
+            "ci_upper": 0.9251,
+            "n_ratings": 6,
+            "n_above_threshold": 5,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 8.0,
+            "beta": 2.0,
+            "mean": 0.8,
+            "variance": 0.014545,
+            "std": 0.1206,
+            "ci_lower": 0.5175,
+            "ci_upper": 0.9719,
+            "n_ratings": 6,
+            "n_above_threshold": 6,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 7.0,
+            "beta": 3.0,
+            "mean": 0.7,
+            "variance": 0.019091,
+            "std": 0.1382,
+            "ci_lower": 0.3999,
+            "ci_upper": 0.9251,
+            "n_ratings": 6,
+            "n_above_threshold": 5,
+            "threshold": 3.5,
+            "raw_mean": 4.33
+          },
+          "helpfulness": {
+            "alpha": 7.0,
+            "beta": 3.0,
+            "mean": 0.7,
+            "variance": 0.019091,
+            "std": 0.1382,
+            "ci_lower": 0.3999,
+            "ci_upper": 0.9251,
+            "n_ratings": 6,
+            "n_above_threshold": 5,
+            "threshold": 3.5,
+            "raw_mean": 4.5
+          },
+          "difficulty": {
+            "alpha": 4.0,
+            "beta": 6.0,
+            "mean": 0.4,
+            "variance": 0.021818,
+            "std": 0.1477,
+            "ci_lower": 0.137,
+            "ci_upper": 0.7007,
+            "n_ratings": 6,
+            "n_above_threshold": 2,
+            "threshold": 1.5,
+            "raw_mean": 3.67
+          }
+        },
+        "would_take_again_posterior": null
+      },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "History",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          }
+        },
+        "good_rating": {
+          "alpha": 6.3974,
+          "beta": 1.6026,
+          "n": 6,
+          "successes": 5,
+          "mean": 0.7997,
+          "variance": 0.017799,
+          "ci_lower": 0.4823,
+          "ci_upper": 0.9805,
+          "ci_level": 0.95,
+          "shrinkage": 0.25,
+          "prior": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.7208,
+            "expected": 0.7997,
+            "typical": 0.8252,
+            "most_likely": 0.8996,
+            "optimistic": 0.9037
+          }
+        },
+        "take_again": {
+          "alpha": 1.5758,
+          "beta": 0.4242,
+          "n": 0,
+          "successes": 0,
+          "mean": 0.7879,
+          "variance": 0.055709,
+          "ci_lower": 0.1823,
+          "ci_upper": 0.9999,
+          "ci_level": 0.95,
+          "shrinkage": 1.0,
+          "prior": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.663,
+            "expected": 0.7879,
+            "typical": 0.8826,
+            "most_likely": null,
+            "optimistic": 0.978
+          }
+        }
+      },
+      "tag_posteriors": [],
+      "grade_forecast": null,
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.6807,
+          "effective_n": 0.16,
+          "plain_mean": 0.8333,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.7879,
+          "effective_n": 0.0,
+          "plain_mean": null,
+          "note": null
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 6,
+        "n_flagged": 1,
+        "flagged_ids": [
+          "UmF0aW5nLTI1ODM0MDIw"
+        ],
+        "per_review_probabilities": [
+          1.0,
+          0.079,
+          0.079,
+          0.064,
+          0.079,
+          0.064
+        ]
+      },
+      "quality_adjusted": null,
+      "attributes": [],
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 4.3,
+          "n_reviews": 5,
+          "pct_positive": 80.0
+        },
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2005-11",
+          "2006-05",
+          "2006-11",
+          "2006-11",
+          "2012-01",
+          "2015-12"
+        ],
+        "train_ratings": [
+          4.5,
+          5.0,
+          4.5,
+          5.0,
+          5.0,
+          2.5
+        ],
+        "pred_dates": [
+          "2005-11",
+          "2006-06",
+          "2006-12",
+          "2007-07",
+          "2008-01",
+          "2008-07",
+          "2009-02",
+          "2009-08",
+          "2010-02",
+          "2010-09",
+          "2011-03",
+          "2011-09",
+          "2012-04",
+          "2012-10",
+          "2013-05",
+          "2013-11",
+          "2014-05",
+          "2014-12",
+          "2015-06",
+          "2015-12"
+        ],
+        "pred_mean": [
+          3.055,
+          4.091,
+          3.357,
+          1.274,
+          0.177,
+          0.008,
+          0.0,
+          0.0,
+          0.003,
+          0.08,
+          0.766,
+          2.395,
+          2.432,
+          0.802,
+          0.086,
+          0.003,
+          0.009,
+          0.147,
+          0.792,
+          1.389
+        ],
+        "pred_std": [
+          0.622,
+          0.558,
+          0.564,
+          0.924,
+          0.998,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.979,
+          0.766,
+          0.758,
+          0.977,
+          1.0,
+          1.0,
+          1.0,
+          0.997,
+          0.905,
+          0.667
+        ],
+        "pred_ci_lower": [
+          1.836,
+          2.997,
+          2.252,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "pred_ci_upper": [
+          4.274,
+          5.0,
+          4.462,
+          3.085,
+          2.133,
+          1.968,
+          1.96,
+          1.96,
+          1.963,
+          2.04,
+          2.685,
+          3.896,
+          3.918,
+          2.717,
+          2.046,
+          1.963,
+          1.969,
+          2.101,
+          2.566,
+          2.696
+        ],
+        "n_data_points": 6,
+        "date_range": "2005-11 to 2015-12"
+      },
+      "grade_distribution": {},
       "top_tags": []
     },
     {
@@ -2822,8 +2817,8 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.4966,
-          "effective_n": 1.01,
+          "mean": 0.4969,
+          "effective_n": 1.0,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -3017,7 +3012,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 3.0894520547945206
+          "score": 3.0812328767123285
         },
         {
           "id": "UmF0aW5nLTE0OTkzNzQx",
@@ -3221,7 +3216,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7806,
+          "mean": 0.7805,
           "effective_n": 0.82,
           "plain_mean": 0.6667,
           "note": "Recent reviews are noticeably better than older ones."
@@ -3629,12 +3624,12 @@
       "recency": {
         "good_rating_recent": {
           "mean": 0.7525,
-          "effective_n": 0.44,
+          "effective_n": 0.43,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8247,
+          "mean": 0.8246,
           "effective_n": 0.42,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -4038,7 +4033,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7238,
+          "mean": 0.7237,
           "effective_n": 0.18,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -4237,7 +4232,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 4.005
+          "score": 3.9967808219178083
         },
         {
           "id": "UmF0aW5nLTI5MjAwMjcy",
@@ -4460,13 +4455,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.4856,
+          "mean": 0.4859,
           "effective_n": 1.17,
           "plain_mean": 0.4286,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.6545,
+          "mean": 0.6546,
           "effective_n": 0.14,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -4876,13 +4871,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8131,
+          "mean": 0.813,
           "effective_n": 1.22,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8678,
+          "mean": 0.8677,
           "effective_n": 1.21,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -5048,382 +5043,6 @@
       "grade_distribution": {
         "A-": 1,
         "A": 1,
-        "A+": 1
-      },
-      "top_tags": []
-    },
-    {
-      "professor_id": "VGVhY2hlci04NDUxNTU=",
-      "legacy_id": 845155,
-      "name": "Vicki Colvin",
-      "department": "Chemistry",
-      "summary": {
-        "avg_rating": 2.3,
-        "avg_difficulty": 3.7,
-        "num_ratings": 3,
-        "would_take_again_pct": 50
-      },
-      "verdict": "Below average reviews. Worth checking if this fits your learning style, but ratings have been improving recently",
-      "verdict_emoji": "caution",
-      "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
-      "trend_summary": "Significantly improving over time",
-      "grade_probabilities": {
-        "A range": 100.0,
-        "B range": 0.0,
-        "C range": 0.0,
-        "D/F": 0.0
-      },
-      "review_highlights": [],
-      "class_breakdown": [
-        {
-          "class_name": "CHEM101",
-          "num_reviews": 3,
-          "avg_rating": 2.3,
-          "grades": {
-            "A-": 1,
-            "A+": 1
-          }
-        }
-      ],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 3.5,
-            "raw_mean": 2.33
-          },
-          "helpfulness": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 3.5,
-            "raw_mean": 2.33
-          },
-          "difficulty": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
-            "threshold": 1.5,
-            "raw_mean": 3.67
-          }
-        },
-        "would_take_again_posterior": {
-          "alpha": 3.0,
-          "beta": 2.0,
-          "mean": 0.6,
-          "variance": 0.04,
-          "std": 0.2,
-          "ci_lower": 0.1941,
-          "ci_upper": 0.9324,
-          "n_ratings": 1,
-          "n_above_threshold": 1,
-          "threshold": 3.0
-        }
-      },
-      "calibrated_analysis": {
-        "version": 1,
-        "department_used": "Chemistry",
-        "priors": {
-          "good_rating": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "take_again": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          }
-        },
-        "good_rating": {
-          "alpha": 2.3974,
-          "beta": 2.6026,
-          "n": 3,
-          "successes": 1,
-          "mean": 0.4795,
-          "variance": 0.041597,
-          "ci_lower": 0.1101,
-          "ci_upper": 0.864,
-          "ci_level": 0.95,
-          "shrinkage": 0.4,
-          "prior": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.3238,
-            "expected": 0.4795,
-            "typical": 0.4765,
-            "most_likely": 0.4658,
-            "optimistic": 0.6325
-          }
-        },
-        "take_again": {
-          "alpha": 2.5758,
-          "beta": 0.4242,
-          "n": 1,
-          "successes": 1,
-          "mean": 0.8586,
-          "variance": 0.030354,
-          "ci_lower": 0.3724,
-          "ci_upper": 0.9999,
-          "ci_level": 0.95,
-          "shrinkage": 0.6667,
-          "prior": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.7903,
-            "expected": 0.8586,
-            "typical": 0.9312,
-            "most_likely": null,
-            "optimistic": 0.9874
-          }
-        }
-      },
-      "tag_posteriors": [],
-      "grade_forecast": {
-        "posterior_pct": {
-          "A range": 100.0
-        },
-        "expected_gpa": 3.8,
-        "ci_lower": 3.8,
-        "ci_upper": 3.8,
-        "most_likely": "A range",
-        "n_reviews_used": 100,
-        "used_student_gpa": null
-      },
-      "recency": {
-        "good_rating_recent": {
-          "mean": 0.6026,
-          "effective_n": 0.63,
-          "plain_mean": 0.3333,
-          "note": "Recent reviews are noticeably better than older ones."
-        },
-        "take_again_recent": {
-          "mean": 0.8061,
-          "effective_n": 0.19,
-          "plain_mean": 1.0,
-          "note": "Recent reviews are noticeably worse than older ones."
-        },
-        "half_life_days": 1095
-      },
-      "review_quality": {
-        "n_reviews": 3,
-        "n_flagged": 0,
-        "flagged_ids": [],
-        "per_review_probabilities": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      },
-      "quality_adjusted": null,
-      "attributes": [],
-      "category_sentiment": {
-        "lectures": {
-          "mean_sentiment": 2.33,
-          "n_reviews": 3,
-          "pct_positive": 33.3
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2006-10",
-          "2019-03",
-          "2022-11"
-        ],
-        "train_ratings": [
-          1.0,
-          5.0,
-          1.0
-        ],
-        "pred_dates": [
-          "2006-10",
-          "2007-08",
-          "2008-06",
-          "2009-04",
-          "2010-03",
-          "2011-01",
-          "2011-11",
-          "2012-09",
-          "2013-07",
-          "2014-05",
-          "2015-03",
-          "2016-02",
-          "2016-12",
-          "2017-10",
-          "2018-08",
-          "2019-06",
-          "2020-04",
-          "2021-03",
-          "2022-01",
-          "2022-11"
-        ],
-        "pred_mean": [
-          0.556,
-          0.133,
-          0.002,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.0,
-          0.039,
-          1.3,
-          2.498,
-          0.273,
-          0.003,
-          0.133,
-          0.556
-        ],
-        "pred_std": [
-          0.667,
-          0.984,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          0.937,
-          0.742,
-          0.997,
-          1.0,
-          0.984,
-          0.667
-        ],
-        "pred_ci_lower": [
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.044,
-          1.0,
-          1.0,
-          1.0,
-          1.0
-        ],
-        "pred_ci_upper": [
-          1.863,
-          2.062,
-          1.962,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.96,
-          1.999,
-          3.137,
-          3.952,
-          2.227,
-          1.963,
-          2.062,
-          1.863
-        ],
-        "n_data_points": 3,
-        "date_range": "2006-10 to 2022-11"
-      },
-      "grade_distribution": {
-        "A-": 1,
         "A+": 1
       },
       "top_tags": []
@@ -5717,14 +5336,14 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5985,
+          "mean": 0.5986,
           "effective_n": 1.78,
           "plain_mean": 0.4444,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.6339,
-          "effective_n": 0.92,
+          "mean": 0.634,
+          "effective_n": 0.91,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -5913,6 +5532,382 @@
         "A+": 2,
         "A": 1,
         "C": 1
+      },
+      "top_tags": []
+    },
+    {
+      "professor_id": "VGVhY2hlci04NDUxNTU=",
+      "legacy_id": 845155,
+      "name": "Vicki Colvin",
+      "department": "Chemistry",
+      "summary": {
+        "avg_rating": 2.3,
+        "avg_difficulty": 3.7,
+        "num_ratings": 3,
+        "would_take_again_pct": 50
+      },
+      "verdict": "Below average reviews. Worth checking if this fits your learning style, but ratings have been improving recently",
+      "verdict_emoji": "caution",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
+      "trend_summary": "Significantly improving over time",
+      "grade_probabilities": {
+        "A range": 100.0,
+        "B range": 0.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [],
+      "class_breakdown": [
+        {
+          "class_name": "CHEM101",
+          "num_reviews": 3,
+          "avg_rating": 2.3,
+          "grades": {
+            "A-": 1,
+            "A+": 1
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 3.5,
+            "raw_mean": 2.33
+          },
+          "helpfulness": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 3.5,
+            "raw_mean": 2.33
+          },
+          "difficulty": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 1.5,
+            "raw_mean": 3.67
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 3.0,
+          "beta": 2.0,
+          "mean": 0.6,
+          "variance": 0.04,
+          "std": 0.2,
+          "ci_lower": 0.1941,
+          "ci_upper": 0.9324,
+          "n_ratings": 1,
+          "n_above_threshold": 1,
+          "threshold": 3.0
+        }
+      },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Chemistry",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          }
+        },
+        "good_rating": {
+          "alpha": 2.3974,
+          "beta": 2.6026,
+          "n": 3,
+          "successes": 1,
+          "mean": 0.4795,
+          "variance": 0.041597,
+          "ci_lower": 0.1101,
+          "ci_upper": 0.864,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.3238,
+            "expected": 0.4795,
+            "typical": 0.4765,
+            "most_likely": 0.4658,
+            "optimistic": 0.6325
+          }
+        },
+        "take_again": {
+          "alpha": 2.5758,
+          "beta": 0.4242,
+          "n": 1,
+          "successes": 1,
+          "mean": 0.8586,
+          "variance": 0.030354,
+          "ci_lower": 0.3724,
+          "ci_upper": 0.9999,
+          "ci_level": 0.95,
+          "shrinkage": 0.6667,
+          "prior": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.7903,
+            "expected": 0.8586,
+            "typical": 0.9312,
+            "most_likely": null,
+            "optimistic": 0.9874
+          }
+        }
+      },
+      "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 100.0
+        },
+        "expected_gpa": 3.8,
+        "ci_lower": 3.8,
+        "ci_upper": 3.8,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.6027,
+          "effective_n": 0.63,
+          "plain_mean": 0.3333,
+          "note": "Recent reviews are noticeably better than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.806,
+          "effective_n": 0.19,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "quality_adjusted": null,
+      "attributes": [],
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 2.33,
+          "n_reviews": 3,
+          "pct_positive": 33.3
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2006-10",
+          "2019-03",
+          "2022-11"
+        ],
+        "train_ratings": [
+          1.0,
+          5.0,
+          1.0
+        ],
+        "pred_dates": [
+          "2006-10",
+          "2007-08",
+          "2008-06",
+          "2009-04",
+          "2010-03",
+          "2011-01",
+          "2011-11",
+          "2012-09",
+          "2013-07",
+          "2014-05",
+          "2015-03",
+          "2016-02",
+          "2016-12",
+          "2017-10",
+          "2018-08",
+          "2019-06",
+          "2020-04",
+          "2021-03",
+          "2022-01",
+          "2022-11"
+        ],
+        "pred_mean": [
+          0.556,
+          0.133,
+          0.002,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.039,
+          1.3,
+          2.498,
+          0.273,
+          0.003,
+          0.133,
+          0.556
+        ],
+        "pred_std": [
+          0.667,
+          0.984,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.937,
+          0.742,
+          0.997,
+          1.0,
+          0.984,
+          0.667
+        ],
+        "pred_ci_lower": [
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.044,
+          1.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "pred_ci_upper": [
+          1.863,
+          2.062,
+          1.962,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.96,
+          1.999,
+          3.137,
+          3.952,
+          2.227,
+          1.963,
+          2.062,
+          1.863
+        ],
+        "n_data_points": 3,
+        "date_range": "2006-10 to 2022-11"
+      },
+      "grade_distribution": {
+        "A-": 1,
+        "A+": 1
       },
       "top_tags": []
     },
@@ -6220,19 +6215,19 @@
       "attributes": [],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 3.33,
-          "n_reviews": 6,
-          "pct_positive": 66.7
-        },
-        "workload": {
-          "mean_sentiment": 2.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
+          "mean_sentiment": 3.7,
+          "n_reviews": 5,
+          "pct_positive": 80.0
         },
         "approachability": {
-          "mean_sentiment": 4.0,
-          "n_reviews": 1,
-          "pct_positive": 100.0
+          "mean_sentiment": 2.5,
+          "n_reviews": 2,
+          "pct_positive": 50.0
+        },
+        "workload": {
+          "mean_sentiment": 1.75,
+          "n_reviews": 2,
+          "pct_positive": 0.0
         }
       },
       "gp_trend": {
@@ -6653,13 +6648,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8635,
-          "effective_n": 2.42,
+          "mean": 0.8634,
+          "effective_n": 2.41,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.9018,
+          "mean": 0.9017,
           "effective_n": 2.32,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -6868,504 +6863,6 @@
       "top_tags": []
     },
     {
-      "professor_id": "VGVhY2hlci0xMTQ5NTEx",
-      "legacy_id": 1149511,
-      "name": "Luis Duno-Gottberg",
-      "department": "Film",
-      "summary": {
-        "avg_rating": 4.6,
-        "avg_difficulty": 3.6,
-        "num_ratings": 11,
-        "would_take_again_pct": 87.5
-      },
-      "verdict": "Good teaching but expect to put in the work",
-      "verdict_emoji": "good",
-      "confidence_level": "Moderate",
-      "confidence_detail": "Based on 11 reviews, decent sample but could shift with more data",
-      "trend_summary": "Stable, middle-of-the-road ratings",
-      "grade_probabilities": {
-        "A range": 50.0,
-        "B range": 50.0,
-        "C range": 0.0,
-        "D/F": 0.0
-      },
-      "review_highlights": [
-        {
-          "id": "UmF0aW5nLTQyNDcyMDk5",
-          "comment": "My fav professor at Rice! His dedication is incredible, and his teaching style is both fun and original. He cares about the process or how we reason through problems more than just getting &#8220;the right final answer&#8221;. He'll often switch sides in an argument to test different ideas and push the class to really defend our reasoning.  I honestly love it.",
-          "class_name": "SPW6000",
-          "grade": "A-",
-          "date": "2026-01-10",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 4.344246575342465
-        },
-        {
-          "id": "UmF0aW5nLTQyNDcyMDg5",
-          "comment": "This is easily one of the best professors I've had throughout my undergraduate education. His classes really encourage you to think outside the box and challenge the way you approach the subject. If you're open to new ideas and willing to engage critically with the material, I would highly recommend taking his classes.",
-          "class_name": "SPW6000",
-          "grade": "A-",
-          "date": "2026-01-10",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 4.134246575342466
-        },
-        {
-          "id": "UmF0aW5nLTQyNjMxOTEw",
-          "comment": "f you're ready to be challenged and like thinking beyond the usual, Luis is the instructor you want. He's super knowledgeable but also kind and humble. His class pushes you past superficial views of Latin American history and politics by questioning assumptions.",
-          "class_name": "SPAN406",
-          "grade": "B+",
-          "date": "2026-02-21",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 5,
-          "score": 3.959315068493151
-        },
-        {
-          "id": "UmF0aW5nLTQyNTE0OTQ1",
-          "comment": "Challenging, provocative, and inspiring. His classes constantly push you to consider ideas you never thought possible. You leave his class not with easy answers, but with better questions. LL (Love Luis) Gime me an A next time though.",
-          "class_name": "SPW6000",
-          "grade": "B+",
-          "date": "2026-01-18",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 3.7261643835616436
-        },
-        {
-          "id": "UmF0aW5nLTQyNTg3Mjk1",
-          "comment": "Hands down one of the best professors at Rice. He pushes you to think outside the box, so come prepared to be challenged.",
-          "class_name": "SPW6000",
-          "grade": "A-",
-          "date": "2026-02-05",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 3,
-          "score": 3.2104794520547943
-        }
-      ],
-      "class_breakdown": [
-        {
-          "class_name": "SPW6000",
-          "num_reviews": 6,
-          "avg_rating": 4.3,
-          "grades": {
-            "A-": 3,
-            "B+": 2
-          }
-        },
-        {
-          "class_name": "SPAN406",
-          "num_reviews": 3,
-          "avg_rating": 4.7,
-          "grades": {
-            "B+": 2
-          }
-        }
-      ],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 11.0,
-            "beta": 4.0,
-            "mean": 0.7333,
-            "variance": 0.012222,
-            "std": 0.1106,
-            "ci_lower": 0.492,
-            "ci_upper": 0.9161,
-            "n_ratings": 11,
-            "n_above_threshold": 9,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 12.0,
-            "beta": 3.0,
-            "mean": 0.8,
-            "variance": 0.01,
-            "std": 0.1,
-            "ci_lower": 0.5719,
-            "ci_upper": 0.9534,
-            "n_ratings": 11,
-            "n_above_threshold": 10,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 12.0,
-            "beta": 3.0,
-            "mean": 0.8,
-            "variance": 0.01,
-            "std": 0.1,
-            "ci_lower": 0.5719,
-            "ci_upper": 0.9534,
-            "n_ratings": 11,
-            "n_above_threshold": 10,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 12.0,
-            "beta": 3.0,
-            "mean": 0.8,
-            "variance": 0.01,
-            "std": 0.1,
-            "ci_lower": 0.5719,
-            "ci_upper": 0.9534,
-            "n_ratings": 11,
-            "n_above_threshold": 10,
-            "threshold": 3.5,
-            "raw_mean": 4.55
-          },
-          "helpfulness": {
-            "alpha": 12.0,
-            "beta": 3.0,
-            "mean": 0.8,
-            "variance": 0.01,
-            "std": 0.1,
-            "ci_lower": 0.5719,
-            "ci_upper": 0.9534,
-            "n_ratings": 11,
-            "n_above_threshold": 10,
-            "threshold": 3.5,
-            "raw_mean": 4.55
-          },
-          "difficulty": {
-            "alpha": 6.0,
-            "beta": 9.0,
-            "mean": 0.4,
-            "variance": 0.015,
-            "std": 0.1225,
-            "ci_lower": 0.1766,
-            "ci_upper": 0.6486,
-            "n_ratings": 11,
-            "n_above_threshold": 4,
-            "threshold": 1.5,
-            "raw_mean": 3.55
-          }
-        },
-        "would_take_again_posterior": {
-          "alpha": 9.0,
-          "beta": 2.0,
-          "mean": 0.8182,
-          "variance": 0.012397,
-          "std": 0.1113,
-          "ci_lower": 0.555,
-          "ci_upper": 0.9748,
-          "n_ratings": 7,
-          "n_above_threshold": 7,
-          "threshold": 3.0
-        }
-      },
-      "calibrated_analysis": {
-        "version": 1,
-        "department_used": "Film",
-        "priors": {
-          "good_rating": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "take_again": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          }
-        },
-        "good_rating": {
-          "alpha": 11.3974,
-          "beta": 1.6026,
-          "n": 11,
-          "successes": 10,
-          "mean": 0.8767,
-          "variance": 0.00772,
-          "ci_lower": 0.6595,
-          "ci_upper": 0.9888,
-          "ci_level": 0.95,
-          "shrinkage": 0.1538,
-          "prior": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.8294,
-            "expected": 0.8767,
-            "typical": 0.896,
-            "most_likely": 0.9452,
-            "optimistic": 0.9438
-          }
-        },
-        "take_again": {
-          "alpha": 8.5758,
-          "beta": 0.4242,
-          "n": 7,
-          "successes": 7,
-          "mean": 0.9529,
-          "variance": 0.004492,
-          "ci_lower": 0.7582,
-          "ci_upper": 1.0,
-          "ci_level": 0.95,
-          "shrinkage": 0.2222,
-          "prior": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.9366,
-            "expected": 0.9529,
-            "typical": 0.9804,
-            "most_likely": null,
-            "optimistic": 0.9965
-          }
-        }
-      },
-      "tag_posteriors": [],
-      "grade_forecast": {
-        "posterior_pct": {
-          "A range": 50.0,
-          "B range": 50.0
-        },
-        "expected_gpa": 3.4,
-        "ci_lower": 2.62,
-        "ci_upper": 4.0,
-        "most_likely": "A range",
-        "n_reviews_used": 100,
-        "used_student_gpa": null
-      },
-      "recency": {
-        "good_rating_recent": {
-          "mean": 0.8195,
-          "effective_n": 6.24,
-          "plain_mean": 0.9091,
-          "note": "Recent reviews are noticeably worse than older ones."
-        },
-        "take_again_recent": {
-          "mean": 0.9414,
-          "effective_n": 5.24,
-          "plain_mean": 1.0,
-          "note": "Recent reviews are noticeably worse than older ones."
-        },
-        "half_life_days": 1095
-      },
-      "review_quality": {
-        "n_reviews": 11,
-        "n_flagged": 1,
-        "flagged_ids": [
-          "UmF0aW5nLTQyMjg0NDEx"
-        ],
-        "per_review_probabilities": [
-          0.084,
-          0.084,
-          0.084,
-          0.084,
-          0.084,
-          1.0,
-          0.086,
-          0.084,
-          0.084,
-          0.084,
-          0.084
-        ]
-      },
-      "quality_adjusted": {
-        "raw_mean": 4.375,
-        "adjusted_rating": 4.144,
-        "grade_inflation_effect": 0.231,
-        "n_reviews_used": 8,
-        "beta_used": 0.4619
-      },
-      "attributes": [
-        {
-          "name": "heavy_reading",
-          "label": "Heavy reading load",
-          "polarity": "neutral",
-          "hits": 1,
-          "n_reviews": 11,
-          "posterior_mean": 0.095,
-          "confidence": "maybe"
-        }
-      ],
-      "category_sentiment": {
-        "lectures": {
-          "mean_sentiment": 4.9,
-          "n_reviews": 10,
-          "pct_positive": 100.0
-        },
-        "exams": {
-          "mean_sentiment": 1.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
-        },
-        "workload": {
-          "mean_sentiment": 1.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
-        },
-        "grading": {
-          "mean_sentiment": 1.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2008-06",
-          "2009-08",
-          "2015-02",
-          "2017-05",
-          "2024-03",
-          "2025-12",
-          "2026-01",
-          "2026-01",
-          "2026-01",
-          "2026-02",
-          "2026-02"
-        ],
-        "train_ratings": [
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          4.0,
-          1.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0,
-          5.0
-        ],
-        "pred_dates": [
-          "2008-06",
-          "2009-05",
-          "2010-05",
-          "2011-04",
-          "2012-03",
-          "2013-02",
-          "2014-01",
-          "2014-12",
-          "2015-12",
-          "2016-11",
-          "2017-10",
-          "2018-09",
-          "2019-08",
-          "2020-07",
-          "2021-06",
-          "2022-06",
-          "2023-05",
-          "2024-04",
-          "2025-03",
-          "2026-02"
-        ],
-        "pred_mean": [
-          2.852,
-          2.846,
-          1.072,
-          0.015,
-          0.0,
-          0.001,
-          0.263,
-          2.645,
-          0.88,
-          1.596,
-          2.016,
-          0.081,
-          0.0,
-          0.0,
-          0.0,
-          0.004,
-          0.53,
-          2.193,
-          0.871,
-          3.93
-        ],
-        "pred_std": [
-          0.666,
-          0.746,
-          0.955,
-          1.0,
-          1.0,
-          1.0,
-          0.998,
-          0.704,
-          0.974,
-          0.905,
-          0.841,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          0.984,
-          0.678,
-          0.96,
-          0.379
-        ],
-        "pred_ci_lower": [
-          1.547,
-          1.384,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.265,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          1.0,
-          3.187
-        ],
-        "pred_ci_upper": [
-          4.157,
-          4.308,
-          2.944,
-          1.975,
-          1.96,
-          1.961,
-          2.219,
-          4.025,
-          2.789,
-          3.37,
-          3.664,
-          2.041,
-          1.96,
-          1.96,
-          1.96,
-          1.964,
-          2.459,
-          3.522,
-          2.753,
-          4.673
-        ],
-        "n_data_points": 11,
-        "date_range": "2008-06 to 2026-02"
-      },
-      "grade_distribution": {
-        "B+": 4,
-        "A-": 4
-      },
-      "top_tags": []
-    },
-    {
       "professor_id": "VGVhY2hlci03NjU3OTE=",
       "legacy_id": 765791,
       "name": "Stanley Dodds",
@@ -7397,7 +6894,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 3.907876712328767
+          "score": 3.8996575342465754
         },
         {
           "id": "UmF0aW5nLTQyNjEzNzg4",
@@ -7408,7 +6905,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 3.067876712328767
+          "score": 3.0596575342465755
         },
         {
           "id": "UmF0aW5nLTMwNjUyMjIy",
@@ -7631,13 +7128,13 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.502,
-          "effective_n": 2.92,
+          "mean": 0.5022,
+          "effective_n": 2.91,
           "plain_mean": 0.5714,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8932,
+          "mean": 0.8931,
           "effective_n": 1.97,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -7661,15 +7158,15 @@
       "quality_adjusted": null,
       "attributes": [],
       "category_sentiment": {
-        "approachability": {
-          "mean_sentiment": 2.75,
-          "n_reviews": 2,
+        "lectures": {
+          "mean_sentiment": 2.67,
+          "n_reviews": 6,
           "pct_positive": 50.0
         },
-        "lectures": {
-          "mean_sentiment": 3.0,
-          "n_reviews": 5,
-          "pct_positive": 60.0
+        "approachability": {
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
+          "pct_positive": 100.0
         }
       },
       "gp_trend": {
@@ -7809,6 +7306,509 @@
       "top_tags": []
     },
     {
+      "professor_id": "VGVhY2hlci0xMTQ5NTEx",
+      "legacy_id": 1149511,
+      "name": "Luis Duno-Gottberg",
+      "department": "Film",
+      "summary": {
+        "avg_rating": 4.6,
+        "avg_difficulty": 3.6,
+        "num_ratings": 11,
+        "would_take_again_pct": 87.5
+      },
+      "verdict": "Good teaching but expect to put in the work",
+      "verdict_emoji": "good",
+      "confidence_level": "Moderate",
+      "confidence_detail": "Based on 11 reviews, decent sample but could shift with more data",
+      "trend_summary": "Stable, middle-of-the-road ratings",
+      "grade_probabilities": {
+        "A range": 50.0,
+        "B range": 50.0,
+        "C range": 0.0,
+        "D/F": 0.0
+      },
+      "review_highlights": [
+        {
+          "id": "UmF0aW5nLTQyNDcyMDk5",
+          "comment": "My fav professor at Rice! His dedication is incredible, and his teaching style is both fun and original. He cares about the process or how we reason through problems more than just getting &#8220;the right final answer&#8221;. He'll often switch sides in an argument to test different ideas and push the class to really defend our reasoning.  I honestly love it.",
+          "class_name": "SPW6000",
+          "grade": "A-",
+          "date": "2026-01-10",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 4.336027397260274
+        },
+        {
+          "id": "UmF0aW5nLTQyNDcyMDg5",
+          "comment": "This is easily one of the best professors I've had throughout my undergraduate education. His classes really encourage you to think outside the box and challenge the way you approach the subject. If you're open to new ideas and willing to engage critically with the material, I would highly recommend taking his classes.",
+          "class_name": "SPW6000",
+          "grade": "A-",
+          "date": "2026-01-10",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 4.126027397260274
+        },
+        {
+          "id": "UmF0aW5nLTQyNjMxOTEw",
+          "comment": "f you're ready to be challenged and like thinking beyond the usual, Luis is the instructor you want. He's super knowledgeable but also kind and humble. His class pushes you past superficial views of Latin American history and politics by questioning assumptions.",
+          "class_name": "SPAN406",
+          "grade": "B+",
+          "date": "2026-02-21",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 5,
+          "score": 3.9510958904109588
+        },
+        {
+          "id": "UmF0aW5nLTQyNTE0OTQ1",
+          "comment": "Challenging, provocative, and inspiring. His classes constantly push you to consider ideas you never thought possible. You leave his class not with easy answers, but with better questions. LL (Love Luis) Gime me an A next time though.",
+          "class_name": "SPW6000",
+          "grade": "B+",
+          "date": "2026-01-18",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 3.717945205479452
+        },
+        {
+          "id": "UmF0aW5nLTQyNTg3Mjk1",
+          "comment": "Hands down one of the best professors at Rice. He pushes you to think outside the box, so come prepared to be challenged.",
+          "class_name": "SPW6000",
+          "grade": "A-",
+          "date": "2026-02-05",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 3,
+          "score": 3.2022602739726027
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "SPW6000",
+          "num_reviews": 6,
+          "avg_rating": 4.3,
+          "grades": {
+            "A-": 3,
+            "B+": 2
+          }
+        },
+        {
+          "class_name": "SPAN406",
+          "num_reviews": 3,
+          "avg_rating": 4.7,
+          "grades": {
+            "B+": 2
+          }
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 11.0,
+            "beta": 4.0,
+            "mean": 0.7333,
+            "variance": 0.012222,
+            "std": 0.1106,
+            "ci_lower": 0.492,
+            "ci_upper": 0.9161,
+            "n_ratings": 11,
+            "n_above_threshold": 9,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 12.0,
+            "beta": 3.0,
+            "mean": 0.8,
+            "variance": 0.01,
+            "std": 0.1,
+            "ci_lower": 0.5719,
+            "ci_upper": 0.9534,
+            "n_ratings": 11,
+            "n_above_threshold": 10,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 12.0,
+            "beta": 3.0,
+            "mean": 0.8,
+            "variance": 0.01,
+            "std": 0.1,
+            "ci_lower": 0.5719,
+            "ci_upper": 0.9534,
+            "n_ratings": 11,
+            "n_above_threshold": 10,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 12.0,
+            "beta": 3.0,
+            "mean": 0.8,
+            "variance": 0.01,
+            "std": 0.1,
+            "ci_lower": 0.5719,
+            "ci_upper": 0.9534,
+            "n_ratings": 11,
+            "n_above_threshold": 10,
+            "threshold": 3.5,
+            "raw_mean": 4.55
+          },
+          "helpfulness": {
+            "alpha": 12.0,
+            "beta": 3.0,
+            "mean": 0.8,
+            "variance": 0.01,
+            "std": 0.1,
+            "ci_lower": 0.5719,
+            "ci_upper": 0.9534,
+            "n_ratings": 11,
+            "n_above_threshold": 10,
+            "threshold": 3.5,
+            "raw_mean": 4.55
+          },
+          "difficulty": {
+            "alpha": 6.0,
+            "beta": 9.0,
+            "mean": 0.4,
+            "variance": 0.015,
+            "std": 0.1225,
+            "ci_lower": 0.1766,
+            "ci_upper": 0.6486,
+            "n_ratings": 11,
+            "n_above_threshold": 4,
+            "threshold": 1.5,
+            "raw_mean": 3.55
+          }
+        },
+        "would_take_again_posterior": {
+          "alpha": 9.0,
+          "beta": 2.0,
+          "mean": 0.8182,
+          "variance": 0.012397,
+          "std": 0.1113,
+          "ci_lower": 0.555,
+          "ci_upper": 0.9748,
+          "n_ratings": 7,
+          "n_above_threshold": 7,
+          "threshold": 3.0
+        }
+      },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Film",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          }
+        },
+        "good_rating": {
+          "alpha": 11.3974,
+          "beta": 1.6026,
+          "n": 11,
+          "successes": 10,
+          "mean": 0.8767,
+          "variance": 0.00772,
+          "ci_lower": 0.6595,
+          "ci_upper": 0.9888,
+          "ci_level": 0.95,
+          "shrinkage": 0.1538,
+          "prior": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.8294,
+            "expected": 0.8767,
+            "typical": 0.896,
+            "most_likely": 0.9452,
+            "optimistic": 0.9438
+          }
+        },
+        "take_again": {
+          "alpha": 8.5758,
+          "beta": 0.4242,
+          "n": 7,
+          "successes": 7,
+          "mean": 0.9529,
+          "variance": 0.004492,
+          "ci_lower": 0.7582,
+          "ci_upper": 1.0,
+          "ci_level": 0.95,
+          "shrinkage": 0.2222,
+          "prior": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.9366,
+            "expected": 0.9529,
+            "typical": 0.9804,
+            "most_likely": null,
+            "optimistic": 0.9965
+          }
+        }
+      },
+      "tag_posteriors": [],
+      "grade_forecast": {
+        "posterior_pct": {
+          "A range": 50.0,
+          "B range": 50.0
+        },
+        "expected_gpa": 3.4,
+        "ci_lower": 2.62,
+        "ci_upper": 4.0,
+        "most_likely": "A range",
+        "n_reviews_used": 100,
+        "used_student_gpa": null
+      },
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.8195,
+          "effective_n": 6.23,
+          "plain_mean": 0.9091,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "take_again_recent": {
+          "mean": 0.9414,
+          "effective_n": 5.23,
+          "plain_mean": 1.0,
+          "note": "Recent reviews are noticeably worse than older ones."
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 11,
+        "n_flagged": 1,
+        "flagged_ids": [
+          "UmF0aW5nLTQyMjg0NDEx"
+        ],
+        "per_review_probabilities": [
+          0.084,
+          0.084,
+          0.084,
+          0.084,
+          0.084,
+          1.0,
+          0.086,
+          0.084,
+          0.084,
+          0.084,
+          0.084
+        ]
+      },
+      "quality_adjusted": {
+        "raw_mean": 4.375,
+        "adjusted_rating": 4.144,
+        "grade_inflation_effect": 0.231,
+        "n_reviews_used": 8,
+        "beta_used": 0.4619
+      },
+      "attributes": [
+        {
+          "name": "heavy_reading",
+          "label": "Heavy reading load",
+          "polarity": "neutral",
+          "hits": 1,
+          "n_reviews": 11,
+          "posterior_mean": 0.095,
+          "confidence": "maybe"
+        }
+      ],
+      "category_sentiment": {
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
+        "lectures": {
+          "mean_sentiment": 4.89,
+          "n_reviews": 9,
+          "pct_positive": 100.0
+        },
+        "exams": {
+          "mean_sentiment": 1.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        },
+        "grading": {
+          "mean_sentiment": 1.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        },
+        "workload": {
+          "mean_sentiment": 1.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2008-06",
+          "2009-08",
+          "2015-02",
+          "2017-05",
+          "2024-03",
+          "2025-12",
+          "2026-01",
+          "2026-01",
+          "2026-01",
+          "2026-02",
+          "2026-02"
+        ],
+        "train_ratings": [
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          4.0,
+          1.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2008-06",
+          "2009-05",
+          "2010-05",
+          "2011-04",
+          "2012-03",
+          "2013-02",
+          "2014-01",
+          "2014-12",
+          "2015-12",
+          "2016-11",
+          "2017-10",
+          "2018-09",
+          "2019-08",
+          "2020-07",
+          "2021-06",
+          "2022-06",
+          "2023-05",
+          "2024-04",
+          "2025-03",
+          "2026-02"
+        ],
+        "pred_mean": [
+          2.852,
+          2.846,
+          1.072,
+          0.015,
+          0.0,
+          0.001,
+          0.263,
+          2.645,
+          0.88,
+          1.596,
+          2.016,
+          0.081,
+          0.0,
+          0.0,
+          0.0,
+          0.004,
+          0.53,
+          2.193,
+          0.871,
+          3.93
+        ],
+        "pred_std": [
+          0.666,
+          0.746,
+          0.955,
+          1.0,
+          1.0,
+          1.0,
+          0.998,
+          0.704,
+          0.974,
+          0.905,
+          0.841,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          0.984,
+          0.678,
+          0.96,
+          0.379
+        ],
+        "pred_ci_lower": [
+          1.547,
+          1.384,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.265,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          1.0,
+          3.187
+        ],
+        "pred_ci_upper": [
+          4.157,
+          4.308,
+          2.944,
+          1.975,
+          1.96,
+          1.961,
+          2.219,
+          4.025,
+          2.789,
+          3.37,
+          3.664,
+          2.041,
+          1.96,
+          1.96,
+          1.96,
+          1.964,
+          2.459,
+          3.522,
+          2.753,
+          4.673
+        ],
+        "n_data_points": 11,
+        "date_range": "2008-06 to 2026-02"
+      },
+      "grade_distribution": {
+        "B+": 4,
+        "A-": 4
+      },
+      "top_tags": []
+    },
+    {
       "professor_id": "VGVhY2hlci0xMDAwMTgz",
       "legacy_id": 1000183,
       "name": "Don Johnson",
@@ -7851,7 +7851,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 4,
-          "score": 0.6190410958904109
+          "score": 0.6108219178082193
         },
         {
           "id": "UmF0aW5nLTMzNDE1Njk1",
@@ -8056,13 +8056,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7895,
+          "mean": 0.7894,
           "effective_n": 0.86,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8482,
+          "mean": 0.8481,
           "effective_n": 0.79,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -8085,14 +8085,24 @@
       "quality_adjusted": null,
       "attributes": [],
       "category_sentiment": {
-        "workload": {
+        "exams": {
           "mean_sentiment": 5.0,
           "n_reviews": 1,
           "pct_positive": 100.0
         },
-        "approachability": {
-          "mean_sentiment": 4.75,
+        "grading": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
+        "workload": {
+          "mean_sentiment": 5.0,
           "n_reviews": 2,
+          "pct_positive": 100.0
+        },
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
           "pct_positive": 100.0
         },
         "lectures": {
@@ -8508,13 +8518,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7641,
+          "mean": 0.764,
           "effective_n": 0.73,
           "plain_mean": 0.7273,
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.8338,
+          "mean": 0.8337,
           "effective_n": 0.55,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -8555,9 +8565,14 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 4.05,
-          "n_reviews": 10,
-          "pct_positive": 80.0
+          "mean_sentiment": 4.39,
+          "n_reviews": 9,
+          "pct_positive": 88.9
+        },
+        "approachability": {
+          "mean_sentiment": 1.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
         },
         "exams": {
           "mean_sentiment": 2.0,
@@ -8957,7 +8972,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7384,
+          "mean": 0.7383,
           "effective_n": 0.33,
           "plain_mean": 0.75,
           "note": null
@@ -9166,7 +9181,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 2.163287671232877
+          "score": 2.155068493150685
         },
         {
           "id": "UmF0aW5nLTMzNTk1NTI3",
@@ -9406,7 +9421,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7329,
+          "mean": 0.7328,
           "effective_n": 2.19,
           "plain_mean": 0.6,
           "note": "Recent reviews are noticeably better than older ones."
@@ -9818,7 +9833,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5746,
+          "mean": 0.5748,
           "effective_n": 0.59,
           "plain_mean": 0.6667,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -10281,7 +10296,7 @@
           "n_reviews": 7,
           "pct_positive": 85.7
         },
-        "grading": {
+        "workload": {
           "mean_sentiment": 4.0,
           "n_reviews": 1,
           "pct_positive": 100.0
@@ -10700,13 +10715,13 @@
       "attributes": [],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 4.7,
-          "n_reviews": 5,
+          "mean_sentiment": 4.75,
+          "n_reviews": 4,
           "pct_positive": 100.0
         },
         "approachability": {
           "mean_sentiment": 4.5,
-          "n_reviews": 1,
+          "n_reviews": 2,
           "pct_positive": 100.0
         }
       },
@@ -10887,7 +10902,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 2.7252739726027397
+          "score": 2.717054794520548
         },
         {
           "id": "UmF0aW5nLTQwNjk5ODMz",
@@ -10898,7 +10913,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 2.7247945205479454
+          "score": 2.7165753424657533
         },
         {
           "id": "UmF0aW5nLTExMzU4NTUy",
@@ -11119,13 +11134,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8417,
+          "mean": 0.8416,
           "effective_n": 2.24,
           "plain_mean": 0.9412,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.85,
+          "mean": 0.8499,
           "effective_n": 2.0,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -11727,7 +11742,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 4.657602739726027
+          "score": 4.649383561643836
         },
         {
           "id": "UmF0aW5nLTMwNDE5MTQ=",
@@ -11943,7 +11958,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.4743,
+          "mean": 0.4746,
           "effective_n": 1.12,
           "plain_mean": 0.2857,
           "note": "Recent reviews are noticeably better than older ones."
@@ -12161,7 +12176,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.115479452054794
+          "score": 4.107260273972603
         },
         {
           "id": "UmF0aW5nLTQxODgxMTQx",
@@ -12172,7 +12187,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 5,
-          "score": 3.581301369863014
+          "score": 3.5730821917808218
         },
         {
           "id": "UmF0aW5nLTQxODUzNjQw",
@@ -12183,7 +12198,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 3.5576027397260277
+          "score": 3.5493835616438356
         },
         {
           "id": "UmF0aW5nLTM5NzE5MjU3",
@@ -12194,7 +12209,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 1,
-          "score": 2.083082191780822
+          "score": 2.0748630136986304
         },
         {
           "id": "UmF0aW5nLTE4NDEyMDc0",
@@ -12420,8 +12435,8 @@
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.79,
-          "effective_n": 2.81,
+          "mean": 0.7899,
+          "effective_n": 2.8,
           "plain_mean": 0.6,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -12499,9 +12514,14 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 3.06,
-          "n_reviews": 9,
-          "pct_positive": 44.4
+          "mean_sentiment": 2.81,
+          "n_reviews": 8,
+          "pct_positive": 37.5
+        },
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
         }
       },
       "gp_trend": {
@@ -12680,7 +12700,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 3.3045205479452058
+          "score": 3.2963013698630137
         },
         {
           "id": "UmF0aW5nLTI0MTE0MTY3",
@@ -12871,7 +12891,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.4992,
+          "mean": 0.4995,
           "effective_n": 0.85,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
@@ -13073,7 +13093,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 4,
-          "score": 3.0466438356164387
+          "score": 3.0384246575342466
         },
         {
           "id": "UmF0aW5nLTM2NzIyODIx",
@@ -13320,8 +13340,8 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7805,
-          "effective_n": 1.81,
+          "mean": 0.7804,
+          "effective_n": 1.8,
           "plain_mean": 0.7222,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -13389,9 +13409,14 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 4.08,
-          "n_reviews": 18,
-          "pct_positive": 72.2
+          "mean_sentiment": 4.18,
+          "n_reviews": 17,
+          "pct_positive": 76.5
+        },
+        "approachability": {
+          "mean_sentiment": 2.5,
+          "n_reviews": 1,
+          "pct_positive": 0.0
         }
       },
       "gp_trend": {
@@ -13599,7 +13624,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 0.7933561643835615
+          "score": 0.7851369863013699
         },
         {
           "id": "UmF0aW5nLTMwNDc2MjEx",
@@ -13810,7 +13835,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7776,
+          "mean": 0.7775,
           "effective_n": 0.71,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -14008,7 +14033,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.9584931506849315
+          "score": 2.95027397260274
         },
         {
           "id": "UmF0aW5nLTExMDA1MjAz",
@@ -14263,13 +14288,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8147,
-          "effective_n": 2.12,
+          "mean": 0.8146,
+          "effective_n": 2.11,
           "plain_mean": 0.6786,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8387,
+          "mean": 0.8386,
           "effective_n": 1.72,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -14324,30 +14349,20 @@
         }
       ],
       "category_sentiment": {
-        "exams": {
-          "mean_sentiment": 3.5,
+        "approachability": {
+          "mean_sentiment": 5.0,
           "n_reviews": 2,
-          "pct_positive": 50.0
-        },
-        "workload": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        },
-        "grading": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
           "pct_positive": 100.0
         },
         "lectures": {
-          "mean_sentiment": 3.52,
-          "n_reviews": 23,
-          "pct_positive": 60.9
+          "mean_sentiment": 3.56,
+          "n_reviews": 24,
+          "pct_positive": 62.5
         },
-        "approachability": {
-          "mean_sentiment": 4.83,
-          "n_reviews": 3,
-          "pct_positive": 100.0
+        "exams": {
+          "mean_sentiment": 2.0,
+          "n_reviews": 1,
+          "pct_positive": 0.0
         }
       },
       "gp_trend": {
@@ -14563,7 +14578,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 4,
-          "score": 3.751027397260274
+          "score": 3.7428082191780825
         },
         {
           "id": "UmF0aW5nLTQxNjQxMDYw",
@@ -14574,7 +14589,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.920958904109589
+          "score": 2.9127397260273975
         },
         {
           "id": "UmF0aW5nLTM5ODI5OTQ5",
@@ -14585,7 +14600,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 5,
-          "score": 2.1068493150684935
+          "score": 2.0986301369863014
         },
         {
           "id": "UmF0aW5nLTM5MDM5MDM1",
@@ -14596,7 +14611,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 1.885890410958904
+          "score": 1.8776712328767124
         },
         {
           "id": "UmF0aW5nLTM4MjI5NDI5",
@@ -14607,7 +14622,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 4,
-          "score": 0.8001369863013698
+          "score": 0.7919178082191781
         }
       ],
       "class_breakdown": [
@@ -14799,14 +14814,14 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8868,
-          "effective_n": 4.07,
+          "mean": 0.8866,
+          "effective_n": 4.06,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.9011,
-          "effective_n": 4.07,
+          "mean": 0.901,
+          "effective_n": 4.06,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
@@ -14830,7 +14845,12 @@
       "category_sentiment": {
         "lectures": {
           "mean_sentiment": 5.0,
-          "n_reviews": 6,
+          "n_reviews": 5,
+          "pct_positive": 100.0
+        },
+        "approachability": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
           "pct_positive": 100.0
         }
       },
@@ -15013,7 +15033,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 4.012602739726027
+          "score": 4.004383561643835
         },
         {
           "id": "UmF0aW5nLTQyMjczNTYx",
@@ -15024,7 +15044,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 3.5857534246575344
+          "score": 3.5775342465753424
         },
         {
           "id": "UmF0aW5nLTQwNjk5ODQw",
@@ -15035,7 +15055,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 2.909794520547945
+          "score": 2.9015753424657533
         },
         {
           "id": "UmF0aW5nLTQwNjk5ODQ2",
@@ -15046,7 +15066,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 5,
-          "score": 2.3747945205479453
+          "score": 2.3665753424657536
         }
       ],
       "class_breakdown": [
@@ -15249,13 +15269,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.4599,
-          "effective_n": 3.47,
+          "mean": 0.46,
+          "effective_n": 3.46,
           "plain_mean": 0.5,
-          "note": "Recent reviews are noticeably worse than older ones."
+          "note": null
         },
         "take_again_recent": {
-          "mean": 0.8597,
+          "mean": 0.8596,
           "effective_n": 1.02,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -15744,13 +15764,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5651,
-          "effective_n": 3.39,
+          "mean": 0.5652,
+          "effective_n": 3.38,
           "plain_mean": 0.8571,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8784,
+          "mean": 0.8783,
           "effective_n": 1.49,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -16004,7 +16024,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 3.287054794520548
+          "score": 3.2788356164383563
         },
         {
           "id": "UmF0aW5nLTQwMjAxMzE5",
@@ -16015,7 +16035,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 2,
-          "score": 2.8943150684931505
+          "score": 2.8860958904109593
         },
         {
           "id": "UmF0aW5nLTQwMTk1MDk2",
@@ -16026,7 +16046,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 2.4543150684931505
+          "score": 2.446095890410959
         }
       ],
       "class_breakdown": [
@@ -16225,7 +16245,7 @@
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.8752,
+          "mean": 0.8751,
           "effective_n": 1.4,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -16659,13 +16679,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7483,
+          "mean": 0.7482,
           "effective_n": 0.46,
           "plain_mean": 0.75,
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.8216,
+          "mean": 0.8215,
           "effective_n": 0.38,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -16703,8 +16723,8 @@
       ],
       "category_sentiment": {
         "approachability": {
-          "mean_sentiment": 5.0,
-          "n_reviews": 1,
+          "mean_sentiment": 4.75,
+          "n_reviews": 2,
           "pct_positive": 100.0
         },
         "lectures": {
@@ -17502,13 +17522,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6388,
+          "mean": 0.6389,
           "effective_n": 0.27,
           "plain_mean": 0.6,
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.7127,
+          "mean": 0.7128,
           "effective_n": 0.21,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -17906,13 +17926,13 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.726,
+          "mean": 0.7259,
           "effective_n": 0.2,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.7365,
+          "mean": 0.7366,
           "effective_n": 0.14,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -18109,7 +18129,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 3.443972602739726
+          "score": 3.435753424657534
         },
         {
           "id": "UmF0aW5nLTM3NDY1MDQx",
@@ -18131,7 +18151,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 1.882876712328767
+          "score": 1.8746575342465752
         }
       ],
       "class_breakdown": [
@@ -18325,13 +18345,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.3489,
-          "effective_n": 2.01,
+          "mean": 0.3492,
+          "effective_n": 2.0,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8278,
+          "mean": 0.8277,
           "effective_n": 0.46,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -18353,7 +18373,7 @@
       "category_sentiment": {
         "approachability": {
           "mean_sentiment": 1.0,
-          "n_reviews": 1,
+          "n_reviews": 2,
           "pct_positive": 0.0
         },
         "lectures": {
@@ -18558,7 +18578,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 3.278972602739726
+          "score": 3.2707534246575345
         },
         {
           "id": "UmF0aW5nLTQxNTIwNDU2",
@@ -18569,7 +18589,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 3.2334931506849314
+          "score": 3.2252739726027397
         }
       ],
       "class_breakdown": [
@@ -18791,8 +18811,8 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.3606,
-          "effective_n": 4.08,
+          "mean": 0.3608,
+          "effective_n": 4.07,
           "plain_mean": 0.25,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -19261,13 +19281,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7789,
-          "effective_n": 0.93,
+          "mean": 0.7788,
+          "effective_n": 0.92,
           "plain_mean": 0.25,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8528,
+          "mean": 0.8527,
           "effective_n": 0.88,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -19460,7 +19480,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 2,
-          "score": 1.7515753424657534
+          "score": 1.7433561643835618
         },
         {
           "id": "UmF0aW5nLTMzNTUzNDg0",
@@ -19675,13 +19695,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.633,
+          "mean": 0.6331,
           "effective_n": 1.38,
           "plain_mean": 0.6667,
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.8452,
+          "mean": 0.8451,
           "effective_n": 0.74,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -19708,11 +19728,6 @@
       "attributes": [],
       "category_sentiment": {
         "grading": {
-          "mean_sentiment": 1.0,
-          "n_reviews": 1,
-          "pct_positive": 0.0
-        },
-        "approachability": {
           "mean_sentiment": 1.0,
           "n_reviews": 1,
           "pct_positive": 0.0
@@ -19897,7 +19912,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 1,
-          "score": 0.8586301369863015
+          "score": 0.8504109589041094
         }
       ],
       "class_breakdown": [
@@ -20097,7 +20112,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5585,
+          "mean": 0.5586,
           "effective_n": 1.35,
           "plain_mean": 0.25,
           "note": "Recent reviews are noticeably better than older ones."
@@ -20136,12 +20151,12 @@
           "n_reviews": 1,
           "pct_positive": 0.0
         },
-        "workload": {
+        "grading": {
           "mean_sentiment": 1.0,
           "n_reviews": 1,
           "pct_positive": 0.0
         },
-        "grading": {
+        "workload": {
           "mean_sentiment": 1.0,
           "n_reviews": 1,
           "pct_positive": 0.0
@@ -20560,7 +20575,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7973,
+          "mean": 0.7972,
           "effective_n": 0.97,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -20828,7 +20843,7 @@
           "clarity": 5,
           "helpful": 5,
           "difficulty": 3,
-          "score": 1.889109589041096
+          "score": 1.8808904109589042
         },
         {
           "id": "UmF0aW5nLTMxNjAxNDk3",
@@ -21058,7 +21073,7 @@
       "recency": {
         "good_rating_recent": {
           "mean": 0.6278,
-          "effective_n": 2.57,
+          "effective_n": 2.56,
           "plain_mean": 0.7273,
           "note": "Recent reviews are noticeably worse than older ones."
         },
@@ -21502,13 +21517,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6097,
-          "effective_n": 0.83,
+          "mean": 0.6099,
+          "effective_n": 0.82,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.6909,
+          "mean": 0.691,
           "effective_n": 0.44,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably better than older ones."
@@ -22806,13 +22821,13 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 2.75,
-          "n_reviews": 4,
-          "pct_positive": 25.0
+          "mean_sentiment": 2.67,
+          "n_reviews": 3,
+          "pct_positive": 33.3
         },
         "approachability": {
-          "mean_sentiment": 2.5,
-          "n_reviews": 1,
+          "mean_sentiment": 2.75,
+          "n_reviews": 2,
           "pct_positive": 0.0
         }
       },
@@ -23397,7 +23412,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 1.6215753424657535
+          "score": 1.6133561643835614
         },
         {
           "id": "UmF0aW5nLTEwODk0MDE1",
@@ -23620,13 +23635,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5966,
+          "mean": 0.5968,
           "effective_n": 0.88,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.814,
+          "mean": 0.8139,
           "effective_n": 0.28,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -24043,7 +24058,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7199,
+          "mean": 0.7198,
           "effective_n": 0.15,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -24074,16 +24089,11 @@
       "attributes": [],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 4.5,
-          "n_reviews": 7,
+          "mean_sentiment": 4.67,
+          "n_reviews": 6,
           "pct_positive": 100.0
         },
         "approachability": {
-          "mean_sentiment": 3.5,
-          "n_reviews": 1,
-          "pct_positive": 100.0
-        },
-        "grading": {
           "mean_sentiment": 3.5,
           "n_reviews": 1,
           "pct_positive": 100.0
@@ -24651,7 +24661,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 3,
-          "score": 4.074589041095891
+          "score": 4.066369863013699
         },
         {
           "id": "UmF0aW5nLTQzMTk3OTQ3",
@@ -24662,7 +24672,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 3,
-          "score": 3.47458904109589
+          "score": 3.4663698630136985
         },
         {
           "id": "UmF0aW5nLTMzOTIxOTgy",
@@ -24903,14 +24913,14 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.3332,
-          "effective_n": 5.36,
+          "mean": 0.3333,
+          "effective_n": 5.35,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.7255,
-          "effective_n": 1.12,
+          "mean": 0.7256,
+          "effective_n": 1.11,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably better than older ones."
         },
@@ -25370,8 +25380,8 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6087,
-          "effective_n": 0.76,
+          "mean": 0.6088,
+          "effective_n": 0.75,
           "plain_mean": 0.75,
           "note": "Recent reviews are noticeably worse than older ones."
         },
@@ -25796,13 +25806,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.8005,
+          "mean": 0.8004,
           "effective_n": 1.02,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
         },
         "take_again_recent": {
-          "mean": 0.8537,
+          "mean": 0.8536,
           "effective_n": 0.9,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -26052,7 +26062,7 @@
           "clarity": 4,
           "helpful": 4,
           "difficulty": 5,
-          "score": 2.4505479452054795
+          "score": 2.442328767123288
         },
         {
           "id": "UmF0aW5nLTM4MTkyNjYx",
@@ -26063,7 +26073,7 @@
           "clarity": 1,
           "helpful": 1,
           "difficulty": 4,
-          "score": 0.5966438356164385
+          "score": 0.5884246575342464
         }
       ],
       "class_breakdown": [
@@ -26251,7 +26261,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5996,
+          "mean": 0.5997,
           "effective_n": 1.34,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably better than older ones."
@@ -26467,7 +26477,7 @@
           "clarity": 3,
           "helpful": 3,
           "difficulty": 3,
-          "score": 2.5363698630136984
+          "score": 2.528150684931507
         },
         {
           "id": "UmF0aW5nLTM1MTg3NjA2",
@@ -26715,8 +26725,8 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.5046,
-          "effective_n": 2.39,
+          "mean": 0.5047,
+          "effective_n": 2.38,
           "plain_mean": 0.5,
           "note": null
         },
@@ -27139,7 +27149,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6637,
+          "mean": 0.6638,
           "effective_n": 0.15,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
@@ -28884,7 +28894,17 @@
           "n_reviews": 12,
           "pct_positive": 91.7
         },
-        "approachability": {
+        "exams": {
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
+        "grading": {
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
+        "workload": {
           "mean_sentiment": 4.5,
           "n_reviews": 1,
           "pct_positive": 100.0
@@ -29344,9 +29364,14 @@
           "n_reviews": 9,
           "pct_positive": 100.0
         },
+        "exams": {
+          "mean_sentiment": 5.0,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
         "approachability": {
-          "mean_sentiment": 4.75,
-          "n_reviews": 2,
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
           "pct_positive": 100.0
         }
       },
@@ -29494,389 +29519,6 @@
       "grade_distribution": {
         "B+": 1
       },
-      "top_tags": []
-    },
-    {
-      "professor_id": "VGVhY2hlci0xNDUxNzIx",
-      "legacy_id": 1451721,
-      "name": "Carl Atlee",
-      "department": "Languages",
-      "summary": {
-        "avg_rating": 4.2,
-        "avg_difficulty": 3.7,
-        "num_ratings": 3,
-        "would_take_again_pct": -1
-      },
-      "verdict": "Mixed reviews. Student experiences vary quite a bit, but ratings have been improving recently",
-      "verdict_emoji": "mixed",
-      "confidence_level": "Low",
-      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
-      "trend_summary": "Significantly improving over time",
-      "grade_probabilities": {
-        "A range": 0,
-        "B range": 0,
-        "C range": 0,
-        "D/F": 0
-      },
-      "review_highlights": [
-        {
-          "id": "UmF0aW5nLTE4ODM5MzU4",
-          "comment": "This is one of the best teachers I ever had. Prof. Atlee is knowledgeable of the subject his teaches, very detailed, very professional. I think he is very funny, excellent reader and has a great Spanish accent specially for reading literature. I highly recommend him.",
-          "class_name": "FLSPSPO5",
-          "grade": "",
-          "date": "2011-07-21",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 1.335
-        },
-        {
-          "id": "UmF0aW5nLTE4ODM5MzU3",
-          "comment": "This is one of the best teachers I ever had. Prof. Atlee is knowledgeable of the subject his teaches, very detailed, very professional. I think he is very funny, excellent reader and has a great Spanish accent specially for reading literature. I highly recommend him.",
-          "class_name": "FLSPSPO5",
-          "grade": "",
-          "date": "2011-07-21",
-          "clarity": 5,
-          "helpful": 5,
-          "difficulty": 4,
-          "score": 1.335
-        },
-        {
-          "id": "UmF0aW5nLTE3OTE3MjY1",
-          "comment": "He was a very nice guy, but a pretty harsh grader. This class is not for beginners because ANY errors will be noticed and cause points to be taken off. Tests were take home, and class participation was rather simple (but mandatory).",
-          "class_name": "SPAN101",
-          "grade": "",
-          "date": "2010-12-12",
-          "clarity": 3,
-          "helpful": 2,
-          "difficulty": 3,
-          "score": 1.16
-        }
-      ],
-      "class_breakdown": [
-        {
-          "class_name": "FLSPSPO5",
-          "num_reviews": 2,
-          "avg_rating": 5.0,
-          "grades": {}
-        }
-      ],
-      "bayesian_analysis": {
-        "rating_posteriors": {
-          "excellent": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
-            "threshold": 4.5
-          },
-          "good": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
-            "threshold": 3.5
-          },
-          "acceptable": {
-            "alpha": 5.0,
-            "beta": 2.0,
-            "mean": 0.7143,
-            "variance": 0.02551,
-            "std": 0.1597,
-            "ci_lower": 0.3588,
-            "ci_upper": 0.9567,
-            "n_ratings": 3,
-            "n_above_threshold": 3,
-            "threshold": 2.5
-          }
-        },
-        "sub_rating_posteriors": {
-          "clarity": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
-            "threshold": 3.5,
-            "raw_mean": 4.33
-          },
-          "helpfulness": {
-            "alpha": 4.0,
-            "beta": 3.0,
-            "mean": 0.5714,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.2228,
-            "ci_upper": 0.8819,
-            "n_ratings": 3,
-            "n_above_threshold": 2,
-            "threshold": 3.5,
-            "raw_mean": 4.0
-          },
-          "difficulty": {
-            "alpha": 3.0,
-            "beta": 4.0,
-            "mean": 0.4286,
-            "variance": 0.030612,
-            "std": 0.175,
-            "ci_lower": 0.1181,
-            "ci_upper": 0.7772,
-            "n_ratings": 3,
-            "n_above_threshold": 1,
-            "threshold": 1.5,
-            "raw_mean": 3.67
-          }
-        },
-        "would_take_again_posterior": null
-      },
-      "calibrated_analysis": {
-        "version": 1,
-        "department_used": "Languages",
-        "priors": {
-          "good_rating": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "take_again": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          }
-        },
-        "good_rating": {
-          "alpha": 3.3974,
-          "beta": 1.6026,
-          "n": 3,
-          "successes": 2,
-          "mean": 0.6795,
-          "variance": 0.036297,
-          "ci_lower": 0.2637,
-          "ci_upper": 0.9649,
-          "ci_level": 0.95,
-          "shrinkage": 0.4,
-          "prior": {
-            "alpha": 1.3974,
-            "beta": 0.6026,
-            "mean": 0.6987,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.5507,
-            "expected": 0.6795,
-            "typical": 0.7049,
-            "most_likely": 0.7991,
-            "optimistic": 0.8319
-          }
-        },
-        "take_again": {
-          "alpha": 1.5758,
-          "beta": 0.4242,
-          "n": 0,
-          "successes": 0,
-          "mean": 0.7879,
-          "variance": 0.055709,
-          "ci_lower": 0.1823,
-          "ci_upper": 0.9999,
-          "ci_level": 0.95,
-          "shrinkage": 1.0,
-          "prior": {
-            "alpha": 1.5758,
-            "beta": 0.4242,
-            "mean": 0.7879,
-            "concentration": 2.0,
-            "source": "empirical_bayes_mom"
-          },
-          "decision": {
-            "conservative": 0.663,
-            "expected": 0.7879,
-            "typical": 0.8826,
-            "most_likely": null,
-            "optimistic": 0.978
-          }
-        }
-      },
-      "tag_posteriors": [],
-      "grade_forecast": null,
-      "recency": {
-        "good_rating_recent": {
-          "mean": 0.6986,
-          "effective_n": 0.09,
-          "plain_mean": 0.6667,
-          "note": null
-        },
-        "take_again_recent": {
-          "mean": 0.7879,
-          "effective_n": 0.0,
-          "plain_mean": null,
-          "note": null
-        },
-        "half_life_days": 1095
-      },
-      "review_quality": {
-        "n_reviews": 3,
-        "n_flagged": 0,
-        "flagged_ids": [],
-        "per_review_probabilities": [
-          0.0,
-          0.0,
-          0.0
-        ]
-      },
-      "quality_adjusted": null,
-      "attributes": [],
-      "category_sentiment": {
-        "lectures": {
-          "mean_sentiment": 4.17,
-          "n_reviews": 3,
-          "pct_positive": 66.7
-        }
-      },
-      "gp_trend": {
-        "insufficient_data": false,
-        "train_dates": [
-          "2010-12",
-          "2011-07",
-          "2011-07"
-        ],
-        "train_ratings": [
-          2.5,
-          5.0,
-          5.0
-        ],
-        "pred_dates": [
-          "2010-12",
-          "2010-12",
-          "2011-01",
-          "2011-01",
-          "2011-01",
-          "2011-02",
-          "2011-02",
-          "2011-03",
-          "2011-03",
-          "2011-03",
-          "2011-04",
-          "2011-04",
-          "2011-04",
-          "2011-05",
-          "2011-05",
-          "2011-06",
-          "2011-06",
-          "2011-06",
-          "2011-07",
-          "2011-07"
-        ],
-        "pred_mean": [
-          2.117,
-          2.244,
-          2.371,
-          2.497,
-          2.622,
-          2.745,
-          2.863,
-          2.978,
-          3.086,
-          3.188,
-          3.282,
-          3.367,
-          3.442,
-          3.507,
-          3.56,
-          3.602,
-          3.63,
-          3.646,
-          3.648,
-          3.637
-        ],
-        "pred_std": [
-          0.639,
-          0.63,
-          0.622,
-          0.614,
-          0.607,
-          0.6,
-          0.594,
-          0.587,
-          0.579,
-          0.571,
-          0.563,
-          0.555,
-          0.546,
-          0.538,
-          0.531,
-          0.525,
-          0.52,
-          0.518,
-          0.519,
-          0.524
-        ],
-        "pred_ci_lower": [
-          1.0,
-          1.009,
-          1.152,
-          1.294,
-          1.432,
-          1.569,
-          1.699,
-          1.827,
-          1.951,
-          2.069,
-          2.179,
-          2.279,
-          2.372,
-          2.453,
-          2.519,
-          2.573,
-          2.611,
-          2.631,
-          2.631,
-          2.61
-        ],
-        "pred_ci_upper": [
-          3.369,
-          3.479,
-          3.59,
-          3.7,
-          3.812,
-          3.921,
-          4.027,
-          4.129,
-          4.221,
-          4.307,
-          4.385,
-          4.455,
-          4.512,
-          4.561,
-          4.601,
-          4.631,
-          4.649,
-          4.661,
-          4.665,
-          4.664
-        ],
-        "n_data_points": 3,
-        "date_range": "2010-12 to 2011-07"
-      },
-      "grade_distribution": {},
       "top_tags": []
     },
     {
@@ -30294,6 +29936,389 @@
         ],
         "n_data_points": 7,
         "date_range": "2004-10 to 2013-04"
+      },
+      "grade_distribution": {},
+      "top_tags": []
+    },
+    {
+      "professor_id": "VGVhY2hlci0xNDUxNzIx",
+      "legacy_id": 1451721,
+      "name": "Carl Atlee",
+      "department": "Languages",
+      "summary": {
+        "avg_rating": 4.2,
+        "avg_difficulty": 3.7,
+        "num_ratings": 3,
+        "would_take_again_pct": -1
+      },
+      "verdict": "Mixed reviews. Student experiences vary quite a bit, but ratings have been improving recently",
+      "verdict_emoji": "mixed",
+      "confidence_level": "Low",
+      "confidence_detail": "Only 3 reviews so far, take these numbers with a grain of salt",
+      "trend_summary": "Significantly improving over time",
+      "grade_probabilities": {
+        "A range": 0,
+        "B range": 0,
+        "C range": 0,
+        "D/F": 0
+      },
+      "review_highlights": [
+        {
+          "id": "UmF0aW5nLTE4ODM5MzU4",
+          "comment": "This is one of the best teachers I ever had. Prof. Atlee is knowledgeable of the subject his teaches, very detailed, very professional. I think he is very funny, excellent reader and has a great Spanish accent specially for reading literature. I highly recommend him.",
+          "class_name": "FLSPSPO5",
+          "grade": "",
+          "date": "2011-07-21",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 1.335
+        },
+        {
+          "id": "UmF0aW5nLTE4ODM5MzU3",
+          "comment": "This is one of the best teachers I ever had. Prof. Atlee is knowledgeable of the subject his teaches, very detailed, very professional. I think he is very funny, excellent reader and has a great Spanish accent specially for reading literature. I highly recommend him.",
+          "class_name": "FLSPSPO5",
+          "grade": "",
+          "date": "2011-07-21",
+          "clarity": 5,
+          "helpful": 5,
+          "difficulty": 4,
+          "score": 1.335
+        },
+        {
+          "id": "UmF0aW5nLTE3OTE3MjY1",
+          "comment": "He was a very nice guy, but a pretty harsh grader. This class is not for beginners because ANY errors will be noticed and cause points to be taken off. Tests were take home, and class participation was rather simple (but mandatory).",
+          "class_name": "SPAN101",
+          "grade": "",
+          "date": "2010-12-12",
+          "clarity": 3,
+          "helpful": 2,
+          "difficulty": 3,
+          "score": 1.16
+        }
+      ],
+      "class_breakdown": [
+        {
+          "class_name": "FLSPSPO5",
+          "num_reviews": 2,
+          "avg_rating": 5.0,
+          "grades": {}
+        }
+      ],
+      "bayesian_analysis": {
+        "rating_posteriors": {
+          "excellent": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 4.5
+          },
+          "good": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5
+          },
+          "acceptable": {
+            "alpha": 5.0,
+            "beta": 2.0,
+            "mean": 0.7143,
+            "variance": 0.02551,
+            "std": 0.1597,
+            "ci_lower": 0.3588,
+            "ci_upper": 0.9567,
+            "n_ratings": 3,
+            "n_above_threshold": 3,
+            "threshold": 2.5
+          }
+        },
+        "sub_rating_posteriors": {
+          "clarity": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5,
+            "raw_mean": 4.33
+          },
+          "helpfulness": {
+            "alpha": 4.0,
+            "beta": 3.0,
+            "mean": 0.5714,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.2228,
+            "ci_upper": 0.8819,
+            "n_ratings": 3,
+            "n_above_threshold": 2,
+            "threshold": 3.5,
+            "raw_mean": 4.0
+          },
+          "difficulty": {
+            "alpha": 3.0,
+            "beta": 4.0,
+            "mean": 0.4286,
+            "variance": 0.030612,
+            "std": 0.175,
+            "ci_lower": 0.1181,
+            "ci_upper": 0.7772,
+            "n_ratings": 3,
+            "n_above_threshold": 1,
+            "threshold": 1.5,
+            "raw_mean": 3.67
+          }
+        },
+        "would_take_again_posterior": null
+      },
+      "calibrated_analysis": {
+        "version": 1,
+        "department_used": "Languages",
+        "priors": {
+          "good_rating": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "take_again": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          }
+        },
+        "good_rating": {
+          "alpha": 3.3974,
+          "beta": 1.6026,
+          "n": 3,
+          "successes": 2,
+          "mean": 0.6795,
+          "variance": 0.036297,
+          "ci_lower": 0.2637,
+          "ci_upper": 0.9649,
+          "ci_level": 0.95,
+          "shrinkage": 0.4,
+          "prior": {
+            "alpha": 1.3974,
+            "beta": 0.6026,
+            "mean": 0.6987,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.5507,
+            "expected": 0.6795,
+            "typical": 0.7049,
+            "most_likely": 0.7991,
+            "optimistic": 0.8319
+          }
+        },
+        "take_again": {
+          "alpha": 1.5758,
+          "beta": 0.4242,
+          "n": 0,
+          "successes": 0,
+          "mean": 0.7879,
+          "variance": 0.055709,
+          "ci_lower": 0.1823,
+          "ci_upper": 0.9999,
+          "ci_level": 0.95,
+          "shrinkage": 1.0,
+          "prior": {
+            "alpha": 1.5758,
+            "beta": 0.4242,
+            "mean": 0.7879,
+            "concentration": 2.0,
+            "source": "empirical_bayes_mom"
+          },
+          "decision": {
+            "conservative": 0.663,
+            "expected": 0.7879,
+            "typical": 0.8826,
+            "most_likely": null,
+            "optimistic": 0.978
+          }
+        }
+      },
+      "tag_posteriors": [],
+      "grade_forecast": null,
+      "recency": {
+        "good_rating_recent": {
+          "mean": 0.6986,
+          "effective_n": 0.09,
+          "plain_mean": 0.6667,
+          "note": null
+        },
+        "take_again_recent": {
+          "mean": 0.7879,
+          "effective_n": 0.0,
+          "plain_mean": null,
+          "note": null
+        },
+        "half_life_days": 1095
+      },
+      "review_quality": {
+        "n_reviews": 3,
+        "n_flagged": 0,
+        "flagged_ids": [],
+        "per_review_probabilities": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "quality_adjusted": null,
+      "attributes": [],
+      "category_sentiment": {
+        "lectures": {
+          "mean_sentiment": 4.17,
+          "n_reviews": 3,
+          "pct_positive": 66.7
+        }
+      },
+      "gp_trend": {
+        "insufficient_data": false,
+        "train_dates": [
+          "2010-12",
+          "2011-07",
+          "2011-07"
+        ],
+        "train_ratings": [
+          2.5,
+          5.0,
+          5.0
+        ],
+        "pred_dates": [
+          "2010-12",
+          "2010-12",
+          "2011-01",
+          "2011-01",
+          "2011-01",
+          "2011-02",
+          "2011-02",
+          "2011-03",
+          "2011-03",
+          "2011-03",
+          "2011-04",
+          "2011-04",
+          "2011-04",
+          "2011-05",
+          "2011-05",
+          "2011-06",
+          "2011-06",
+          "2011-06",
+          "2011-07",
+          "2011-07"
+        ],
+        "pred_mean": [
+          2.117,
+          2.244,
+          2.371,
+          2.497,
+          2.622,
+          2.745,
+          2.863,
+          2.978,
+          3.086,
+          3.188,
+          3.282,
+          3.367,
+          3.442,
+          3.507,
+          3.56,
+          3.602,
+          3.63,
+          3.646,
+          3.648,
+          3.637
+        ],
+        "pred_std": [
+          0.639,
+          0.63,
+          0.622,
+          0.614,
+          0.607,
+          0.6,
+          0.594,
+          0.587,
+          0.579,
+          0.571,
+          0.563,
+          0.555,
+          0.546,
+          0.538,
+          0.531,
+          0.525,
+          0.52,
+          0.518,
+          0.519,
+          0.524
+        ],
+        "pred_ci_lower": [
+          1.0,
+          1.009,
+          1.152,
+          1.294,
+          1.432,
+          1.569,
+          1.699,
+          1.827,
+          1.951,
+          2.069,
+          2.179,
+          2.279,
+          2.372,
+          2.453,
+          2.519,
+          2.573,
+          2.611,
+          2.631,
+          2.631,
+          2.61
+        ],
+        "pred_ci_upper": [
+          3.369,
+          3.479,
+          3.59,
+          3.7,
+          3.812,
+          3.921,
+          4.027,
+          4.129,
+          4.221,
+          4.307,
+          4.385,
+          4.455,
+          4.512,
+          4.561,
+          4.601,
+          4.631,
+          4.649,
+          4.661,
+          4.665,
+          4.664
+        ],
+        "n_data_points": 3,
+        "date_range": "2010-12 to 2011-07"
       },
       "grade_distribution": {},
       "top_tags": []
@@ -30944,7 +30969,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.69,
+          "mean": 0.6901,
           "effective_n": 0.18,
           "plain_mean": 0.5,
           "note": "Recent reviews are noticeably better than older ones."
@@ -31821,15 +31846,10 @@
       "quality_adjusted": null,
       "attributes": [],
       "category_sentiment": {
-        "workload": {
-          "mean_sentiment": 4.75,
-          "n_reviews": 2,
-          "pct_positive": 100.0
-        },
         "lectures": {
-          "mean_sentiment": 3.4,
-          "n_reviews": 5,
-          "pct_positive": 40.0
+          "mean_sentiment": 3.79,
+          "n_reviews": 7,
+          "pct_positive": 57.1
         }
       },
       "gp_trend": {
@@ -32173,7 +32193,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7143,
+          "mean": 0.7142,
           "effective_n": 0.11,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -32592,7 +32612,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6754,
+          "mean": 0.6755,
           "effective_n": 0.07,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -35461,7 +35481,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.769,
+          "mean": 0.7689,
           "effective_n": 0.85,
           "plain_mean": 0.9375,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -36279,17 +36299,22 @@
           "n_reviews": 2,
           "pct_positive": 100.0
         },
+        "approachability": {
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
+          "pct_positive": 100.0
+        },
         "exams": {
           "mean_sentiment": 5.0,
           "n_reviews": 2,
           "pct_positive": 100.0
         },
-        "workload": {
+        "grading": {
           "mean_sentiment": 5.0,
           "n_reviews": 2,
           "pct_positive": 100.0
         },
-        "grading": {
+        "workload": {
           "mean_sentiment": 5.0,
           "n_reviews": 2,
           "pct_positive": 100.0
@@ -36679,11 +36704,6 @@
           "mean_sentiment": 4.5,
           "n_reviews": 1,
           "pct_positive": 100.0
-        },
-        "workload": {
-          "mean_sentiment": 4.5,
-          "n_reviews": 1,
-          "pct_positive": 100.0
         }
       },
       "gp_trend": {
@@ -37045,7 +37065,7 @@
       "grade_forecast": null,
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6406,
+          "mean": 0.6407,
           "effective_n": 0.25,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
@@ -37879,7 +37899,7 @@
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.7152,
+          "mean": 0.7151,
           "effective_n": 0.11,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -38721,13 +38741,13 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.3938,
+          "mean": 0.3941,
           "effective_n": 1.55,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
         },
         "take_again_recent": {
-          "mean": 0.521,
+          "mean": 0.5213,
           "effective_n": 1.02,
           "plain_mean": 0.0,
           "note": "Recent reviews are noticeably better than older ones."
@@ -39182,8 +39202,13 @@
       ],
       "category_sentiment": {
         "lectures": {
-          "mean_sentiment": 4.93,
-          "n_reviews": 7,
+          "mean_sentiment": 5.0,
+          "n_reviews": 6,
+          "pct_positive": 100.0
+        },
+        "approachability": {
+          "mean_sentiment": 4.5,
+          "n_reviews": 1,
           "pct_positive": 100.0
         }
       },
@@ -39567,7 +39592,7 @@
           "note": null
         },
         "take_again_recent": {
-          "mean": 0.8013,
+          "mean": 0.8012,
           "effective_n": 0.13,
           "plain_mean": 1.0,
           "note": "Recent reviews are noticeably worse than older ones."
@@ -39950,7 +39975,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.6732,
+          "mean": 0.6733,
           "effective_n": 0.3,
           "plain_mean": 0.3333,
           "note": "Recent reviews are noticeably better than older ones."
@@ -40397,7 +40422,7 @@
       },
       "recency": {
         "good_rating_recent": {
-          "mean": 0.7534,
+          "mean": 0.7533,
           "effective_n": 0.53,
           "plain_mean": 0.6667,
           "note": "Recent reviews are noticeably better than older ones."
