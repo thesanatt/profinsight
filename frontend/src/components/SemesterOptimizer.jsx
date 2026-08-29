@@ -64,7 +64,7 @@ export default function SemesterOptimizer({ school, onSelect, onClose }) {
             <span key={c} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-sm font-medium"
               style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}>
               {c}
-              <button onClick={() => removeCourse(c)} className="ml-0.5 opacity-60 hover:opacity-100">×</button>
+              <button onClick={() => removeCourse(c)} aria-label={`Remove ${c}`} className="ml-0.5 opacity-60 hover:opacity-100">×</button>
             </span>
           ))}
           <div className="relative flex-1 min-w-[200px]">

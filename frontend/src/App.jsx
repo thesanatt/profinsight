@@ -41,7 +41,16 @@ export default function App() {
   const school = route.school || ''
   const mode = route.profId ? 'detail' : (route.mode || 'browse')
 
-  useEffect(() => { fetch(`${API_BASE}/api/schools`).then(r => r.json()).then(d => setSchools(d.schools || [])).catch(() => {}) }, [])
+  const [schoolsError, setSchoolsError] = useState(false)
+  useEffect(() => {
+    fetch(`${API_BASE}/api/schools`)
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
+      .then(d => setSchools(d.schools || []))
+      .catch(() => setSchoolsError(true))
+  }, [])
+
+  // A new school means a new department list; drop the old filters.
+  useEffect(() => { setSearch(''); setDeptFilter('') }, [school])
 
   // Keep-alive ping every 10 min to prevent Render free tier sleep
   useEffect(() => {
@@ -54,22 +63,36 @@ export default function App() {
   useEffect(() => {
     if (!school) return
     setLoading(true)
-    const p = new URLSearchParams({ sort_by: sortBy, limit: '300' })
-    if (search) p.set('search', search)
-    if (deptFilter) p.set('department', deptFilter)
-    fetch(`${API_BASE}/api/${school}/professors?${p}`).then(r => r.json())
-      .then(d => { setProfessors(d.professors || []); setLoading(false) }).catch(() => setLoading(false))
+    // Debounce typing and drop out-of-order responses.
+    const ctrl = new AbortController()
+    const timer = setTimeout(() => {
+      const p = new URLSearchParams({ sort_by: sortBy, limit: '300' })
+      if (search) p.set('search', search)
+      if (deptFilter) p.set('department', deptFilter)
+      fetch(`${API_BASE}/api/${school}/professors?${p}`, { signal: ctrl.signal })
+        .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
+        .then(d => { setProfessors(d.professors || []); setLoading(false) })
+        .catch(e => { if (e.name !== 'AbortError') { setProfessors([]); setLoading(false) } })
+    }, search ? 250 : 0)
+    return () => { clearTimeout(timer); ctrl.abort() }
   }, [school, search, deptFilter, sortBy])
 
   useEffect(() => {
     if (!school) return
-    fetch(`${API_BASE}/api/${school}/departments`).then(r => r.json()).then(d => setDepartments(d.departments || [])).catch(() => {})
-    fetch(`${API_BASE}/api/${school}/stats`).then(r => r.json()).then(setStats).catch(() => {})
+    const ok = r => { if (!r.ok) throw new Error(r.status); return r.json() }
+    fetch(`${API_BASE}/api/${school}/departments`).then(ok).then(d => setDepartments(d.departments || [])).catch(() => setDepartments([]))
+    fetch(`${API_BASE}/api/${school}/stats`).then(ok).then(setStats).catch(() => setStats(null))
   }, [school])
 
   useEffect(() => {
-    if (!route.profId || !school) { setProfDetail(null); return }
-    fetch(`${API_BASE}/api/${school}/professors/${encodeURIComponent(route.profId)}`).then(r => r.json()).then(setProfDetail).catch(() => {})
+    setProfDetail(null)
+    if (!route.profId || !school) return
+    const ctrl = new AbortController()
+    fetch(`${API_BASE}/api/${school}/professors/${encodeURIComponent(route.profId)}`, { signal: ctrl.signal })
+      .then(r => { if (!r.ok) throw new Error(r.status); return r.json() })
+      .then(setProfDetail)
+      .catch(() => {})
+    return () => ctrl.abort()
   }, [route.profId, school])
 
   const cur = schools.find(s => s.slug === school)
@@ -85,7 +108,7 @@ export default function App() {
           <span className="font-semibold" style={{ color: 'var(--text-1)' }}>ProfInsight</span>
         </div>
       </header>
-      <Landing schools={schools} onSelectSchool={s => nav(`/school/${s}`)} />
+      <Landing schools={schools} error={schoolsError} onSelectSchool={s => nav(`/school/${s}`)} />
     </div>
   )
 
@@ -104,7 +127,7 @@ export default function App() {
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <select value={school} onChange={e => nav(`/school/${e.target.value}`)} className="select-dark text-sm py-1.5 max-w-[200px] sm:max-w-none truncate">
+            <select aria-label="School" value={school} onChange={e => nav(`/school/${e.target.value}`)} className="select-dark text-sm py-1.5 max-w-[200px] sm:max-w-none truncate">
               {schools.map(s => <option key={s.slug} value={s.slug}>{s.name}</option>)}
             </select>
             {cur && <span className="hidden sm:inline text-xs" style={{ color: 'var(--text-3)' }}>{cur.professors} profs · {cur.reviews?.toLocaleString()} reviews</span>}
@@ -137,7 +160,9 @@ export default function App() {
                   {stats.total_reviews?.toLocaleString()} reviews across {stats.departments} departments at {stats.school}
                 </p>
                 <p className="text-xs mt-1" style={{ color: 'var(--text-3)', opacity: 0.7 }}>
-                  Showing the most reviewed professors. Not all professors at this university may be listed.
+                  {stats.total_professors > 300
+                    ? `Showing 300 of ${stats.total_professors.toLocaleString()} professors for the current sort. Search or filter by department to find the rest.`
+                    : `${stats.total_professors} professors listed. Not every instructor at this university has reviews.`}
                 </p>
               </div>
             )}
@@ -160,13 +185,13 @@ export default function App() {
                 <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
-                <input type="text" placeholder="Search by name or department..." value={search} onChange={e => setSearch(e.target.value)} className="input-dark w-full pl-10" />
+                <input type="text" aria-label="Search professors" placeholder="Search by name or department..." value={search} onChange={e => setSearch(e.target.value)} className="input-dark w-full pl-10" />
               </div>
-              <select value={deptFilter} onChange={e => setDeptFilter(e.target.value)} className="select-dark">
+              <select aria-label="Department" value={deptFilter} onChange={e => setDeptFilter(e.target.value)} className="select-dark">
                 <option value="">All departments</option>
                 {departments.map(d => <option key={d.name} value={d.name}>{d.name} ({d.professor_count})</option>)}
               </select>
-              <select value={sortBy} onChange={e => setSortBy(e.target.value)} className="select-dark">
+              <select aria-label="Sort by" value={sortBy} onChange={e => setSortBy(e.target.value)} className="select-dark">
                 <option value="rating">Highest rated</option>
                 <option value="difficulty">Most difficult</option>
                 <option value="num_ratings">Most reviewed</option>

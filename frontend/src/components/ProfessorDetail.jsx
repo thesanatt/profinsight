@@ -184,7 +184,7 @@ function TrendChart({ gp }) {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="date" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
           <YAxis domain={[1, 5]} ticks={[1, 2, 3, 4, 5]} tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-          <Tooltip />
+          <Tooltip formatter={(v, name) => (name === 'ci_range' ? [`${v[0]} to ${v[1]}`, '95% band'] : [v, 'Rating'])} />
           <ReferenceLine y={3.5} stroke="var(--border)" strokeDasharray="4 4" />
           <Area dataKey="ci_range" stroke="none" fill="var(--accent)" fillOpacity={0.06} type="monotone" />
           <Area dataKey="mean" stroke="var(--accent)" strokeWidth={2} fill="none" type="monotone" dot={false} />
@@ -202,7 +202,7 @@ function GradeChart({ grades }) {
   const data = order.filter(g => grades[g]).map(g => ({ grade: g, count: grades[g] }))
   const gc = { 'A+':'#059669',A:'#10b981','A-':'#34d399','B+':'#eab308',B:'#facc15','B-':'#fde047','C+':'#f97316',C:'#fb923c','C-':'#fdba74','D+':'#ef4444',D:'#f87171','D-':'#fca5a5',F:'#dc2626' }
   const total = data.reduce((s, d) => s + d.count, 0)
-  const mostCommon = data[0]?.grade || '?'
+  const mostCommon = data.reduce((best, d) => (d.count > (best?.count || 0) ? d : best), null)?.grade || '?'
 
   return (
     <div className="card p-5">

@@ -1,0 +1,59 @@
+name: Tests
+
+# Runs the pure-Python test suite (pytest + doctests) on every push and PR.
+# No data files are needed: the model tests use synthetic inputs.
+
+on:
+  push:
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+      - '.github/workflows/test.yml'
+  pull_request:
+    paths:
+      - '**.py'
+      - 'requirements.txt'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+      - name: pytest
+        run: python -m pytest -q
+      - name: doctests
+        run: python -m doctest bayesian_calibration.py bayesian_advanced.py bayesian_honest.py bayesian_pipeline.py && echo "doctests ok"
+      - name: Evaluation harness smoke test (synthetic school)
+        run: |
+          python - <<'PY'
+          import json, os, random
+          rng = random.Random(0)
+          os.makedirs("tmp_data", exist_ok=True)
+          profs = []
+          for i in range(40):
+              p = rng.betavariate(6, 3)
+              reviews = []
+              for k in range(rng.randint(4, 30)):
+                  good = rng.random() < p
+                  r = 5 if good else 2
+                  reviews.append({"id": f"r{i}-{k}", "date": f"20{15 + k % 10:02d}-{1 + k % 12:02d}-10 12:00:00 +0000 UTC",
+                                  "comment": "great lectures and fair exams" if good else "harsh grading and heavy homework",
+                                  "clarity_rating": r, "helpful_rating": r, "difficulty_rating": 3,
+                                  "would_take_again": 1 if good else 0, "grade": "A" if good else "B",
+                                  "rating_tags": "Amazing lectures" if good else "Tough grader", "class_name": "TEST101"})
+              profs.append({"id": f"p{i}", "first_name": "A", "last_name": str(i), "department": "Testing",
+                            "avg_rating": 4.0, "avg_difficulty": 3.0, "num_ratings": len(reviews),
+                            "would_take_again_pct": 70.0, "top_tags": [], "reviews": reviews})
+          json.dump({"metadata": {"school_name": "Synthetic U"}, "professors": profs}, open("tmp_data/synth.json", "w"))
+          PY
+          python train_classifier.py --data-dir tmp_data --output tmp_data/nb_model.json
+          python bayesian_pipeline.py --input tmp_data/synth.json --output tmp_data/synth_analyzed.json.gz --nb-model tmp_data/nb_model.json
+          python evaluate.py --data-dir tmp_data --skip-gp --output tmp_data/metrics
+          python -c "import json; m=json.load(open('tmp_data/metrics.json')); print(m['dataset'])"

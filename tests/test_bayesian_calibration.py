@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+import random
 import os
 import sys
 
@@ -12,6 +13,8 @@ from bayesian_calibration import (  # noqa: E402
     BetaPrior,
     DEFAULT_PRIOR_ALPHA,
     DEFAULT_PRIOR_BETA,
+    MAX_CONCENTRATION,
+    MIN_CONCENTRATION,
     beta_cdf,
     beta_credible_interval,
     beta_mean,
@@ -92,18 +95,39 @@ def test_eb_recovers_known_beta():
         x = sum(1 for _ in range(n) if rng.random() < p)
         pairs.append((x, n))
     prior = fit_empirical_bayes_beta(pairs)
-    assert prior.source == "empirical_bayes_mom"
-    # Method of moments gets the mean nearly exactly...
+    assert prior.source == "empirical_bayes_ml"
+    # Type-II ML gets the mean nearly exactly...
     assert abs(prior.mean - 0.2) < 0.03
-    # ...and the concentration within ~40% of the true 40.
-    assert 24 < prior.concentration < 60
+    # ...and the concentration within ~25% of the true 40.
+    assert 30 < prior.concentration < 50
+    # The naive moment estimator is still available for comparison and is
+    # biased low on concentration because it counts sampling noise as spread.
+    mom = fit_empirical_bayes_beta(pairs, method="mom")
+    assert mom.source == "empirical_bayes_mom"
+    assert mom.concentration < prior.concentration
 
 
-def test_eb_fallback_on_degenerate_input():
-    p = fit_empirical_bayes_beta([(5, 10), (50, 100), (500, 1000)])  # zero variance
-    assert p.source == "fallback_weak"
-    assert p.alpha == DEFAULT_PRIOR_ALPHA
-    assert p.beta == DEFAULT_PRIOR_BETA
+def test_eb_small_n_groups_do_not_look_heterogeneous():
+    # 200 groups drawn from a TIGHT population (Beta(60, 40)) but each observed
+    # only 3 times. Raw p_hat variance is dominated by binomial noise, so the
+    # moment estimator collapses to the floor; ML sees through it.
+    rng = random.Random(1)
+    pairs = []
+    for _ in range(200):
+        p = rng.betavariate(60, 40)
+        pairs.append((sum(1 for _ in range(3) if rng.random() < p), 3))
+    ml = fit_empirical_bayes_beta(pairs)
+    mom = fit_empirical_bayes_beta(pairs, method="mom")
+    assert mom.concentration == MIN_CONCENTRATION
+    assert ml.concentration > 10
+
+
+def test_eb_homogeneous_groups_give_strong_prior():
+    p = fit_empirical_bayes_beta([(5, 10), (50, 100), (500, 1000)])
+    assert p.source == "empirical_bayes_ml"
+    assert p.concentration > 20
+    assert p.concentration <= MAX_CONCENTRATION
+    assert abs(p.mean - 0.5) < 0.05
 
 
 def test_eb_fallback_on_too_few_groups():

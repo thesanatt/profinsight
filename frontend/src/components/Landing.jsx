@@ -1,9 +1,9 @@
 import { useState } from 'react'
 
-export default function Landing({ schools, onSelectSchool }) {
+export default function Landing({ schools, error = false, onSelectSchool }) {
   const [query, setQuery] = useState('')
   const [focused, setFocused] = useState(false)
-  const loading = schools.length === 0
+  const loading = schools.length === 0 && !error
 
   // Sort: UMich first, then alphabetical
   const sorted = [...schools].sort((a, b) => {
@@ -26,7 +26,13 @@ export default function Landing({ schools, onSelectSchool }) {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
               style={{ background: 'var(--bg-2)', color: 'var(--text-3)' }}>
               <div className="w-3 h-3 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'var(--accent)', borderTopColor: 'transparent' }} />
-              Loading...
+              Waking up the server, this can take up to a minute on first load
+            </div>
+          )}
+          {error && (
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium mb-8"
+              style={{ background: 'var(--red-bg)', color: 'var(--red)' }}>
+              The API is not responding. Reload in a minute.
             </div>
           )}
 
@@ -41,17 +47,18 @@ export default function Landing({ schools, onSelectSchool }) {
             whether they're getting better or worse, and which one actually fits how you learn.
           </p>
 
-          <div className="mt-10 relative max-w-sm mx-auto">
-            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="mt-10 relative max-w-sm mx-auto"
+            onFocus={() => setFocused(true)}
+            onBlur={e => { if (!e.currentTarget.contains(e.relatedTarget)) setFocused(false) }}>
+            <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-3)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
               placeholder="Search your school..."
+              aria-label="Search your school"
               value={query}
               onChange={e => setQuery(e.target.value)}
-              onFocus={() => setFocused(true)}
-              onBlur={() => setTimeout(() => setFocused(false), 200)}
               className="input-dark w-full pl-10 py-3 text-base"
             />
 

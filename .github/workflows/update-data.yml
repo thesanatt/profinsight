@@ -1,7 +1,7 @@
 name: Nightly Data Refresh
 
 # Rotation strategy:
-# The full school list is ~65 entries. Scraping all of them in one run would
+# The full school list is ~80 entries. Scraping all of them in one run would
 # blow the 6-hour GitHub Actions budget and would also be uncourteous to
 # RateMyProfessors' servers. Instead we split into 3 deterministic batches
 # by slug. Each night we run one batch (batch index = day-of-year mod 3),
@@ -62,6 +62,9 @@ jobs:
             echo "batch=$(( DOY % 3 ))/3" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Retrain topic classifier on the current corpus
+        run: python train_classifier.py
+
       - name: Refresh batch
         run: |
           MAX="${{ github.event.inputs.max_professors || '1500' }}"
@@ -83,12 +86,15 @@ jobs:
           # must still be valid JSON and still have the calibration block.
           python - <<'PY'
           import glob, json, sys
+          from datafiles import list_analyzed, load_json
           bad = []
-          for f in glob.glob('data/*_analyzed.json'):
+          for f in list_analyzed('data'):
               try:
-                  d = json.load(open(f))
-                  if not d.get('calibration') or not d.get('analysis'):
+                  d = load_json(f)
+                  if 'calibration' not in d or 'analysis' not in d:
                       bad.append(f)
+                  elif not d['analysis']:
+                      print(f'WARNING: {f} has zero professors')
               except Exception as e:
                   bad.append(f'{f} :: {e}')
           if bad:
@@ -96,17 +102,18 @@ jobs:
               for b in bad:
                   print(' ', b)
               sys.exit(1)
-          print(f'OK: {len(glob.glob("data/*_analyzed.json"))} analyzed files valid.')
+          print(f'OK: {len(list_analyzed("data"))} analyzed files valid.')
           PY
 
       - name: Detect changes
         id: check
         run: |
-          if git diff --quiet data/; then
+          # --porcelain sees untracked files too, so a brand-new school commits.
+          if [ -z "$(git status --porcelain data/ models/)" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
-            git diff --stat data/ | tail -3
+            git status --short data/ | tail -5
           fi
 
       - name: Commit + push
@@ -116,12 +123,14 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Pull first so a concurrent manual push doesn't cause rejection.
           git pull --rebase --autostash origin main
-          git add data/
+          git add data/ models/
           git commit -m "data: refresh batch ${{ steps.batch.outputs.batch }} $(date -u +%Y-%m-%d)"
           # Retry the push once if somebody else pushed between rebase and push.
+          pushed=0
           for i in 1 2 3; do
-            git push && break
+            if git push; then pushed=1; break; fi
             echo "push attempt $i failed; pulling + retrying"
             git pull --rebase --autostash origin main
             sleep 5
           done
+          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }

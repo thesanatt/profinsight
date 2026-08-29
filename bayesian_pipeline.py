@@ -1,14 +1,17 @@
 """
 ProfInsight - Bayesian ML Pipeline
 ===================================
-Three Bayesian models that turn raw RMP reviews into actionable insights:
+Turns one school's raw RMP reviews into per-professor posteriors:
 
-1. Beta-Binomial Rating Model   → honest rating posteriors with uncertainty
-2. Naive Bayes Classifier       → categorize review text into topics
-3. Gaussian Process Regression  → rating trends over time with confidence bands
+1. Beta-Binomial rating model with empirical-Bayes priors (bayesian_calibration)
+2. Naive Bayes topic classifier trained on tag weak labels (train_classifier.py)
+3. Gaussian process on monthly-binned rating history with credible bands
+plus grade forecast, recency weighting, outlier flagging (bayesian_advanced)
+and grade-inflation adjustment, teaching attributes (bayesian_honest).
+Every model has a held-out number in metrics/latest.md (evaluate.py).
 
 Usage:
-    python ml/bayesian_pipeline.py --input data/umich_test.json --output data/umich_analyzed.json
+    python bayesian_pipeline.py --input data/umich.json --output data/umich_analyzed.json.gz
 """
 
 import json
@@ -17,7 +20,7 @@ import re
 import argparse
 import os
 from collections import Counter, defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 from bayesian_calibration import (
@@ -43,6 +46,7 @@ from bayesian_honest import (
     fit_grade_inflation_beta,
     grade_adjusted_quality,
 )
+from datafiles import dump_json
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -91,13 +95,16 @@ class BetaBinomialModel:
             Dict with posterior parameters and summary statistics.
         """
         if not ratings:
+            variance = self._beta_variance(self.prior_alpha, self.prior_beta)
+            lo, hi = beta_credible_interval(self.prior_alpha, self.prior_beta, 0.95)
             return {
                 "alpha": self.prior_alpha,
                 "beta": self.prior_beta,
-                "mean": self.prior_alpha / (self.prior_alpha + self.prior_beta),
-                "variance": self._beta_variance(self.prior_alpha, self.prior_beta),
-                "ci_lower": 0.0,
-                "ci_upper": 1.0,
+                "mean": round(self.prior_alpha / (self.prior_alpha + self.prior_beta), 4),
+                "variance": round(variance, 6),
+                "std": round(math.sqrt(variance), 4),
+                "ci_lower": round(lo, 4),
+                "ci_upper": round(hi, 4),
                 "n_ratings": 0,
                 "n_above_threshold": 0,
                 "threshold": threshold,
@@ -338,27 +345,68 @@ class NaiveBayesClassifier:
             key=lambda x: -x[1],
         )
 
-    def train_on_reviews(self, reviews: list):
+    # NOTE: an earlier version "self-trained" the seed model on its own
+    # predictions. Scored against tag-derived weak labels, that step pushed
+    # top-1 accuracy below the majority-class baseline, so it was removed.
+    # Current numbers: metrics/latest.md (evaluate.py, classifier section).
+
+    def fit(self, texts: list, labels: list, uniform_prior: bool = False):
         """
-        Update word counts from actual review data (semi-supervised).
-        Uses the seed-based classification to label, then adds those
-        words back to strengthen the model.
+        Supervised multinomial NB fit from (text, category) pairs.
+
+        Replaces the seed counts entirely. Class priors are the empirical
+        label frequencies unless uniform_prior=True.
         """
-        for review in reviews:
-            comment = review.get("comment", "")
-            if not comment:
+        cats = list(self.CATEGORY_SEEDS)
+        self.vocab = set()
+        self.category_word_counts = {c: Counter() for c in cats}
+        self.category_total_words = {c: 0 for c in cats}
+        label_counts = Counter()
+        for text, label in zip(texts, labels):
+            if label not in self.category_word_counts:
                 continue
+            tokens = self._tokenize(text)
+            self.category_word_counts[label].update(tokens)
+            self.category_total_words[label] += len(tokens)
+            self.vocab.update(tokens)
+            label_counts[label] += 1
+        n = sum(label_counts.values()) or 1
+        if uniform_prior:
+            self.category_prior = {c: 1.0 / len(cats) for c in cats}
+        else:
+            # Laplace-smoothed so an unseen class never gets log(0)
+            self.category_prior = {c: (label_counts[c] + 1) / (n + len(cats)) for c in cats}
+        self.n_training_docs = n
 
-            tokens = self._tokenize(comment)
-            posteriors = self.classify(comment)
-            top_cat = max(posteriors, key=posteriors.get)
+    def to_dict(self) -> dict:
+        return {
+            "version": 1,
+            "smoothing": self.smoothing,
+            "n_training_docs": getattr(self, "n_training_docs", 0),
+            "category_prior": self.category_prior,
+            "category_word_counts": {c: dict(wc) for c, wc in self.category_word_counts.items()},
+        }
 
-            # Only update if reasonably confident
-            if posteriors[top_cat] > 0.35:
-                for token in tokens:
-                    self.category_word_counts[top_cat][token] += 1
-                    self.category_total_words[top_cat] += 1
-                    self.vocab.add(token)
+    @classmethod
+    def from_dict(cls, d: dict) -> "NaiveBayesClassifier":
+        model = cls(smoothing=d.get("smoothing", 1.0))
+        model.category_word_counts = {c: Counter(wc) for c, wc in d["category_word_counts"].items()}
+        model.category_total_words = {c: sum(wc.values()) for c, wc in model.category_word_counts.items()}
+        model.category_prior = dict(d["category_prior"])
+        model.vocab = set()
+        for wc in model.category_word_counts.values():
+            model.vocab.update(wc)
+        model.n_training_docs = d.get("n_training_docs", 0)
+        return model
+
+    def save(self, path: str):
+        with open(path, "w") as f:
+            json.dump(self.to_dict(), f)
+
+    @classmethod
+    def load(cls, path: str) -> "NaiveBayesClassifier":
+        with open(path) as f:
+            return cls.from_dict(json.load(f))
 
     def get_sentiment_by_category(self, reviews: list) -> dict:
         """
@@ -409,7 +457,7 @@ class NaiveBayesClassifier:
 # not just a single trend line. The confidence band widens where we have
 # fewer data points - honest about uncertainty.
 #
-# This is a pure NumPy implementation to avoid heavy dependencies.
+# Pure Python (lists of lists); no NumPy so the Render free tier stays light.
 
 class GaussianProcessRegression:
     """
@@ -449,13 +497,60 @@ class GaussianProcessRegression:
                 )
         return K
 
-    def _add_noise(self, K: list) -> list:
-        """Add noise to diagonal."""
+    def _add_noise(self, K: list, counts: Optional[list] = None) -> list:
+        """Add observation noise to the diagonal. When `counts` is given each
+        point is the mean of that many ratings, so its noise is
+        noise_variance / count (heteroscedastic)."""
         n = len(K)
         result = [row[:] for row in K]
         for i in range(n):
-            result[i][i] += self.noise_variance
+            c = counts[i] if counts else 1
+            result[i][i] += self.noise_variance / max(1, c)
         return result
+
+    # Cap on GP training points. Reviews are binned by calendar month (mean
+    # rating, count as weight); if a professor spans more months than this the
+    # bin widens to 2, 3, 6 or 12 months. A pure-Python O(n^3) solve is fine at
+    # a few hundred points and hopeless at 6,000 (BYU's most-reviewed
+    # professor), which is why this exists.
+    MAX_GP_POINTS = 240
+
+    @classmethod
+    def bin_by_month(cls, points: list, max_points: Optional[int] = None) -> tuple[list, list, list, int]:
+        """
+        Aggregate (datetime, rating) pairs into time bins.
+
+        Returns (x_months, y_mean, counts, bin_width_months) where x is months
+        since the first observation (bin centre = mean date of its ratings).
+
+        >>> from datetime import datetime
+        >>> pts = [(datetime(2020, 1, 5), 5.0), (datetime(2020, 1, 20), 3.0), (datetime(2020, 3, 1), 4.0)]
+        >>> x, y, c, w = GaussianProcessRegression.bin_by_month(pts)
+        >>> (len(x), y, c, w)
+        (2, [4.0, 4.0], [2, 1], 1)
+        """
+        max_points = max_points or cls.MAX_GP_POINTS
+        if not points:
+            return [], [], [], 1
+        points = sorted(points, key=lambda t: t[0])
+        first = points[0][0]
+        for width in (1, 2, 3, 6, 12, 24):
+            bins: dict = {}
+            for dt, y in points:
+                key = ((dt.year - first.year) * 12 + (dt.month - first.month)) // width
+                b = bins.setdefault(key, [0.0, 0, 0.0])
+                b[0] += y
+                b[1] += 1
+                b[2] += (dt - first).days / 30.44
+            if len(bins) <= max_points or width == 24:
+                break
+        xs, ys, cs = [], [], []
+        for key in sorted(bins):
+            total, n, months = bins[key]
+            xs.append(months / n)
+            ys.append(total / n)
+            cs.append(n)
+        return xs, ys, cs, width
 
     def _cholesky(self, A: list) -> Optional[list]:
         """Cholesky decomposition A = LL^T. Returns L or None if not PD."""
@@ -490,14 +585,55 @@ class GaussianProcessRegression:
             x[i] = (b[i] - sum(L[j][i] * x[j] for j in range(i + 1, n))) / L[i][i]
         return x
 
-    def predict(self, x_train: list, y_train: list, x_test: list) -> dict:
+    def _factor(self, x_train: list, counts: Optional[list] = None) -> Optional[list]:
+        """Cholesky factor of K(x, x) + noise, with one jitter retry."""
+        K_noisy = self._add_noise(self._rbf_kernel(x_train, x_train), counts)
+        L = self._cholesky(K_noisy)
+        if L is None:
+            for i in range(len(x_train)):
+                K_noisy[i][i] += 0.1
+            L = self._cholesky(K_noisy)
+        return L
+
+    def log_marginal_likelihood(self, x_train: list, y_train: list, counts: Optional[list] = None) -> float:
+        """
+        Log marginal likelihood log p(y | x, hyperparameters) of the centered
+        observations. Used for type-II maximum-likelihood selection of the
+        length-scale in fit_professor_trend.
+
+        log p(y) = -1/2 y^T (K + S)^{-1} y - sum log L_ii - n/2 log 2 pi
+        """
+        if len(x_train) < 2:
+            return float("-inf")
+        mu = sum(y_train) / len(y_train)
+        y = [v - mu for v in y_train]
+        L = self._factor(x_train, counts)
+        if L is None:
+            return float("-inf")
+        alpha = self._solve_triangular_upper(L, self._solve_triangular_lower(L, y))
+        n = len(y)
+        return (
+            -0.5 * sum(yi * ai for yi, ai in zip(y, alpha))
+            - sum(math.log(L[i][i]) for i in range(n))
+            - 0.5 * n * math.log(2.0 * math.pi)
+        )
+
+    def predict(self, x_train: list, y_train: list, x_test: list, counts: Optional[list] = None) -> dict:
         """
         GP prediction at test points.
 
+        The GP is fit to observations centered on their mean (a constant mean
+        function equal to the professor's average rating) and the mean is added
+        back to the predictions. Without this, a zero-mean GP on a 1-5 rating
+        scale reverts toward 0 in any gap wider than the length-scale; before
+        centering, about half of all fitted trends dipped below the 1-star
+        floor (metrics/latest.md, GP section).
+
         Args:
             x_train: Training inputs (time values, e.g., months since first review).
-            y_train: Training outputs (ratings).
+            y_train: Training outputs (ratings, or bin means).
             x_test: Test inputs (points to predict at).
+            counts: Optional number of ratings behind each training point.
 
         Returns:
             Dict with "mean" and "std" lists for each test point.
@@ -511,36 +647,31 @@ class GaussianProcessRegression:
             }
 
         n = len(x_train)
+        if counts:
+            mu = sum(y * c for y, c in zip(y_train, counts)) / sum(counts)
+        else:
+            mu = sum(y_train) / n
+        y_centered = [y - mu for y in y_train]
 
-        # Compute kernel matrices
-        K = self._rbf_kernel(x_train, x_train)
-        K_noisy = self._add_noise(K)
         K_star = self._rbf_kernel(x_test, x_train)
         K_star_star = self._rbf_kernel(x_test, x_test)
 
-        # Cholesky decomposition of K + noise*I
-        L = self._cholesky(K_noisy)
+        L = self._factor(x_train, counts)
         if L is None:
-            # Add more jitter
-            for i in range(n):
-                K_noisy[i][i] += 0.1
-            L = self._cholesky(K_noisy)
-            if L is None:
-                prior_mean = sum(y_train) / len(y_train)
-                return {
-                    "mean": [prior_mean] * len(x_test),
-                    "std": [1.0] * len(x_test),
-                }
+            return {
+                "mean": [mu] * len(x_test),
+                "std": [1.0] * len(x_test),
+            }
 
-        # Solve for alpha = (K + noise*I)^{-1} * y
-        alpha_intermediate = self._solve_triangular_lower(L, y_train)
+        # Solve for alpha = (K + noise*I)^{-1} * (y - mu)
+        alpha_intermediate = self._solve_triangular_lower(L, y_centered)
         alpha = self._solve_triangular_upper(L, alpha_intermediate)
 
-        # Predictive mean: K_star @ alpha
+        # Predictive mean: mu + K_star @ alpha
         m = len(x_test)
         pred_mean = [0.0] * m
         for i in range(m):
-            pred_mean[i] = sum(K_star[i][j] * alpha[j] for j in range(n))
+            pred_mean[i] = mu + sum(K_star[i][j] * alpha[j] for j in range(n))
 
         # Predictive variance
         pred_std = [0.0] * m
@@ -554,16 +685,38 @@ class GaussianProcessRegression:
             "std": [round(s, 3) for s in pred_std],
         }
 
+    # Candidate length-scales (months) for type-II ML selection. Spans "one
+    # semester" to "four years" so both fast swings and slow drifts are
+    # representable; the marginal likelihood picks per professor.
+    LENGTH_SCALE_GRID = (3.0, 6.0, 12.0, 24.0, 48.0)
+
+    def select_length_scale(self, x_train: list, y_train: list, counts: Optional[list] = None) -> tuple[float, float]:
+        """Pick the length-scale (months) with the highest log marginal likelihood.
+        Returns (length_scale, log_marginal_likelihood)."""
+        best_ls, best_ll = self.length_scale, float("-inf")
+        original = self.length_scale
+        for ls in self.LENGTH_SCALE_GRID:
+            self.length_scale = ls
+            ll = self.log_marginal_likelihood(x_train, y_train, counts)
+            if ll > best_ll:
+                best_ll, best_ls = ll, ls
+        self.length_scale = original
+        return best_ls, best_ll
+
     def fit_professor_trend(self, reviews: list, n_prediction_points: int = 20) -> dict:
         """
         Fit a GP to a professor's rating history.
+
+        The length-scale is chosen per professor by maximizing the log marginal
+        likelihood over LENGTH_SCALE_GRID (type-II maximum likelihood); the
+        noise and signal variances stay fixed.
 
         Args:
             reviews: List of review dicts with "date" and rating fields.
             n_prediction_points: Number of evenly-spaced points to predict at.
 
         Returns:
-            Dict with time points, predicted means, and confidence bands.
+            Dict with time points, predicted means, and credible bands.
         """
         # Extract (time, rating) pairs
         data_points = []
@@ -588,20 +741,18 @@ class GaussianProcessRegression:
 
         # Sort by date
         data_points.sort(key=lambda x: x[0])
-
-        # Convert dates to months since first review
         first_date = data_points[0][0]
-        x_train = []
-        y_train = []
-        dates_raw = []
-        for dt, score in data_points:
-            months = (dt - first_date).days / 30.44
-            x_train.append(months)
-            y_train.append(score)
-            dates_raw.append(dt.strftime("%Y-%m"))
+        last_date = data_points[-1][0]
 
-        # Prediction grid
-        x_min, x_max = min(x_train), max(x_train)
+        # Bin by calendar month: mean rating per bin, count as weight. Keeps
+        # the O(n^3) solve at a few hundred points for heavily reviewed profs.
+        x_train, y_train, counts, bin_width = self.bin_by_month(data_points)
+        dates_raw = [
+            (first_date + timedelta(days=x * 30.44)).strftime("%Y-%m") for x in x_train
+        ]
+
+        # Prediction grid over the observed span
+        x_min, x_max = 0.0, (last_date - first_date).days / 30.44
         span = x_max - x_min
         if span < 1:
             span = 12  # at least show 1 year
@@ -612,33 +763,41 @@ class GaussianProcessRegression:
         ]
 
         # Convert test points back to dates for the frontend
-        test_dates = []
-        for x in x_test:
-            days_offset = x * 30.44
-            from datetime import timedelta
-            test_dt = first_date + timedelta(days=days_offset)
-            test_dates.append(test_dt.strftime("%Y-%m"))
+        test_dates = [
+            (first_date + timedelta(days=x * 30.44)).strftime("%Y-%m") for x in x_test
+        ]
 
-        # Fit GP
-        result = self.predict(x_train, y_train, x_test)
+        # Fit GP with the length-scale chosen by marginal likelihood
+        length_scale, lml = self.select_length_scale(x_train, y_train, counts)
+        original = self.length_scale
+        self.length_scale = length_scale
+        try:
+            result = self.predict(x_train, y_train, x_test, counts)
+        finally:
+            self.length_scale = original
+        pred_mean = [round(min(5.0, max(1.0, m)), 3) for m in result["mean"]]
 
         return {
             "insufficient_data": False,
             "train_dates": dates_raw,
             "train_ratings": [round(y, 2) for y in y_train],
+            "train_counts": counts,
+            "bin_width_months": bin_width,
             "pred_dates": test_dates,
-            "pred_mean": result["mean"],
+            "pred_mean": pred_mean,
             "pred_std": result["std"],
             "pred_ci_lower": [
                 round(max(1.0, m - 1.96 * s), 3)
-                for m, s in zip(result["mean"], result["std"])
+                for m, s in zip(pred_mean, result["std"])
             ],
             "pred_ci_upper": [
                 round(min(5.0, m + 1.96 * s), 3)
-                for m, s in zip(result["mean"], result["std"])
+                for m, s in zip(pred_mean, result["std"])
             ],
             "n_data_points": len(data_points),
             "date_range": f"{dates_raw[0]} to {dates_raw[-1]}",
+            "length_scale_months": length_scale,
+            "log_marginal_likelihood": round(lml, 3) if lml != float("-inf") else None,
         }
 
 
@@ -789,7 +948,7 @@ def _tag_posteriors(professor: dict, tag_base_rate: float = 0.2, concentration: 
 # outlier flagging. See bayesian_advanced.py for the underlying math.
 # ═══════════════════════════════════════════════════════════════════════════════
 
-def _grade_forecast_block(grade_probabilities: dict) -> dict:
+def _grade_forecast_block(grade_probabilities: dict, n_graded_reviews: int) -> dict:
     """Base-rate forecast (no student GPA) in a frontend-friendly shape.
 
     The frontend's "Your probable grade" card takes these base-rate fields and
@@ -799,20 +958,57 @@ def _grade_forecast_block(grade_probabilities: dict) -> dict:
     """
     if not grade_probabilities or not any(grade_probabilities.values()):
         return None
-    n_total = sum(max(0, v) for v in grade_probabilities.values())
     forecast = personal_grade_forecast(
         grade_probabilities,
         student_gpa=None,
-        n_reviews=int(n_total),
+        n_reviews=int(n_graded_reviews),
     )
     return forecast.as_dict()
 
 
-def _recency_block(prof: dict, priors: dict) -> dict:
+_LETTER_GRADES = {"A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "D-", "F"}
+
+
+def letter_grade(raw) -> Optional[str]:
+    """
+    Normalize a self-reported grade to a letter grade, or None for anything
+    that is not one (blank, 'Not sure yet', 'Not_Sure_Yet', 'Pass', 'Audit', ...).
+
+    >>> letter_grade("A-"), letter_grade(" b+ "), letter_grade("Not_Sure_Yet"), letter_grade("Pass")
+    ('A-', 'B+', None, None)
+    """
+    if not raw:
+        return None
+    g = str(raw).strip().replace("_", " ").upper()
+    return g if g in _LETTER_GRADES else None
+
+
+def derive_top_tags(reviews: list, limit: int = 10) -> list:
+    """
+    Count the tags reviewers attached ('Tough grader--Caring--...') and return
+    [{'tag': name, 'count': n}, ...] sorted by count. The scraper's professor
+    search does not return tag totals, so this is where top_tags comes from.
+
+    >>> derive_top_tags([{"rating_tags": "Caring--Tough grader"}, {"rating_tags": "Caring"}])
+    [{'tag': 'Caring', 'count': 2}, {'tag': 'Tough grader', 'count': 1}]
+    """
+    counts = Counter()
+    for r in reviews:
+        for t in (r.get("rating_tags") or "").split("--"):
+            t = t.strip()
+            if t:
+                counts[t] += 1
+    return [{"tag": t, "count": c} for t, c in counts.most_common(limit)]
+
+
+def _recency_block(prof: dict, priors: dict, now: Optional[datetime] = None) -> dict:
     """Recency-weighted view of the two headline posteriors (good-rating and
     take-again). Each observation contributes exponentially-decaying pseudocount
     mass so a prof who *used* to be great but has been slipping shows the
     slippage on the headline number, not just in the GP trend chart.
+
+    `plain_mean` is the posterior mean under the same prior with unweighted
+    counts, so the two numbers differ only by the recency weighting.
     """
     reviews = prof.get("reviews", [])
     if not reviews:
@@ -831,14 +1027,14 @@ def _recency_block(prof: dict, priors: dict) -> dict:
             continue
         avg = (c + h) / 2
         stamped.append({
-            "date": r.get("date", ""),
+            "date": r.get("date") or "",
             "good": avg >= 3.5,
             "take_again": r.get("would_take_again"),
         })
 
-    good_s, good_t = recency_weighted_counts(stamped, "good")
+    good_s, good_t = recency_weighted_counts(stamped, "good", now=now)
     wta_s, wta_t = recency_weighted_counts(
-        stamped, "take_again",
+        stamped, "take_again", now=now,
         success_values={1}, non_success_values={0},
     )
 
@@ -846,9 +1042,13 @@ def _recency_block(prof: dict, priors: dict) -> dict:
     good_mean = (good_prior.alpha + good_s) / (good_prior.alpha + good_prior.beta + good_t) if good_t > 0 else good_prior.mean
     wta_mean = (wta_prior.alpha + wta_s) / (wta_prior.alpha + wta_prior.beta + wta_t) if wta_t > 0 else wta_prior.mean
 
-    # Compare against the non-recency version so the UI can surface any shift.
-    plain_good = prof_good_plain(prof, threshold=3.5)
-    plain_wta = prof_wta_plain(prof)
+    # Same prior, unweighted counts: the only difference is the recency weighting.
+    good_n = sum(1 for s in stamped)
+    good_x = sum(1 for s in stamped if s["good"])
+    wta_n = sum(1 for s in stamped if s["take_again"] in (0, 1))
+    wta_x = sum(1 for s in stamped if s["take_again"] == 1)
+    plain_good = (good_prior.alpha + good_x) / (good_prior.alpha + good_prior.beta + good_n) if good_n else None
+    plain_wta = (wta_prior.alpha + wta_x) / (wta_prior.alpha + wta_prior.beta + wta_n) if wta_n else None
 
     return {
         "good_rating_recent": {
@@ -909,6 +1109,40 @@ def _review_quality_block(reviews: list) -> dict:
 # ANALYSIS PIPELINE
 # ═══════════════════════════════════════════════════════════════════════════════
 
+def summarize_trend(pred_mean: list) -> str:
+    """
+    Plain-English label for a GP trend curve: compare the mean of the first
+    quarter of the prediction grid to the last quarter.
+
+    >>> summarize_trend([4.5] * 20)
+    'Consistently highly rated'
+    >>> summarize_trend([4.0] * 10 + [3.0] * 10)
+    'Declining over time'
+    >>> summarize_trend([3.0, 3.1])
+    'Not enough data'
+    """
+    if len(pred_mean) < 4:
+        return "Not enough data"
+    q = len(pred_mean) // 4
+    first_quarter = sum(pred_mean[:q]) / q
+    last_quarter = sum(pred_mean[-q:]) / q
+    diff = last_quarter - first_quarter
+    recent_mean = pred_mean[-1]
+    if abs(diff) < 0.3:
+        if recent_mean >= 4.0:
+            return "Consistently highly rated"
+        if recent_mean >= 3.0:
+            return "Stable, middle-of-the-road ratings"
+        return "Consistently low rated"
+    if diff > 0.5:
+        return "Significantly improving over time"
+    if diff > 0.3:
+        return "Trending upward recently"
+    if diff < -0.5:
+        return "Declining over time"
+    return "Trending downward recently"
+
+
 def analyze_professor(
     prof: dict,
     bb_model,
@@ -916,9 +1150,20 @@ def analyze_professor(
     gp_model,
     priors: Optional[dict] = None,
     grade_inflation_beta: float = 0.0,
+    now: Optional[datetime] = None,
 ) -> dict:
-    """Run all three Bayesian models on a single professor."""
+    """Run all three Bayesian models on a single professor.
+
+    `now` anchors the recency weighting and the highlight recency bonus. The
+    pipeline passes the scrape timestamp so re-running on the same input gives
+    byte-identical output; it defaults to the wall clock for ad-hoc calls.
+    """
+    if now is None:
+        now = datetime.now()
     reviews = prof.get("reviews", [])
+    # The scraper's search index does not return tag totals; count them from
+    # the reviews themselves so per-tag posteriors have data.
+    top_tags = prof.get("top_tags") or derive_top_tags(reviews)
 
     # --- Beta-Binomial ---
     # Overall rating posterior
@@ -946,25 +1191,14 @@ def analyze_professor(
     # --- Naive Bayes ---
     category_sentiment = nb_model.get_sentiment_by_category(reviews)
 
-    # Classify each review
-    review_categories = []
-    for r in reviews:
-        comment = r.get("comment", "")
-        if comment:
-            cats = nb_model.classify_top_categories(comment, threshold=0.25)
-            review_categories.append({
-                "review_id": r.get("id"),
-                "top_categories": [{"category": c, "probability": p} for c, p in cats],
-            })
-
     # --- Gaussian Process ---
     gp_trend = gp_model.fit_professor_trend(reviews)
 
-    # --- Grade Distribution ---
+    # --- Grade Distribution (letter grades only) ---
     grade_counts = Counter()
     for r in reviews:
-        grade = r.get("grade")
-        if grade and grade not in ("Not sure yet", "Rather not say", "Incomplete", "Drop/Withdrawal", "Audit/No Grade", "N/A"):
+        grade = letter_grade(r.get("grade"))
+        if grade:
             grade_counts[grade] += 1
 
     # --- Grade Probabilities (student-friendly) ---
@@ -987,65 +1221,53 @@ def analyze_professor(
     # --- Review Highlights (top 3 most useful) ---
     # Build highlights — and filter out reviews the outlier detector flagged,
     # so we never surface a likely troll as "what students say".
-    _flagged_ids_set = set((_review_quality_block(reviews) or {}).get("flagged_ids", []))
+    review_quality = _review_quality_block(reviews)
+    _flagged_ids_set = set((review_quality or {}).get("flagged_ids", []))
     scored_reviews = []
     for r in reviews:
-        comment = r.get("comment", "").strip()
+        comment = (r.get("comment") or "").strip()
         if not comment or len(comment) < 30:
             continue
         if r.get("id") in _flagged_ids_set:
             continue
         # Score: upvotes + length bonus + recency bonus
-        score = (r.get("thumbs_up", 0) - r.get("thumbs_down", 0))
+        score = ((r.get("thumbs_up") or 0) - (r.get("thumbs_down") or 0))
         score += min(len(comment) / 200, 2.0)  # length bonus, capped
         try:
-            dt = datetime.strptime(r.get("date", "")[:10], "%Y-%m-%d")
-            years_ago = (datetime.now() - dt).days / 365
+            dt = datetime.strptime((r.get("date") or "")[:10], "%Y-%m-%d")
+            years_ago = (now - dt).days / 365
             score += max(0, 3 - years_ago)  # recency bonus
         except (ValueError, TypeError):
             pass
         scored_reviews.append({
             "id": r.get("id"),
             "comment": comment[:500],  # cap length
-            "class_name": r.get("class_name", ""),
-            "grade": r.get("grade", ""),
-            "date": r.get("date", "")[:10],
+            "class_name": r.get("class_name") or "",
+            "grade": letter_grade(r.get("grade")) or "",
+            "date": (r.get("date") or "")[:10],
             "clarity": r.get("clarity_rating"),
             "helpful": r.get("helpful_rating"),
             "difficulty": r.get("difficulty_rating"),
             "score": score,
         })
-    scored_reviews.sort(key=lambda x: -x["score"])
+    # Stable order: score desc, then id, so identical input gives identical output.
+    scored_reviews.sort(key=lambda x: (-x["score"], str(x["id"])))
     review_highlights = scored_reviews[:5]
 
     # --- Trend Summary (plain English from GP) ---
-    trend_summary = "Not enough data"
-    if not gp_trend.get("insufficient_data") and len(gp_trend.get("pred_mean", [])) >= 4:
-        means = gp_trend["pred_mean"]
-        first_quarter = sum(means[:len(means)//4]) / max(len(means)//4, 1)
-        last_quarter = sum(means[-(len(means)//4):]) / max(len(means)//4, 1)
-        diff = last_quarter - first_quarter
-        recent_mean = means[-1]
+    trend_summary = (
+        "Not enough data" if gp_trend.get("insufficient_data")
+        else summarize_trend(gp_trend.get("pred_mean", []))
+    )
 
-        if abs(diff) < 0.3:
-            if recent_mean >= 4.0:
-                trend_summary = "Consistently highly rated"
-            elif recent_mean >= 3.0:
-                trend_summary = "Stable, middle-of-the-road ratings"
-            else:
-                trend_summary = "Consistently low rated"
-        elif diff > 0.5:
-            trend_summary = "Significantly improving over time"
-        elif diff > 0.3:
-            trend_summary = "Trending upward recently"
-        elif diff < -0.5:
-            trend_summary = "Declining over time"
-        elif diff < -0.3:
-            trend_summary = "Trending downward recently"
+    # --- Calibrated (empirical-Bayes) posteriors; the headline numbers use
+    # these when priors are available, else the fixed Beta(2,2) posterior.
+    calibrated = _calibrated_block(prof, priors) if priors is not None else None
+    quality_adjusted = grade_adjusted_quality(prof, grade_inflation_beta)
 
     # --- Confidence Level (plain English from Beta-Binomial) ---
     n = len(overall_ratings)
-    good_post = rating_posterior.get("good", {})
+    good_post = calibrated["good_rating"] if calibrated else rating_posterior.get("good", {})
     ci_width = (good_post.get("ci_upper", 1) - good_post.get("ci_lower", 0))
     if n >= 100 and ci_width < 0.15:
         confidence_level = "Very high"
@@ -1063,10 +1285,6 @@ def analyze_professor(
     # --- Verdict (the headline) ---
     good_prob = good_post.get("mean", 0.5)
     difficulty = prof.get("avg_difficulty", 3.0) or 3.0
-    wta_pct = prof.get("would_take_again_pct")
-    if wta_pct and wta_pct < 0:
-        wta_pct = None
-
     if good_prob >= 0.85 and difficulty <= 2.5:
         verdict = "Highly rated with a manageable workload"
         verdict_emoji = "great"
@@ -1098,15 +1316,16 @@ def analyze_professor(
     # --- Class-specific breakdown ---
     class_data = defaultdict(lambda: {"ratings": [], "grades": [], "count": 0})
     for r in reviews:
-        cls = r.get("class_name", "").strip()
+        cls = (r.get("class_name") or "").strip()
         if not cls:
             continue
         class_data[cls]["count"] += 1
         scores = [s for s in [r.get("clarity_rating"), r.get("helpful_rating")] if s]
         if scores:
             class_data[cls]["ratings"].append(sum(scores) / len(scores))
-        if r.get("grade"):
-            class_data[cls]["grades"].append(r["grade"])
+        g = letter_grade(r.get("grade"))
+        if g:
+            class_data[cls]["grades"].append(g)
 
     class_breakdown = []
     for cls, info in sorted(class_data.items(), key=lambda x: -x[1]["count"]):
@@ -1149,31 +1368,29 @@ def analyze_professor(
         # Calibrated layer (empirical-Bayes priors + decision-theoretic summaries)
         # Stable v1 shape so the frontend can rely on subfields; absent when
         # priors aren't passed in (e.g. callers using the pre-calibration path).
-        "calibrated_analysis": (
-            _calibrated_block(prof, priors) if priors is not None else None
-        ),
-        "tag_posteriors": _tag_posteriors(prof),
+        "calibrated_analysis": calibrated,
+        "tag_posteriors": _tag_posteriors({**prof, "top_tags": top_tags, "num_ratings": len(reviews)}),
         # Essentials layer (personal grade forecast baseline, recency read,
         # outlier flags). Purely additive — frontend falls back when absent.
-        "grade_forecast": _grade_forecast_block(grade_probabilities),
-        "recency": _recency_block(prof, priors) if priors is not None else None,
-        "review_quality": _review_quality_block(reviews),
+        "grade_forecast": _grade_forecast_block(grade_probabilities, grade_total),
+        "recency": _recency_block(prof, priors, now=now) if priors is not None else None,
+        "review_quality": review_quality,
         # Honest-signals layer: grade-inflation-adjusted quality (separates
         # teaching from grade generosity) + concrete teaching-style attributes
         # extracted from review text (slides online, attendance, exam format).
-        "quality_adjusted": (
-            grade_adjusted_quality(prof, grade_inflation_beta).as_dict()
-            if grade_adjusted_quality(prof, grade_inflation_beta) is not None else None
-        ),
+        "quality_adjusted": (quality_adjusted.as_dict() if quality_adjusted is not None else None),
         "attributes": [s.as_dict() for s in extract_teaching_attributes(reviews)],
         "category_sentiment": category_sentiment,
         "gp_trend": gp_trend,
         "grade_distribution": dict(grade_counts.most_common()),
-        "top_tags": prof.get("top_tags", []),
+        "top_tags": top_tags,
     }
 
 
-def run_pipeline(input_path: str, output_path: str):
+DEFAULT_NB_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models", "nb_topic_model.json")
+
+
+def run_pipeline(input_path: str, output_path: str, nb_model_path: str = DEFAULT_NB_MODEL_PATH):
     """Run the full Bayesian analysis pipeline."""
     print(f"Loading data from {input_path}...")
     with open(input_path, "r") as f:
@@ -1184,17 +1401,23 @@ def run_pipeline(input_path: str, output_path: str):
 
     # Initialize models
     bb_model = BetaBinomialModel(prior_alpha=2.0, prior_beta=2.0)
-    nb_model = NaiveBayesClassifier(smoothing=1.0)
     gp_model = GaussianProcessRegression(
-        length_scale=6.0,       # smooth over ~6 months
+        length_scale=6.0,       # starting point; per-professor selection in fit_professor_trend
         signal_variance=1.0,
         noise_variance=0.8,     # ratings are noisy
     )
 
-    # Optional: train NB on the actual review data first (semi-supervised)
-    all_reviews = [r for p in professors for r in p.get("reviews", [])]
-    print(f"Training Naive Bayes on {len(all_reviews)} reviews...")
-    nb_model.train_on_reviews(all_reviews)
+    # Topic classifier: the supervised model trained by train_classifier.py on
+    # tag-weak-labeled reviews (cross-school accuracy in metrics/latest.md).
+    # Falls back to the keyword-seed model if the artifact is missing.
+    if os.path.exists(nb_model_path):
+        nb_model = NaiveBayesClassifier.load(nb_model_path)
+        print(f"Loaded topic classifier from {nb_model_path} "
+              f"({nb_model.n_training_docs} training reviews, {len(nb_model.vocab)} vocab)")
+    else:
+        nb_model = NaiveBayesClassifier(smoothing=1.0)
+        print(f"WARNING: {nb_model_path} not found; using keyword-seed classifier. "
+              f"Run train_classifier.py to build it.")
 
     # Fit empirical-Bayes priors across the whole school (and per department).
     # This is the Lecture-2-p.3 pseudocount framing operationalized: the
@@ -1217,6 +1440,17 @@ def run_pipeline(input_path: str, output_path: str):
     print(f"  β = {grade_inflation_beta:+.3f}  "
           f"(students who got one GP higher rated this prof {grade_inflation_beta:+.2f} points higher on avg)")
 
+    # Anchor "now" to the scrape time so output is deterministic per input.
+    now = None
+    scraped_at = (data.get("metadata") or {}).get("scraped_at")
+    if scraped_at:
+        try:
+            now = datetime.fromisoformat(scraped_at.replace("Z", "+00:00")).replace(tzinfo=None)
+        except ValueError:
+            now = None
+    if now is None:
+        now = datetime.now()
+
     # Analyze each professor
     print("Running Bayesian analysis...")
     results = []
@@ -1227,6 +1461,7 @@ def run_pipeline(input_path: str, output_path: str):
             prof, bb_model, nb_model, gp_model,
             priors=priors,
             grade_inflation_beta=grade_inflation_beta,
+            now=now,
         )
         results.append(analysis)
 
@@ -1242,11 +1477,10 @@ def run_pipeline(input_path: str, output_path: str):
             "grade_inflation_beta": round(grade_inflation_beta, 4),
         },
     }
-    output["metadata"]["analyzed_at"] = datetime.now().isoformat()
+    output["metadata"]["analyzed_at"] = datetime.now(timezone.utc).isoformat()
 
-    os.makedirs(os.path.dirname(output_path) or ".", exist_ok=True)
-    with open(output_path, "w") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
+    # Gzipped when the path ends in .gz (the deploy format); plain otherwise.
+    dump_json(output, output_path, indent=None if output_path.endswith(".gz") else 2)
 
     print(f"\nAnalysis saved to {output_path}")
     print(f"  Professors analyzed: {len(results)}")
@@ -1262,8 +1496,10 @@ def main():
     parser = argparse.ArgumentParser(description="ProfInsight Bayesian ML Pipeline")
     parser.add_argument("--input", type=str, required=True, help="Input JSON from scraper")
     parser.add_argument("--output", type=str, required=True, help="Output analyzed JSON")
+    parser.add_argument("--nb-model", type=str, default=DEFAULT_NB_MODEL_PATH,
+                        help="Path to the trained topic-classifier JSON (see train_classifier.py)")
     args = parser.parse_args()
-    run_pipeline(args.input, args.output)
+    run_pipeline(args.input, args.output, nb_model_path=args.nb_model)
 
 
 if __name__ == "__main__":
