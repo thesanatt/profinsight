@@ -17,6 +17,7 @@ import os
 import json
 import time
 import argparse
+from datafiles import analyzed_path, load_json
 
 # Default School List
 # slug: (search name, max_professors, school_id_override)
@@ -36,7 +37,11 @@ DEFAULT_SCHOOLS = {
     "mit":          ("Massachusetts Institute of Technology", 1500, None),
     "stanford":     ("Stanford University", 1500, None),
     "berkeley":     ("University of California Berkeley", 1500, None),
-    "utdallas":     ("University of Texas at Dallas", 1500, None),
+    # RMP's name search ranks the wrong campus first for several schools
+    # (Dallas -> Arlington, Irvine -> Riverside, A&M -> Beaumont), so every
+    # ambiguous entry pins its school_id. See docs/DATA.md.
+    "utdallas":     ("University of Texas at Dallas", 1500, "U2Nob29sLTEyNzM="),
+    "uta":          ("University of Texas at Arlington", 1500, "U2Nob29sLTEzNDM="),
     "gatech":       ("Georgia Institute of Technology", 1500, None),
     "uiuc":         ("University of Illinois Urbana-Champaign", 1500, "U2Nob29sLTExMTI="),
     "cmu":          ("Carnegie Mellon University", 1500, None),
@@ -52,15 +57,15 @@ DEFAULT_SCHOOLS = {
     # slug below so we don't lose that data.
     "umd":          ("University of Maryland", 1500, "U2Nob29sLTEyNzA="),
     "umbc":         ("University of Maryland, Baltimore County", 1500, "U2Nob29sLTEyNDQ="),
-    "uw":           ("University of Washington", 1500, None),
+    "uw":           ("University of Washington", 1500, "U2Nob29sLTE1MzA="),
     "ucla":         ("University of California Los Angeles", 1500, None),
     "ucsd":         ("University of California San Diego", 1500, None),
     "osu":          ("The Ohio State University", 1500, "U2Nob29sLTcyNA=="),
     "wisc":         ("University of Wisconsin Madison", 1500, None),
     "uf":           ("University of Florida", 1500, None),
-    "fsu":          ("Florida State University", 1500, None),
+    "fsu":          ("Florida State University", 1500, "U2Nob29sLTEyMzc="),
     "utaustin":     ("University of Texas at Austin", 1500, None),
-    "tamu":         ("Texas A&M University", 1500, None),
+    "tamu":         ("Texas A&M University", 1500, "U2Nob29sLTEwMDM="),
     "msu":          ("Michigan State University", 1500, None),
     "psu":          ("Penn State University", 1500, None),
     "bu":           ("Boston University", 1500, None),
@@ -76,46 +81,46 @@ DEFAULT_SCHOOLS = {
     "uchicago":     ("University of Chicago", 1500, None),
     "northwestern": ("Northwestern University", 1500, None),
     "duke":         ("Duke University", 1500, None),
-    "jhu":          ("Johns Hopkins University", 1500, None),
+    "jhu":          ("Johns Hopkins University", 1500, "U2Nob29sLTQ2NA=="),
     "vanderbilt":   ("Vanderbilt University", 1500, None),
     "wustl":        ("Washington University in St. Louis", 1500, None),
-    "emory":        ("Emory University", 1500, None),
-    "notredame":    ("University of Notre Dame", 1500, None),
-    "caltech":      ("California Institute of Technology", 1500, None),
-    "usc":          ("University of Southern California", 1500, None),
+    "emory":        ("Emory University", 1500, "U2Nob29sLTM0MA=="),
+    "notredame":    ("University of Notre Dame", 1500, "U2Nob29sLTE1NzY="),
+    "caltech":      ("California Institute of Technology", 1500, "U2Nob29sLTE0OA=="),
+    "usc":          ("University of Southern California", 1500, "U2Nob29sLTEzODE="),
 
     # Big public research schools
-    "rutgers":      ("Rutgers University", 1500, None),
+    "rutgers":      ("Rutgers University", 1500, "U2Nob29sLTgyNQ=="),
     "uva":          ("University of Virginia", 1500, None),
     "vt":           ("Virginia Tech", 1500, None),
     "ucdavis":      ("University of California Davis", 1500, None),
     "ucsb":         ("University of California Santa Barbara", 1500, None),
-    "uci":          ("University of California Irvine", 1500, None),
-    "ucr":          ("University of California Riverside", 1500, None),
+    "uci":          ("University of California Irvine", 1500, "U2Nob29sLTEwNzQ="),
+    "ucr":          ("University of California Riverside", 1500, "U2Nob29sLTEwNzY="),
     "asu":          ("Arizona State University", 1500, None),
-    "ua":           ("University of Arizona", 1500, None),
-    "cuboulder":    ("University of Colorado Boulder", 1500, None),
+    "ua":           ("University of Arizona", 1500, "U2Nob29sLTE0MDI="),
+    "cuboulder":    ("University of Colorado Boulder", 1500, "U2Nob29sLTEwODc="),
     "iub":          ("Indiana University Bloomington", 1500, None),
     "iastate":      ("Iowa State University", 1500, None),
     "kansas":       ("University of Kansas", 1500, None),
     "mizzou":       ("University of Missouri", 1500, None),
-    "ncsu":         ("North Carolina State University", 1500, None),
+    "ncsu":         ("North Carolina State University", 1500, "U2Nob29sLTY4NQ=="),
     "uga":          ("University of Georgia", 1500, None),
     "alabama":      ("University of Alabama", 1500, None),
-    "auburn":       ("Auburn University", 1500, None),
+    "auburn":       ("Auburn University", 1500, "U2Nob29sLTYw"),
     "miami":        ("University of Miami", 1500, None),
-    "ucf":          ("University of Central Florida", 1500, None),
+    "ucf":          ("University of Central Florida", 1500, "U2Nob29sLTEwODI="),
     "uic":          ("University of Illinois Chicago", 1500, None),
-    "uiowa":        ("University of Iowa", 1500, None),
+    "uiowa":        ("University of Iowa", 1500, "U2Nob29sLTExMTU="),
     "uky":          ("University of Kentucky", 1500, None),
-    "pittsburgh":   ("University of Pittsburgh", 1500, None),
+    "pittsburgh":   ("University of Pittsburgh", 1500, "U2Nob29sLTEyNDc="),
     "uoregon":      ("University of Oregon", 1500, None),
-    "wvu":          ("West Virginia University", 1500, None),
+    "wvu":          ("West Virginia University", 1500, "U2Nob29sLTExNjY="),
     "tcu":          ("Texas Christian University", 1500, None),
     "smu":          ("Southern Methodist University", 1500, None),
     "rpi":          ("Rensselaer Polytechnic Institute", 1500, None),
     "wpi":          ("Worcester Polytechnic Institute", 1500, None),
-    "stevens":      ("Stevens Institute of Technology", 1500, None),
+    "stevens":      ("Stevens Institute of Technology", 1500, "U2Nob29sLTE5MDAy"),
     "byu":          ("Brigham Young University", 1500, None),
     "utah":         ("University of Utah", 1500, None),
 }
@@ -125,10 +130,33 @@ SCRAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rmp_scraper.
 PIPELINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bayesian_pipeline.py")
 
 
+def _scraped_at_epoch(analyzed_path):
+    """Epoch seconds of metadata.scraped_at in an analyzed file; 0 if missing
+    or unparseable so the school counts as stale."""
+    if not os.path.exists(analyzed_path):
+        return 0.0
+    try:
+        from datetime import datetime, timezone
+        from datafiles import open_text
+        with open_text(analyzed_path, "rt") as f:
+            # metadata is the first key; read a prefix rather than the whole file
+            head = f.read(4000)
+        import re
+        m = re.search(r'"scraped_at":\s*"([^"]+)"', head)
+        if not m:
+            return os.path.getmtime(analyzed_path)
+        dt = datetime.fromisoformat(m.group(1).replace("Z", "+00:00"))
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return dt.timestamp()
+    except Exception:
+        return 0.0
+
+
 def scrape_school(slug, name, max_profs, school_id=None):
     """Scrape a single school."""
     raw_path = os.path.join(DATA_DIR, f"{slug}.json")
-    analyzed_path = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
+    analyzed_path_ = analyzed_path(DATA_DIR, slug, prefer_existing=False)
 
     print(f"\n{'='*60}")
     print(f"  {name}")
@@ -162,7 +190,7 @@ def scrape_school(slug, name, max_profs, school_id=None):
     result = subprocess.run(
         [sys.executable, PIPELINE,
          "--input", raw_path,
-         "--output", analyzed_path],
+         "--output", analyzed_path_],
         capture_output=True, text=True
     )
     if result.returncode != 0:
@@ -176,8 +204,7 @@ def scrape_school(slug, name, max_profs, school_id=None):
 
     # Show summary
     try:
-        with open(analyzed_path) as f:
-            data = json.load(f)
+        data = load_json(analyzed_path_)
         meta = data.get("metadata", {})
         print(f"\n  ✓ {meta.get('school_name', slug)}: {meta.get('total_professors', 0)} professors, {meta.get('total_reviews', 0)} reviews")
     except Exception:
@@ -193,11 +220,10 @@ def list_schools():
     print("-" * 100)
 
     for slug, (name, max_p, sid) in sorted(DEFAULT_SCHOOLS.items()):
-        analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
+        analyzed = analyzed_path(DATA_DIR, slug)
         if os.path.exists(analyzed):
             try:
-                with open(analyzed) as f:
-                    meta = json.load(f).get("metadata", {})
+                meta = load_json(analyzed).get("metadata", {})
                 profs = meta.get("total_professors", "?")
                 reviews = meta.get("total_reviews", "?")
                 status = "✓ Ready"
@@ -255,7 +281,7 @@ def main():
     elif args.refresh:
         # Re-scrape all that have existing data
         for slug, (name, max_p, sid) in DEFAULT_SCHOOLS.items():
-            analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
+            analyzed = analyzed_path(DATA_DIR, slug)
             if os.path.exists(analyzed):
                 schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
 
@@ -267,7 +293,7 @@ def main():
     else:
         # Default: scrape schools that don't have data yet
         for slug, (name, max_p, sid) in DEFAULT_SCHOOLS.items():
-            analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
+            analyzed = analyzed_path(DATA_DIR, slug)
             if not os.path.exists(analyzed):
                 schools_to_scrape.append((slug, name, args.max_professors or max_p, sid))
 
@@ -286,14 +312,13 @@ def main():
         schools_to_scrape.sort(key=lambda x: x[0])
         schools_to_scrape = [s for idx, s in enumerate(schools_to_scrape) if idx % n == i]
 
-    # --stale-days: keep only schools whose analyzed JSON was modified more
-    # than the cutoff ago. Fresh enough -> skip.
+    # --stale-days: keep only schools scraped more than the cutoff ago, read
+    # from metadata.scraped_at (file mtime is the checkout time in CI).
     if args.stale_days is not None:
         cutoff = time.time() - args.stale_days * 86400
         kept = []
         for slug, name, max_p, sid in schools_to_scrape:
-            analyzed = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
-            if not os.path.exists(analyzed) or os.path.getmtime(analyzed) < cutoff:
+            if _scraped_at_epoch(analyzed_path(DATA_DIR, slug)) < cutoff:
                 kept.append((slug, name, max_p, sid))
             else:
                 print(f"  skip (fresh): {slug}")

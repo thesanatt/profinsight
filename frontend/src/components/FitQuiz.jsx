@@ -3,8 +3,8 @@ import { API_BASE } from '../config'
 
 const questions = [
   { key: 'difficulty', label: 'How do you feel about difficulty?', low: 'Keep it easy', high: 'Challenge me' },
-  { key: 'grading', label: 'How important is lenient grading?', low: 'I need easy As', high: "Fair grading is fine" },
-  { key: 'lectures', label: 'How much do lecture quality matter?', low: "I'll self-study", high: 'Lectures are everything' },
+  { key: 'grading', label: 'How much does clear, fair grading matter?', low: 'Not much', high: 'A lot' },
+  { key: 'lectures', label: 'How much does lecture quality matter?', low: "I'll self-study", high: 'Lectures are everything' },
   { key: 'approachability', label: 'How important is professor approachability?', low: 'Not important', high: 'Very important' },
   { key: 'workload', label: 'How do you feel about workload?', low: 'Keep it light', high: 'Heavy is fine' },
 ]
@@ -138,7 +138,7 @@ export default function FitQuiz({ school, departments, onSelect, onClose }) {
         ))}
         <div className="card px-5 py-4">
           <div className="text-sm font-medium mb-2" style={{ color: 'var(--text-1)' }}>Department (optional)</div>
-          <select value={dept} onChange={e => setDept(e.target.value)} className="select-dark w-full">
+          <select aria-label="Department" value={dept} onChange={e => setDept(e.target.value)} className="select-dark w-full">
             <option value="">All departments</option>
             {departments.map(d => <option key={d.name} value={d.name}>{d.name}</option>)}
           </select>

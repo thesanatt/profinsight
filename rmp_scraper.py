@@ -10,6 +10,7 @@ Usage:
 """
 
 import requests
+import sys
 import json
 import base64
 import time
@@ -148,37 +149,53 @@ query ProfessorReviews($profID: ID!, $after: String) {
 
 # API Helpers
 
+class RMPRequestError(RuntimeError):
+    """Raised when a GraphQL request fails after all retries. Callers that
+    page through reviews use it to mark a professor as incomplete instead of
+    silently saving a truncated review list."""
+
+
 def graphql_request(query: str, variables: dict, max_retries: int = 3) -> dict:
-    """Send a GraphQL request to RMP with retry and exponential backoff."""
+    """Send a GraphQL request to RMP with retry and exponential backoff.
+    Raises RMPRequestError once retries are exhausted."""
     payload = {"query": query, "variables": variables}
+    last_error = None
     for attempt in range(max_retries + 1):
         try:
             response = requests.post(RMP_GRAPHQL_URL, headers=HEADERS, json=payload, timeout=15)
             if response.status_code == 429:
                 # Rate limited - back off exponentially
                 wait = 2 ** attempt + 1  # 2s, 3s, 5s, 9s
+                last_error = f"HTTP 429 after {attempt + 1} attempts"
                 if attempt < max_retries:
                     time.sleep(wait)
                     continue
-                else:
-                    return {}
+                break
             response.raise_for_status()
             data = response.json()
-            if "errors" in data:
-                pass  # silent, don't spam logs
-            return data.get("data", {})
+            if "errors" in data and not data.get("data"):
+                raise RMPRequestError(f"GraphQL errors: {str(data['errors'])[:200]}")
+            return data.get("data", {}) or {}
         except requests.exceptions.RequestException as e:
+            last_error = repr(e)
             if attempt < max_retries:
                 time.sleep(2 ** attempt)
                 continue
-            return {}
+    raise RMPRequestError(last_error or "request failed")
 
 
 def search_school(school_name: str) -> list:
-    """Search for a school by name. Returns list of {id, name, city, state}."""
+    """Search for a school by name. Returns list of {id, name, city, state},
+    best name match first (RMP's own ranking puts UC Riverside ahead of UC
+    Irvine for 'University of California Irvine')."""
     data = graphql_request(SEARCH_SCHOOL_QUERY, {"query": school_name})
-    schools = data.get("newSearch", {}).get("schools", {}).get("edges", [])
-    return [edge["node"] for edge in schools]
+    schools = [edge["node"] for edge in data.get("newSearch", {}).get("schools", {}).get("edges", [])]
+    try:
+        from rapidfuzz import fuzz
+        schools.sort(key=lambda s: -fuzz.ratio((s.get("name") or "").lower(), school_name.lower()))
+    except ImportError:
+        pass
+    return schools
 
 
 def get_all_professors(school_id: str, max_professors: int = None) -> list:
@@ -208,7 +225,11 @@ def get_all_professors(school_id: str, max_professors: int = None) -> list:
             variables = {"query": {"text": term, "schoolID": school_id}}
             if cursor:
                 variables["after"] = cursor
-            data = graphql_request(SEARCH_PROFESSORS_QUERY, variables)
+            try:
+                data = graphql_request(SEARCH_PROFESSORS_QUERY, variables)
+            except RMPRequestError as e:
+                print(f"    search '{term}' failed: {e}", flush=True)
+                break
             if not data:
                 break
             teachers = data.get("newSearch", {}).get("teachers", {})
@@ -275,6 +296,8 @@ def get_all_professors(school_id: str, max_professors: int = None) -> list:
                 if max_professors and len(professors) >= max_professors:
                     stopped = True
                     print(f"  Reached limit ({max_professors}) at {done}/{len(two_letter_terms)} searches")
+                    for f in futures:
+                        f.cancel()  # queued searches never start; running ones finish
             except Exception as e:
                 done += 1
 
@@ -378,8 +401,14 @@ def scrape_school(
     professor_data = []
 
     def fetch_one(prof):
-        reviews = get_professor_reviews(prof["id"], max_reviews_per_prof)
+        incomplete = False
+        try:
+            reviews = get_professor_reviews(prof["id"], max_reviews_per_prof)
+        except RMPRequestError as e:
+            print(f"  [INCOMPLETE] {prof['firstName']} {prof['lastName']}: {e}")
+            reviews, incomplete = [], True
         return {
+            "reviews_incomplete": incomplete,
             "id": prof["id"],
             "legacy_id": prof.get("legacyId"),
             "first_name": prof["firstName"],
@@ -434,6 +463,8 @@ def scrape_school(
                 done += 1
 
     # Step 4: Package result
+    n_incomplete = sum(1 for p in professor_data if p.get("reviews_incomplete"))
+    professor_data.sort(key=lambda p: (p.get("last_name") or "", p.get("first_name") or "", p["id"]))
     result = {
         "metadata": {
             "school_name": school_info.get("name", "Unknown"),
@@ -443,11 +474,28 @@ def scrape_school(
             "scraped_at": datetime.now(tz=__import__("datetime").timezone.utc).isoformat(),
             "total_professors": len(professor_data),
             "total_reviews": sum(len(p["reviews"]) for p in professor_data),
+            "incomplete_professors": n_incomplete,
         },
         "professors": professor_data,
     }
+    if n_incomplete:
+        print(f"  WARNING: {n_incomplete}/{len(professor_data)} professors have incomplete review lists")
 
     return result
+
+
+def scrape_is_usable(data: dict, min_professors: int = 20, max_incomplete_frac: float = 0.05) -> tuple[bool, str]:
+    """Refuse to overwrite a good data file with a bad scrape: too few
+    professors (wrong campus or blocked) or too many incomplete review lists
+    (rate limited mid-run)."""
+    meta = (data or {}).get("metadata", {})
+    n = meta.get("total_professors", 0)
+    if n < min_professors:
+        return False, f"only {n} professors discovered (min {min_professors})"
+    inc = meta.get("incomplete_professors", 0)
+    if n and inc / n > max_incomplete_frac:
+        return False, f"{inc}/{n} professors incomplete (> {max_incomplete_frac:.0%})"
+    return True, "ok"
 
 
 def save_json(data: dict, output_path: str):
@@ -488,10 +536,14 @@ def main():
         min_ratings=args.min_ratings,
     )
 
-    if data:
-        save_json(data, args.output)
-    else:
+    if not data:
         print("No data scraped.")
+        sys.exit(2)
+    ok, why = scrape_is_usable(data)
+    if not ok:
+        print(f"NOT SAVING {args.output}: {why}")
+        sys.exit(2)
+    save_json(data, args.output)
 
 
 if __name__ == "__main__":

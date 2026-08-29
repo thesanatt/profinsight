@@ -26,6 +26,7 @@ from bayesian_calibration import (
     prob_a_gt_b_mc,
 )
 from bayesian_advanced import personal_grade_forecast
+from datafiles import analyzed_path, list_analyzed, load_json, read_metadata, slug_from_analyzed
 
 app = FastAPI(title="ProfInsight API", version="0.4.0")
 
@@ -82,7 +83,10 @@ async def rate_limit_middleware(request: Request, call_next):
     if request.url.path in ("/api/health", "/"):
         return await call_next(request)
 
-    ip = request.client.host or "unknown"
+    # Behind Render/Cloudflare every request arrives from the proxy, so key on
+    # the first X-Forwarded-For hop when present.
+    forwarded = request.headers.get("x-forwarded-for", "")
+    ip = forwarded.split(",")[0].strip() if forwarded else ((request.client.host if request.client else None) or "unknown")
     now = _time.time()
 
     with _rate_lock:
@@ -96,6 +100,10 @@ async def rate_limit_middleware(request: Request, call_next):
                 content={"error": "Too many requests. Try again in a minute."}
             )
         _rate_limits[ip].append(now)
+        # Drop idle clients so the table does not grow forever.
+        if len(_rate_limits) > 5000:
+            for stale in [k for k, v in _rate_limits.items() if not v or now - v[-1] > RATE_WINDOW]:
+                del _rate_limits[stale]
 
     response = await call_next(request)
 
@@ -118,7 +126,7 @@ async def rate_limit_middleware(request: Request, call_next):
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173", "https://*.vercel.app"],
+    allow_origins=["http://localhost:3000", "http://localhost:5173", "http://127.0.0.1:5173"],
     allow_origin_regex=r"https://.*\.vercel\.app",
     allow_credentials=True,
     allow_methods=["GET"],
@@ -132,33 +140,25 @@ _cache = {}
 _schools_cache = None
 _schools_cache_time = 0
 SCHOOLS_CACHE_TTL = 300  # refresh school list every 5 min
-MAX_CACHED_SCHOOLS = 10  # only keep 10 schools in memory at once
+# The largest analyzed files (BYU, UC Davis, UGA) are 15-20 MB on disk and
+# several times that as Python objects; four resident schools fits the
+# 512 MB Render free tier with room for request handling.
+MAX_CACHED_SCHOOLS = int(os.environ.get("MAX_CACHED_SCHOOLS", "4"))
+_cache_lock = threading.Lock()
 
 
 def discover_schools() -> list:
-    """Find all analyzed JSON files. Cached for 5 minutes."""
+    """Find all analyzed files (plain or gzipped). Cached for 5 minutes."""
     global _schools_cache, _schools_cache_time
     now = _time.time()
     if _schools_cache and (now - _schools_cache_time) < SCHOOLS_CACHE_TTL:
         return _schools_cache
 
     schools = []
-    pattern = os.path.join(DATA_DIR, "*_analyzed.json")
-    for filepath in sorted(glob.glob(pattern)):
+    for filepath in list_analyzed(DATA_DIR):
+        slug = slug_from_analyzed(filepath)
         try:
-            # Only read metadata, not the full file
-            with open(filepath, "r") as f:
-                # Read just enough to get metadata (first ~2000 chars)
-                raw = f.read(5000)
-                # Find metadata section
-                meta_start = raw.find('"metadata"')
-                if meta_start == -1:
-                    continue
-                # Quick parse just the metadata
-                data = json.loads(raw[:raw.find('"analysis"')] + '"analysis": []}')
-                meta = data.get("metadata", {})
-
-            slug = os.path.basename(filepath).replace("_analyzed.json", "")
+            meta = read_metadata(filepath)  # header only, not the whole file
             schools.append({
                 "slug": slug,
                 "name": meta.get("school_name", slug),
@@ -167,7 +167,6 @@ def discover_schools() -> list:
             })
         except Exception:
             # Fallback: just list the file
-            slug = os.path.basename(filepath).replace("_analyzed.json", "")
             schools.append({"slug": slug, "name": slug, "professors": 0, "reviews": 0})
 
     _schools_cache = schools
@@ -176,26 +175,55 @@ def discover_schools() -> list:
 
 
 def load_school(slug: str) -> dict:
-    """Load a school's analyzed data. LRU cache with eviction."""
-    if slug in _cache:
-        # Move to front (most recently used)
-        _cache[slug] = _cache.pop(slug)
-        return _cache[slug]
-
-    filepath = os.path.join(DATA_DIR, f"{slug}_analyzed.json")
+    """Load a school's analyzed data. LRU cache with eviction; reloads when
+    the file on disk changes (nightly refresh)."""
+    filepath = analyzed_path(DATA_DIR, slug)
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail=f"School '{slug}' not found")
+    mtime = os.path.getmtime(filepath)
 
-    with open(filepath, "r") as f:
-        data = json.load(f)
+    with _cache_lock:
+        entry = _cache.get(slug)
+        if entry is not None and entry[0] == mtime:
+            # Move to front (most recently used)
+            _cache[slug] = _cache.pop(slug)
+            return entry[1]
 
-    # Evict oldest if cache is full
-    if len(_cache) >= MAX_CACHED_SCHOOLS:
-        oldest = next(iter(_cache))
-        del _cache[oldest]
+    data = load_json(filepath)
 
-    _cache[slug] = data
+    with _cache_lock:
+        _cache.pop(slug, None)
+        # Evict oldest if cache is full
+        while len(_cache) >= MAX_CACHED_SCHOOLS:
+            del _cache[next(iter(_cache))]
+        _cache[slug] = (mtime, data)
     return data
+
+
+def _headline_good(prof: dict) -> dict:
+    """The one posterior every surface should agree on: the calibrated
+    (empirical-Bayes) good-rating posterior, with the fixed Beta(2,2) block as
+    a fallback for JSON produced before the calibration layer existed."""
+    cal = prof.get("calibrated_analysis") or {}
+    gr = cal.get("good_rating") if isinstance(cal, dict) else None
+    if gr and gr.get("mean") is not None:
+        return {"mean": gr.get("mean"), "ci_lower": gr.get("ci_lower"), "ci_upper": gr.get("ci_upper")}
+    legacy = (prof.get("bayesian_analysis") or {}).get("rating_posteriors", {}).get("good", {}) or {}
+    return {"mean": legacy.get("mean"), "ci_lower": legacy.get("ci_lower"), "ci_upper": legacy.get("ci_upper")}
+
+
+def _course_key(name: str) -> str:
+    """Normalize a course code for matching: 'EECS 281', 'eecs-281' -> 'EECS281'."""
+    return "".join(ch for ch in (name or "").upper() if ch.isalnum())
+
+
+def _course_matches(query: str, class_name: str) -> bool:
+    """Exact match on normalized course codes. Substring containment produced
+    cross-course hits (CS101 vs CS1010, MATH2 vs MATH215); reviewers write
+    'ENG125' and 'ENGLISH125' for the same course, so a department-alias miss
+    is accepted over a false positive."""
+    q, c = _course_key(query), _course_key(class_name)
+    return bool(q) and q == c
 
 
 def get_default_slug() -> str:
@@ -255,8 +283,7 @@ def list_professors(
 
     results = []
     for p in profs[:limit]:
-        bayesian = p.get("bayesian_analysis", {})
-        good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+        good_post = _headline_good(p)
         results.append({
             "id": p.get("professor_id"),
             "legacy_id": p.get("legacy_id"),
@@ -324,17 +351,19 @@ def teaching_now(school: str, course_code: str):
     tba_sections = 0
     for s in sections:
         pids = s.get("matched_professor_ids") or []
-        if not pids:
-            if not s.get("instructors"):
-                tba_sections += 1
-            # unmatched instructor name — include so UI can still list it
-            for name in (s.get("instructors") or []):
-                per_prof.setdefault(("unmatched", name), {
-                    "matched": False,
-                    "instructor_name": name,
-                    "sections": [],
-                })[ "sections"].append(s)
-            continue
+        if not pids and not s.get("instructors"):
+            tba_sections += 1
+        # Instructors without an RMP record are listed by name, including
+        # co-instructors of sections that also have a matched professor.
+        unmatched_names = s.get("unmatched_instructors")
+        if unmatched_names is None:  # schedule JSON from before this field existed
+            unmatched_names = [] if pids else (s.get("instructors") or [])
+        for name in unmatched_names:
+            per_prof.setdefault(("unmatched", name), {
+                "matched": False,
+                "instructor_name": name,
+                "sections": [],
+            })["sections"].append(s)
         for pid in pids:
             key = ("matched", pid)
             if key not in per_prof:
@@ -348,9 +377,7 @@ def teaching_now(school: str, course_code: str):
                     "avg_difficulty": prof.get("summary", {}).get("avg_difficulty"),
                     "num_ratings": prof.get("summary", {}).get("num_ratings"),
                     "verdict": prof.get("verdict"),
-                    "bayesian_good_prob": (prof.get("bayesian_analysis", {})
-                                                 .get("rating_posteriors", {})
-                                                 .get("good", {}).get("mean")),
+                    "bayesian_good_prob": _headline_good(prof).get("mean"),
                     "sections": [],
                 }
             per_prof[key]["sections"].append(s)
@@ -387,9 +414,11 @@ def schedule_status(school: str):
         "scraped_at": sched.get("scraped_at"),
         "n_courses": sched.get("n_courses"),
         "n_sections": sched.get("n_sections"),
+        # Units differ on purpose: assignments are per section-instructor pair,
+        # the unmatched figure counts distinct instructor names.
         "matched_instructor_assignments": stats.get("matched_instructor_assignments", 0),
         "distinct_profs_teaching": stats.get("distinct_profs_teaching", 0),
-        "n_unmatched_instructors": stats.get("n_unmatched_total", 0),
+        "n_unmatched_instructor_names": stats.get("n_unmatched_total", 0),
     }
 
 
@@ -557,7 +586,7 @@ def personalized_forecast(
             detail="This professor doesn't have enough self-reported grade data for a forecast.",
         )
 
-    n_reviews = int(sum(max(0, v) for v in grade_probs.values()))
+    n_reviews = int(sum(prof.get("grade_distribution", {}).values()))
     forecast = personal_grade_forecast(grade_probs, student_gpa=gpa, n_reviews=n_reviews)
     return {
         "professor": {"id": prof.get("professor_id"), "name": prof.get("name"),
@@ -694,7 +723,6 @@ def fit_quiz(
             else:
                 moderated_pct = pct_positive
 
-            importance = pref_val / 5.0  # 0.2 to 1.0
             cat_score = moderated_pct  # 0-100
 
             # If student says "very important" (4-5), weight this category more
@@ -769,11 +797,10 @@ def fit_quiz(
             reasons.append(f"Highly approachable ({appr:.0f}% positive)")
         grade_probs = p.get("grade_probabilities", {})
         a_pct = grade_probs.get("A range", 0)
-        if grading <= 2 and a_pct >= 70:
-            reasons.append(f"{a_pct:.0f}% chance of A")
+        if grading >= 4 and a_pct >= 70:
+            reasons.append(f"{a_pct:.0f}% of reported grades in the A range")
 
-        bayesian = p.get("bayesian_analysis", {})
-        good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+        good_post = _headline_good(p)
 
         scored.append({
             "id": p.get("professor_id"),
@@ -842,9 +869,8 @@ def schedule_helper(school: str, courses: str = Query(..., description="Comma-se
         for p in profs:
             for c in p.get("class_breakdown", []):
                 cname = c.get("class_name", "").strip().upper()
-                if course_code in cname or cname in course_code:
-                    bayesian = p.get("bayesian_analysis", {})
-                    good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+                if _course_matches(course_code, cname):
+                    good_post = _headline_good(p)
                     results[course_code].append({
                         "id": p.get("professor_id"),
                         "name": p.get("name"),
@@ -893,19 +919,21 @@ def optimize_semester(
         for p in profs:
             for c in p.get("class_breakdown", []):
                 cname = c.get("class_name", "").strip().upper()
-                if course_code in cname or cname in course_code:
+                if _course_matches(course_code, cname):
                     summary = p.get("summary", {})
-                    bayesian = p.get("bayesian_analysis", {})
-                    good_post = bayesian.get("rating_posteriors", {}).get("good", {})
+                    good_post = _headline_good(p)
                     grade_probs = p.get("grade_probabilities", {})
 
                     # Compute a composite score based on preference
                     rating = summary.get("avg_rating") or 3.0
                     difficulty = summary.get("avg_difficulty") or 3.0
-                    good_prob = good_post.get("mean", 0.5)
+                    good_prob = good_post.get("mean") if good_post.get("mean") is not None else 0.5
                     wta = summary.get("would_take_again_pct")
-                    wta_score = (wta / 100) if wta and wta >= 0 else 0.5
-                    a_pct = grade_probs.get("A range", 0) / 100 if grade_probs.get("A range") else 0.3
+                    # 0% would-take-again is a real (bad) signal; only a missing
+                    # value (None or RMP's -1) falls back to the neutral 0.5.
+                    wta_score = (wta / 100) if (wta is not None and wta >= 0) else 0.5
+                    has_grades = any(grade_probs.values()) if grade_probs else False
+                    a_pct = (grade_probs.get("A range", 0) / 100) if has_grades else 0.3
 
                     if preference == "easy":
                         score = (rating / 5) * 0.2 + (1 - difficulty / 5) * 0.35 + a_pct * 0.25 + wta_score * 0.2

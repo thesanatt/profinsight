@@ -1,0 +1,1785 @@
+{
+ "generated_at": "2026-08-29T13:57:15",
+ "schools_evaluated": [
+  "alabama",
+  "asu",
+  "berkeley",
+  "brown",
+  "byu",
+  "caltech",
+  "cmu",
+  "columbia",
+  "cornell",
+  "dartmouth",
+  "duke",
+  "fsu",
+  "gatech",
+  "iastate",
+  "iub",
+  "kansas",
+  "miami",
+  "mit",
+  "mizzou",
+  "msu",
+  "northeastern",
+  "northwestern",
+  "nyu",
+  "osu",
+  "princeton",
+  "psu",
+  "purdue",
+  "rice",
+  "rpi",
+  "smu",
+  "stanford",
+  "tamu",
+  "tcu",
+  "ucdavis",
+  "ucf",
+  "uci",
+  "ucla",
+  "ucr",
+  "ucsb",
+  "ucsd",
+  "uf",
+  "uga",
+  "uic",
+  "uiuc",
+  "uky",
+  "umass",
+  "umbc",
+  "umd",
+  "umich",
+  "unc",
+  "uoregon",
+  "upenn",
+  "usc",
+  "uta",
+  "utah",
+  "utaustin",
+  "utdallas",
+  "uva",
+  "uw",
+  "vanderbilt",
+  "vt",
+  "wisc",
+  "wpi",
+  "wustl",
+  "yale"
+ ],
+ "dataset": {
+  "schools": 65,
+  "professors": 50842,
+  "reviews": 1386314,
+  "reviews_with_comment": 1386079,
+  "review_words": 63955978,
+  "reviews_with_tags": 860949,
+  "reviews_with_grade": 794132,
+  "departments": 4902,
+  "courses": 159568,
+  "median_reviews_per_professor": 13.0,
+  "earliest_review": "1999-09-17",
+  "latest_review": "2026-08-29",
+  "reviews_since_2024": 408819,
+  "per_school": {
+   "alabama": {
+    "name": "University of Alabama",
+    "professors": 1145,
+    "reviews": 34398
+   },
+   "asu": {
+    "name": "Arizona State University",
+    "professors": 1274,
+    "reviews": 59798
+   },
+   "berkeley": {
+    "name": "University of California Berkeley",
+    "professors": 1140,
+    "reviews": 29610
+   },
+   "brown": {
+    "name": "Brown University",
+    "professors": 218,
+    "reviews": 2121
+   },
+   "byu": {
+    "name": "Brigham Young University",
+    "professors": 1098,
+    "reviews": 65043
+   },
+   "caltech": {
+    "name": "California Institute of Technology",
+    "professors": 30,
+    "reviews": 250
+   },
+   "cmu": {
+    "name": "Carnegie Mellon University",
+    "professors": 332,
+    "reviews": 3639
+   },
+   "columbia": {
+    "name": "Columbia University",
+    "professors": 260,
+    "reviews": 3830
+   },
+   "cornell": {
+    "name": "Cornell University",
+    "professors": 894,
+    "reviews": 17125
+   },
+   "dartmouth": {
+    "name": "Dartmouth College",
+    "professors": 62,
+    "reviews": 343
+   },
+   "duke": {
+    "name": "Duke University",
+    "professors": 922,
+    "reviews": 18030
+   },
+   "fsu": {
+    "name": "Florida State University",
+    "professors": 1210,
+    "reviews": 30722
+   },
+   "gatech": {
+    "name": "Georgia Institute of Technology",
+    "professors": 943,
+    "reviews": 18891
+   },
+   "iastate": {
+    "name": "Iowa State University",
+    "professors": 992,
+    "reviews": 22821
+   },
+   "iub": {
+    "name": "Indiana University Bloomington",
+    "professors": 1142,
+    "reviews": 24608
+   },
+   "kansas": {
+    "name": "University of Kansas",
+    "professors": 970,
+    "reviews": 17418
+   },
+   "miami": {
+    "name": "University of Miami",
+    "professors": 940,
+    "reviews": 23507
+   },
+   "mit": {
+    "name": "Massachusetts Institute of Technology",
+    "professors": 150,
+    "reviews": 1443
+   },
+   "mizzou": {
+    "name": "University of Missouri - Columbia",
+    "professors": 849,
+    "reviews": 16619
+   },
+   "msu": {
+    "name": "Michigan State University",
+    "professors": 890,
+    "reviews": 17668
+   },
+   "northeastern": {
+    "name": "Northeastern University",
+    "professors": 1040,
+    "reviews": 24511
+   },
+   "northwestern": {
+    "name": "Northwestern University",
+    "professors": 133,
+    "reviews": 934
+   },
+   "nyu": {
+    "name": "New York University",
+    "professors": 1163,
+    "reviews": 29758
+   },
+   "osu": {
+    "name": "The Ohio State University",
+    "professors": 1212,
+    "reviews": 29319
+   },
+   "princeton": {
+    "name": "Princeton University",
+    "professors": 99,
+    "reviews": 813
+   },
+   "psu": {
+    "name": "Penn State University",
+    "professors": 1247,
+    "reviews": 37379
+   },
+   "purdue": {
+    "name": "Purdue University",
+    "professors": 400,
+    "reviews": 11434
+   },
+   "rice": {
+    "name": "Rice University",
+    "professors": 98,
+    "reviews": 660
+   },
+   "rpi": {
+    "name": "Rensselaer Polytechnic Institute",
+    "professors": 508,
+    "reviews": 9129
+   },
+   "smu": {
+    "name": "SMU - Southern Methodist University",
+    "professors": 790,
+    "reviews": 18435
+   },
+   "stanford": {
+    "name": "Stanford University",
+    "professors": 222,
+    "reviews": 2175
+   },
+   "tamu": {
+    "name": "Texas A&M University",
+    "professors": 1222,
+    "reviews": 47017
+   },
+   "tcu": {
+    "name": "Texas Christian University",
+    "professors": 840,
+    "reviews": 19553
+   },
+   "ucdavis": {
+    "name": "University of California Davis",
+    "professors": 1241,
+    "reviews": 57180
+   },
+   "ucf": {
+    "name": "University of Central Florida",
+    "professors": 1279,
+    "reviews": 63512
+   },
+   "uci": {
+    "name": "University of California Irvine",
+    "professors": 1134,
+    "reviews": 44400
+   },
+   "ucla": {
+    "name": "University of California Los Angeles (UCLA)",
+    "professors": 402,
+    "reviews": 3570
+   },
+   "ucr": {
+    "name": "University of California Riverside",
+    "professors": 1002,
+    "reviews": 25873
+   },
+   "ucsb": {
+    "name": "University of California Santa Barbara",
+    "professors": 1056,
+    "reviews": 34464
+   },
+   "ucsd": {
+    "name": "University of California San Diego",
+    "professors": 1095,
+    "reviews": 34664
+   },
+   "uf": {
+    "name": "University of Florida",
+    "professors": 421,
+    "reviews": 16709
+   },
+   "uga": {
+    "name": "University of Georgia",
+    "professors": 1192,
+    "reviews": 44555
+   },
+   "uic": {
+    "name": "University of Illinois Chicago",
+    "professors": 1050,
+    "reviews": 24432
+   },
+   "uiuc": {
+    "name": "University of Illinois Urbana-Champaign",
+    "professors": 1083,
+    "reviews": 21852
+   },
+   "uky": {
+    "name": "University of Kentucky",
+    "professors": 955,
+    "reviews": 21618
+   },
+   "umass": {
+    "name": "University of Massachusetts Amherst",
+    "professors": 443,
+    "reviews": 16220
+   },
+   "umbc": {
+    "name": "University of Maryland, Baltimore County",
+    "professors": 873,
+    "reviews": 20615
+   },
+   "umd": {
+    "name": "University of Maryland",
+    "professors": 913,
+    "reviews": 14174
+   },
+   "umich": {
+    "name": "University of Michigan",
+    "professors": 430,
+    "reviews": 13914
+   },
+   "unc": {
+    "name": "The University of North Carolina at Chapel Hill",
+    "professors": 1116,
+    "reviews": 34691
+   },
+   "uoregon": {
+    "name": "University of Oregon",
+    "professors": 1016,
+    "reviews": 20303
+   },
+   "upenn": {
+    "name": "University of Pennsylvania",
+    "professors": 234,
+    "reviews": 1828
+   },
+   "usc": {
+    "name": "University of Southern California",
+    "professors": 1170,
+    "reviews": 33775
+   },
+   "uta": {
+    "name": "University of Texas at Arlington",
+    "professors": 440,
+    "reviews": 14422
+   },
+   "utah": {
+    "name": "University of Utah",
+    "professors": 1037,
+    "reviews": 20667
+   },
+   "utaustin": {
+    "name": "University of Texas at Austin",
+    "professors": 429,
+    "reviews": 16760
+   },
+   "utdallas": {
+    "name": "University of Texas at Dallas",
+    "professors": 1017,
+    "reviews": 32276
+   },
+   "uva": {
+    "name": "University of Virginia",
+    "professors": 667,
+    "reviews": 9891
+   },
+   "uw": {
+    "name": "University of Washington",
+    "professors": 1148,
+    "reviews": 29612
+   },
+   "vanderbilt": {
+    "name": "Vanderbilt University",
+    "professors": 926,
+    "reviews": 22130
+   },
+   "vt": {
+    "name": "Virginia Tech",
+    "professors": 812,
+    "reviews": 14721
+   },
+   "wisc": {
+    "name": "University of Wisconsin - Madison",
+    "professors": 413,
+    "reviews": 15502
+   },
+   "wpi": {
+    "name": "Worcester Polytechnic Institute",
+    "professors": 534,
+    "reviews": 9841
+   },
+   "wustl": {
+    "name": "Washington University in St. Louis",
+    "professors": 743,
+    "reviews": 12085
+   },
+   "yale": {
+    "name": "Yale University",
+    "professors": 136,
+    "reviews": 1057
+   }
+  }
+ },
+ "shrinkage": {
+  "take_again": {
+   "outcome": "take_again",
+   "professors": 35075,
+   "held_out_reviews": 384800,
+   "seconds": 8.0,
+   "by_bucket": {
+    "all": {
+     "professors": 35075,
+     "reviews": 384800,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.3977,
+       "brier": 0.1129,
+       "prof_mae": 0.1596
+      },
+      "school_mean": {
+       "logloss": 0.375,
+       "brier": 0.1048,
+       "prof_mae": 0.2228
+      },
+      "fixed_beta22": {
+       "logloss": 0.3941,
+       "brier": 0.1214,
+       "prof_mae": 0.2648
+      },
+      "eb_mom": {
+       "logloss": 0.3317,
+       "brier": 0.1029,
+       "prof_mae": 0.1685
+      },
+      "eb_ml": {
+       "logloss": 0.3315,
+       "brier": 0.1021,
+       "prof_mae": 0.1712
+      },
+      "eb_ml_recency": {
+       "logloss": 0.3261,
+       "brier": 0.0996,
+       "prof_mae": 0.1693
+      },
+      "kappa_1": {
+       "logloss": 0.3383,
+       "brier": 0.1065,
+       "prof_mae": 0.1653
+      },
+      "kappa_2": {
+       "logloss": 0.3322,
+       "brier": 0.1031,
+       "prof_mae": 0.169
+      },
+      "kappa_4": {
+       "logloss": 0.3284,
+       "brier": 0.0996,
+       "prof_mae": 0.1748
+      },
+      "kappa_8": {
+       "logloss": 0.3278,
+       "brier": 0.0966,
+       "prof_mae": 0.1822
+      },
+      "kappa_16": {
+       "logloss": 0.3305,
+       "brier": 0.095,
+       "prof_mae": 0.19
+      },
+      "kappa_32": {
+       "logloss": 0.3358,
+       "brier": 0.0948,
+       "prof_mae": 0.1971
+      }
+     }
+    },
+    "2-4": {
+     "professors": 15048,
+     "reviews": 49223,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.607,
+       "brier": 0.1265,
+       "prof_mae": 0.1555
+      },
+      "school_mean": {
+       "logloss": 0.3914,
+       "brier": 0.1115,
+       "prof_mae": 0.2403
+      },
+      "fixed_beta22": {
+       "logloss": 0.4893,
+       "brier": 0.1534,
+       "prof_mae": 0.3132
+      },
+      "eb_mom": {
+       "logloss": 0.3231,
+       "brier": 0.0966,
+       "prof_mae": 0.1757
+      },
+      "eb_ml": {
+       "logloss": 0.3257,
+       "brier": 0.0962,
+       "prof_mae": 0.1809
+      },
+      "eb_ml_recency": {
+       "logloss": 0.3226,
+       "brier": 0.0941,
+       "prof_mae": 0.1805
+      },
+      "kappa_1": {
+       "logloss": 0.3333,
+       "brier": 0.1039,
+       "prof_mae": 0.1684
+      },
+      "kappa_2": {
+       "logloss": 0.3237,
+       "brier": 0.0968,
+       "prof_mae": 0.1763
+      },
+      "kappa_4": {
+       "logloss": 0.3269,
+       "brier": 0.0938,
+       "prof_mae": 0.188
+      },
+      "kappa_8": {
+       "logloss": 0.3386,
+       "brier": 0.0954,
+       "prof_mae": 0.2008
+      },
+      "kappa_16": {
+       "logloss": 0.3521,
+       "brier": 0.0992,
+       "prof_mae": 0.2115
+      },
+      "kappa_32": {
+       "logloss": 0.363,
+       "brier": 0.1029,
+       "prof_mae": 0.2189
+      }
+     }
+    },
+    "5-9": {
+     "professors": 9688,
+     "reviews": 68138,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.4358,
+       "brier": 0.1196,
+       "prof_mae": 0.1597
+      },
+      "school_mean": {
+       "logloss": 0.3867,
+       "brier": 0.1096,
+       "prof_mae": 0.2164
+      },
+      "fixed_beta22": {
+       "logloss": 0.433,
+       "brier": 0.1325,
+       "prof_mae": 0.2513
+      },
+      "eb_mom": {
+       "logloss": 0.3319,
+       "brier": 0.1031,
+       "prof_mae": 0.1619
+      },
+      "eb_ml": {
+       "logloss": 0.3314,
+       "brier": 0.1016,
+       "prof_mae": 0.1636
+      },
+      "eb_ml_recency": {
+       "logloss": 0.3247,
+       "brier": 0.098,
+       "prof_mae": 0.161
+      },
+      "kappa_1": {
+       "logloss": 0.3444,
+       "brier": 0.1094,
+       "prof_mae": 0.161
+      },
+      "kappa_2": {
+       "logloss": 0.3327,
+       "brier": 0.1035,
+       "prof_mae": 0.1623
+      },
+      "kappa_4": {
+       "logloss": 0.327,
+       "brier": 0.0976,
+       "prof_mae": 0.1658
+      },
+      "kappa_8": {
+       "logloss": 0.3294,
+       "brier": 0.0944,
+       "prof_mae": 0.172
+      },
+      "kappa_16": {
+       "logloss": 0.3384,
+       "brier": 0.0951,
+       "prof_mae": 0.1806
+      },
+      "kappa_32": {
+       "logloss": 0.3495,
+       "brier": 0.0981,
+       "prof_mae": 0.1891
+      }
+     }
+    },
+    "10-29": {
+     "professors": 8019,
+     "reviews": 132381,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.3737,
+       "brier": 0.1164,
+       "prof_mae": 0.1676
+      },
+      "school_mean": {
+       "logloss": 0.3776,
+       "brier": 0.1057,
+       "prof_mae": 0.2059
+      },
+      "fixed_beta22": {
+       "logloss": 0.3959,
+       "brier": 0.1222,
+       "prof_mae": 0.2158
+      },
+      "eb_mom": {
+       "logloss": 0.3441,
+       "brier": 0.1086,
+       "prof_mae": 0.1659
+      },
+      "eb_ml": {
+       "logloss": 0.343,
+       "brier": 0.1075,
+       "prof_mae": 0.166
+      },
+      "eb_ml_recency": {
+       "logloss": 0.3349,
+       "brier": 0.1038,
+       "prof_mae": 0.162
+      },
+      "kappa_1": {
+       "logloss": 0.3517,
+       "brier": 0.1122,
+       "prof_mae": 0.1669
+      },
+      "kappa_2": {
+       "logloss": 0.3448,
+       "brier": 0.1089,
+       "prof_mae": 0.1663
+      },
+      "kappa_4": {
+       "logloss": 0.3376,
+       "brier": 0.1042,
+       "prof_mae": 0.1659
+      },
+      "kappa_8": {
+       "logloss": 0.3325,
+       "brier": 0.0989,
+       "prof_mae": 0.1666
+      },
+      "kappa_16": {
+       "logloss": 0.3322,
+       "brier": 0.0951,
+       "prof_mae": 0.1699
+      },
+      "kappa_32": {
+       "logloss": 0.3373,
+       "brier": 0.0943,
+       "prof_mae": 0.1758
+      }
+     }
+    },
+    "30+": {
+     "professors": 2320,
+     "reviews": 135058,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.3259,
+       "brier": 0.1012,
+       "prof_mae": 0.1586
+      },
+      "school_mean": {
+       "logloss": 0.3606,
+       "brier": 0.099,
+       "prof_mae": 0.1952
+      },
+      "fixed_beta22": {
+       "logloss": 0.338,
+       "brier": 0.1032,
+       "prof_mae": 0.1768
+      },
+      "eb_mom": {
+       "logloss": 0.3225,
+       "brier": 0.0995,
+       "prof_mae": 0.1582
+      },
+      "eb_ml": {
+       "logloss": 0.3223,
+       "brier": 0.0992,
+       "prof_mae": 0.1582
+      },
+      "eb_ml_recency": {
+       "logloss": 0.3195,
+       "brier": 0.0983,
+       "prof_mae": 0.1564
+      },
+      "kappa_1": {
+       "logloss": 0.3239,
+       "brier": 0.1004,
+       "prof_mae": 0.1584
+      },
+      "kappa_2": {
+       "logloss": 0.3226,
+       "brier": 0.0996,
+       "prof_mae": 0.1583
+      },
+      "kappa_4": {
+       "logloss": 0.3207,
+       "brier": 0.0982,
+       "prof_mae": 0.1582
+      },
+      "kappa_8": {
+       "logloss": 0.3185,
+       "brier": 0.096,
+       "prof_mae": 0.1583
+      },
+      "kappa_16": {
+       "logloss": 0.3169,
+       "brier": 0.0932,
+       "prof_mae": 0.1593
+      },
+      "kappa_32": {
+       "logloss": 0.3176,
+       "brier": 0.0907,
+       "prof_mae": 0.1623
+      }
+     }
+    }
+   },
+   "coverage": {
+    "fixed_beta22": {
+     "80%": 79.0,
+     "90%": 85.8,
+     "95%": 89.8
+    },
+    "eb_mom": {
+     "80%": 83.6,
+     "90%": 88.4,
+     "95%": 91.5
+    },
+    "eb_ml": {
+     "80%": 83.8,
+     "90%": 88.5,
+     "95%": 91.6
+    },
+    "eb_ml_recency": {
+     "80%": 86.1,
+     "90%": 90.4,
+     "95%": 93.1
+    }
+   },
+   "dept_priors_at_floor": {
+    "eb_mom": {
+     "clamped": 843,
+     "total": 1084,
+     "pct": 77.8
+    },
+    "eb_ml": {
+     "clamped": 380,
+     "total": 1084,
+     "pct": 35.1
+    }
+   }
+  },
+  "good_rating": {
+   "outcome": "good_rating",
+   "professors": 46670,
+   "held_out_reviews": 698356,
+   "seconds": 10.8,
+   "by_bucket": {
+    "all": {
+     "professors": 46670,
+     "reviews": 698356,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.681,
+       "brier": 0.2033,
+       "prof_mae": 0.2025
+      },
+      "school_mean": {
+       "logloss": 0.6635,
+       "brier": 0.2354,
+       "prof_mae": 0.2684
+      },
+      "fixed_beta22": {
+       "logloss": 0.5785,
+       "brier": 0.1967,
+       "prof_mae": 0.2141
+      },
+      "eb_mom": {
+       "logloss": 0.5847,
+       "brier": 0.1974,
+       "prof_mae": 0.2013
+      },
+      "eb_ml": {
+       "logloss": 0.5822,
+       "brier": 0.197,
+       "prof_mae": 0.2022
+      },
+      "eb_ml_recency": {
+       "logloss": 0.5721,
+       "brier": 0.1936,
+       "prof_mae": 0.1998
+      },
+      "kappa_1": {
+       "logloss": 0.5955,
+       "brier": 0.1993,
+       "prof_mae": 0.2019
+      },
+      "kappa_2": {
+       "logloss": 0.5852,
+       "brier": 0.1975,
+       "prof_mae": 0.2013
+      },
+      "kappa_4": {
+       "logloss": 0.5784,
+       "brier": 0.1962,
+       "prof_mae": 0.203
+      },
+      "kappa_8": {
+       "logloss": 0.5763,
+       "brier": 0.1961,
+       "prof_mae": 0.2093
+      },
+      "kappa_16": {
+       "logloss": 0.5797,
+       "brier": 0.1979,
+       "prof_mae": 0.2193
+      },
+      "kappa_32": {
+       "logloss": 0.5882,
+       "brier": 0.2017,
+       "prof_mae": 0.2303
+      }
+     }
+    },
+    "2-4": {
+     "professors": 16208,
+     "reviews": 53413,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 1.1499,
+       "brier": 0.2274,
+       "prof_mae": 0.2452
+      },
+      "school_mean": {
+       "logloss": 0.633,
+       "brier": 0.2204,
+       "prof_mae": 0.3029
+      },
+      "fixed_beta22": {
+       "logloss": 0.5929,
+       "brier": 0.2021,
+       "prof_mae": 0.2774
+      },
+      "eb_mom": {
+       "logloss": 0.572,
+       "brier": 0.193,
+       "prof_mae": 0.2499
+      },
+      "eb_ml": {
+       "logloss": 0.5692,
+       "brier": 0.1923,
+       "prof_mae": 0.2525
+      },
+      "eb_ml_recency": {
+       "logloss": 0.5665,
+       "brier": 0.1913,
+       "prof_mae": 0.2525
+      },
+      "kappa_1": {
+       "logloss": 0.5997,
+       "brier": 0.2004,
+       "prof_mae": 0.2481
+      },
+      "kappa_2": {
+       "logloss": 0.572,
+       "brier": 0.193,
+       "prof_mae": 0.2498
+      },
+      "kappa_4": {
+       "logloss": 0.5669,
+       "brier": 0.1914,
+       "prof_mae": 0.2558
+      },
+      "kappa_8": {
+       "logloss": 0.5774,
+       "brier": 0.1958,
+       "prof_mae": 0.2658
+      },
+      "kappa_16": {
+       "logloss": 0.5929,
+       "brier": 0.2027,
+       "prof_mae": 0.2769
+      },
+      "kappa_32": {
+       "logloss": 0.6062,
+       "brier": 0.2086,
+       "prof_mae": 0.2852
+      }
+     }
+    },
+    "5-9": {
+     "professors": 12134,
+     "reviews": 87015,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.7932,
+       "brier": 0.2091,
+       "prof_mae": 0.2022
+      },
+      "school_mean": {
+       "logloss": 0.6472,
+       "brier": 0.2273,
+       "prof_mae": 0.2631
+      },
+      "fixed_beta22": {
+       "logloss": 0.5771,
+       "brier": 0.1961,
+       "prof_mae": 0.2092
+      },
+      "eb_mom": {
+       "logloss": 0.5808,
+       "brier": 0.1964,
+       "prof_mae": 0.1966
+      },
+      "eb_ml": {
+       "logloss": 0.5765,
+       "brier": 0.1954,
+       "prof_mae": 0.1973
+      },
+      "eb_ml_recency": {
+       "logloss": 0.5708,
+       "brier": 0.1936,
+       "prof_mae": 0.1961
+      },
+      "kappa_1": {
+       "logloss": 0.6039,
+       "brier": 0.2008,
+       "prof_mae": 0.1989
+      },
+      "kappa_2": {
+       "logloss": 0.5815,
+       "brier": 0.1965,
+       "prof_mae": 0.1967
+      },
+      "kappa_4": {
+       "logloss": 0.5702,
+       "brier": 0.1935,
+       "prof_mae": 0.1974
+      },
+      "kappa_8": {
+       "logloss": 0.5727,
+       "brier": 0.1945,
+       "prof_mae": 0.2053
+      },
+      "kappa_16": {
+       "logloss": 0.586,
+       "brier": 0.2001,
+       "prof_mae": 0.2185
+      },
+      "kappa_32": {
+       "logloss": 0.6026,
+       "brier": 0.2074,
+       "prof_mae": 0.2315
+      }
+     }
+    },
+    "10-29": {
+     "professors": 13081,
+     "reviews": 222248,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.6603,
+       "brier": 0.205,
+       "prof_mae": 0.173
+      },
+      "school_mean": {
+       "logloss": 0.6643,
+       "brier": 0.2356,
+       "prof_mae": 0.2432
+      },
+      "fixed_beta22": {
+       "logloss": 0.5814,
+       "brier": 0.1983,
+       "prof_mae": 0.1694
+      },
+      "eb_mom": {
+       "logloss": 0.5944,
+       "brier": 0.2009,
+       "prof_mae": 0.1686
+      },
+      "eb_ml": {
+       "logloss": 0.5908,
+       "brier": 0.2003,
+       "prof_mae": 0.1681
+      },
+      "eb_ml_recency": {
+       "logloss": 0.5805,
+       "brier": 0.1972,
+       "prof_mae": 0.1638
+      },
+      "kappa_1": {
+       "logloss": 0.6074,
+       "brier": 0.2027,
+       "prof_mae": 0.1707
+      },
+      "kappa_2": {
+       "logloss": 0.5952,
+       "brier": 0.201,
+       "prof_mae": 0.1687
+      },
+      "kappa_4": {
+       "logloss": 0.5851,
+       "brier": 0.1991,
+       "prof_mae": 0.1673
+      },
+      "kappa_8": {
+       "logloss": 0.5807,
+       "brier": 0.1983,
+       "prof_mae": 0.1697
+      },
+      "kappa_16": {
+       "logloss": 0.5855,
+       "brier": 0.2004,
+       "prof_mae": 0.1784
+      },
+      "kappa_32": {
+       "logloss": 0.5988,
+       "brier": 0.2061,
+       "prof_mae": 0.1921
+      }
+     }
+    },
+    "30+": {
+     "professors": 5247,
+     "reviews": 335680,
+     "estimators": {
+      "raw_mle": {
+       "logloss": 0.591,
+       "brier": 0.1968,
+       "prof_mae": 0.1448
+      },
+      "school_mean": {
+       "logloss": 0.6721,
+       "brier": 0.2397,
+       "prof_mae": 0.2369
+      },
+      "fixed_beta22": {
+       "logloss": 0.5747,
+       "brier": 0.1949,
+       "prof_mae": 0.1409
+      },
+      "eb_mom": {
+       "logloss": 0.5813,
+       "brier": 0.1961,
+       "prof_mae": 0.1432
+      },
+      "eb_ml": {
+       "logloss": 0.5801,
+       "brier": 0.1959,
+       "prof_mae": 0.1428
+      },
+      "eb_ml_recency": {
+       "logloss": 0.5677,
+       "brier": 0.1916,
+       "prof_mae": 0.135
+      },
+      "kappa_1": {
+       "logloss": 0.5847,
+       "brier": 0.1964,
+       "prof_mae": 0.144
+      },
+      "kappa_2": {
+       "logloss": 0.5816,
+       "brier": 0.1961,
+       "prof_mae": 0.1433
+      },
+      "kappa_4": {
+       "logloss": 0.5779,
+       "brier": 0.1956,
+       "prof_mae": 0.1424
+      },
+      "kappa_8": {
+       "logloss": 0.5741,
+       "brier": 0.1951,
+       "prof_mae": 0.1422
+      },
+      "kappa_16": {
+       "logloss": 0.5721,
+       "brier": 0.1949,
+       "prof_mae": 0.1449
+      },
+      "kappa_32": {
+       "logloss": 0.5746,
+       "brier": 0.1961,
+       "prof_mae": 0.1531
+      }
+     }
+    }
+   },
+   "coverage": {
+    "fixed_beta22": {
+     "80%": 80.9,
+     "90%": 87.7,
+     "95%": 91.5
+    },
+    "eb_mom": {
+     "80%": 78.7,
+     "90%": 85.9,
+     "95%": 90.0
+    },
+    "eb_ml": {
+     "80%": 79.0,
+     "90%": 86.1,
+     "95%": 90.2
+    },
+    "eb_ml_recency": {
+     "80%": 82.5,
+     "90%": 89.4,
+     "95%": 93.1
+    }
+   },
+   "dept_priors_at_floor": {
+    "eb_mom": {
+     "clamped": 1064,
+     "total": 1395,
+     "pct": 76.3
+    },
+    "eb_ml": {
+     "clamped": 355,
+     "total": 1395,
+     "pct": 25.4
+    }
+   }
+  }
+ },
+ "gp": {
+  "professors_eligible": 34554,
+  "professors_evaluated": 3000,
+  "seconds": 11.0,
+  "curve_below_1_star_pct": {
+   "old_zero_mean": 51.0,
+   "shipped": 0.4
+  },
+  "next_period_error": {
+   "train_mean": {
+    "mae": 0.6378,
+    "rmse": 0.8682
+   },
+   "last5_mean": {
+    "mae": 0.6781,
+    "rmse": 0.9272
+   },
+   "gp_old_zero_mean": {
+    "mae": 2.3996,
+    "rmse": 2.6595
+   },
+   "gp_centered_fixed_ls": {
+    "mae": 0.6202,
+    "rmse": 0.8532
+   },
+   "gp_shipped": {
+    "mae": 0.6275,
+    "rmse": 0.858
+   }
+  },
+  "chosen_length_scale_months": {
+   "3.0": 1319,
+   "6.0": 297,
+   "12.0": 196,
+   "24.0": 150,
+   "48.0": 1038
+  },
+  "trend_label_changed_pct": 61.2,
+  "trend_label_changes_top": [
+   {
+    "from": "Significantly improving over time",
+    "to": "Consistently highly rated",
+    "count": 209
+   },
+   {
+    "from": "Stable, middle-of-the-road ratings",
+    "to": "Consistently highly rated",
+    "count": 192
+   },
+   {
+    "from": "Declining over time",
+    "to": "Consistently highly rated",
+    "count": 166
+   },
+   {
+    "from": "Declining over time",
+    "to": "Trending downward recently",
+    "count": 109
+   },
+   {
+    "from": "Significantly improving over time",
+    "to": "Trending upward recently",
+    "count": 92
+   },
+   {
+    "from": "Consistently low rated",
+    "to": "Stable, middle-of-the-road ratings",
+    "count": 81
+   },
+   {
+    "from": "Consistently low rated",
+    "to": "Trending downward recently",
+    "count": 70
+   },
+   {
+    "from": "Trending downward recently",
+    "to": "Consistently highly rated",
+    "count": 69
+   }
+  ]
+ },
+ "classifier": {
+  "train_schools": [
+   "alabama",
+   "berkeley",
+   "byu",
+   "cmu",
+   "cornell",
+   "duke",
+   "gatech",
+   "iub",
+   "miami",
+   "mizzou",
+   "northeastern",
+   "nyu",
+   "princeton",
+   "purdue",
+   "rpi",
+   "stanford",
+   "tcu",
+   "ucf",
+   "ucla",
+   "ucsb",
+   "uf",
+   "uic",
+   "uky",
+   "umbc",
+   "umich",
+   "uoregon",
+   "usc",
+   "utah",
+   "utdallas",
+   "uw",
+   "vt",
+   "wpi",
+   "yale"
+  ],
+  "test_schools": [
+   "asu",
+   "brown",
+   "caltech",
+   "columbia",
+   "dartmouth",
+   "fsu",
+   "iastate",
+   "kansas",
+   "mit",
+   "msu",
+   "northwestern",
+   "osu",
+   "psu",
+   "rice",
+   "smu",
+   "tamu",
+   "ucdavis",
+   "uci",
+   "ucr",
+   "ucsd",
+   "uga",
+   "uiuc",
+   "umass",
+   "umd",
+   "unc",
+   "upenn",
+   "uta",
+   "utaustin",
+   "uva",
+   "vanderbilt",
+   "wisc",
+   "wustl"
+  ],
+  "train_weak_labels": 96762,
+  "test_weak_labels": 96274,
+  "test_label_distribution": {
+   "lectures": 17501,
+   "workload": 20244,
+   "grading": 26412,
+   "exams": 6161,
+   "approachability": 25956
+  },
+  "majority_class": {
+   "label": "grading",
+   "accuracy": 27.4
+  },
+  "variants": {
+   "keyword_seeds": {
+    "accuracy": 31.8,
+    "macro_f1": 0.302,
+    "per_class": {
+     "grading": {
+      "precision": 0.536,
+      "recall": 0.184,
+      "f1": 0.275
+     },
+     "lectures": {
+      "precision": 0.244,
+      "recall": 0.578,
+      "f1": 0.343
+     },
+     "workload": {
+      "precision": 0.399,
+      "recall": 0.301,
+      "f1": 0.343
+     },
+     "approachability": {
+      "precision": 0.474,
+      "recall": 0.291,
+      "f1": 0.36
+     },
+     "exams": {
+      "precision": 0.135,
+      "recall": 0.317,
+      "f1": 0.189
+     }
+    }
+   },
+   "seeds_plus_self_training_old": {
+    "accuracy": 17.5,
+    "macro_f1": 0.115,
+    "per_class": {
+     "grading": {
+      "precision": 0.414,
+      "recall": 0.004,
+      "f1": 0.007
+     },
+     "lectures": {
+      "precision": 0.176,
+      "recall": 0.697,
+      "f1": 0.281
+     },
+     "workload": {
+      "precision": 0.099,
+      "recall": 0.004,
+      "f1": 0.007
+     },
+     "approachability": {
+      "precision": 0.289,
+      "recall": 0.139,
+      "f1": 0.188
+     },
+     "exams": {
+      "precision": 0.068,
+      "recall": 0.149,
+      "f1": 0.094
+     }
+    }
+   },
+   "supervised_empirical_prior_shipped": {
+    "accuracy": 53.2,
+    "macro_f1": 0.452,
+    "per_class": {
+     "grading": {
+      "precision": 0.503,
+      "recall": 0.619,
+      "f1": 0.555
+     },
+     "lectures": {
+      "precision": 0.471,
+      "recall": 0.401,
+      "f1": 0.433
+     },
+     "workload": {
+      "precision": 0.526,
+      "recall": 0.484,
+      "f1": 0.504
+     },
+     "approachability": {
+      "precision": 0.633,
+      "recall": 0.678,
+      "f1": 0.654
+     },
+     "exams": {
+      "precision": 0.202,
+      "recall": 0.08,
+      "f1": 0.115
+     }
+    }
+   },
+   "supervised_uniform_prior": {
+    "accuracy": 52.4,
+    "macro_f1": 0.469,
+    "per_class": {
+     "grading": {
+      "precision": 0.524,
+      "recall": 0.558,
+      "f1": 0.541
+     },
+     "lectures": {
+      "precision": 0.459,
+      "recall": 0.432,
+      "f1": 0.445
+     },
+     "workload": {
+      "precision": 0.515,
+      "recall": 0.502,
+      "f1": 0.508
+     },
+     "approachability": {
+      "precision": 0.656,
+      "recall": 0.645,
+      "f1": 0.651
+     },
+     "exams": {
+      "precision": 0.194,
+      "recall": 0.203,
+      "f1": 0.198
+     }
+    }
+   }
+  },
+  "seconds": 30.9
+ },
+ "grade_inflation": {
+  "schools": 65,
+  "beta_median": 0.7771,
+  "beta_min": 0.1095,
+  "beta_max": 1.3232,
+  "split_half_abs_gap_median": 0.048,
+  "per_school": {
+   "alabama": {
+    "beta": 0.8255,
+    "beta_odd_half": 0.8128,
+    "beta_even_half": 0.8367
+   },
+   "asu": {
+    "beta": 0.7445,
+    "beta_odd_half": 0.736,
+    "beta_even_half": 0.756
+   },
+   "berkeley": {
+    "beta": 0.7998,
+    "beta_odd_half": 0.8334,
+    "beta_even_half": 0.7627
+   },
+   "brown": {
+    "beta": 0.7854,
+    "beta_odd_half": 0.8289,
+    "beta_even_half": 0.7415
+   },
+   "byu": {
+    "beta": 0.6493,
+    "beta_odd_half": 0.5913,
+    "beta_even_half": 0.7313
+   },
+   "caltech": {
+    "beta": 0.2476,
+    "beta_odd_half": 0.1963,
+    "beta_even_half": 0.7323
+   },
+   "cmu": {
+    "beta": 0.6987,
+    "beta_odd_half": 0.7636,
+    "beta_even_half": 0.6634
+   },
+   "columbia": {
+    "beta": 0.5944,
+    "beta_odd_half": 0.5554,
+    "beta_even_half": 0.6732
+   },
+   "cornell": {
+    "beta": 0.7253,
+    "beta_odd_half": 0.6719,
+    "beta_even_half": 0.822
+   },
+   "dartmouth": {
+    "beta": 1.3232,
+    "beta_odd_half": 1.3208,
+    "beta_even_half": 1.3273
+   },
+   "duke": {
+    "beta": 0.8445,
+    "beta_odd_half": 0.9555,
+    "beta_even_half": 0.7723
+   },
+   "fsu": {
+    "beta": 0.8107,
+    "beta_odd_half": 0.8437,
+    "beta_even_half": 0.7862
+   },
+   "gatech": {
+    "beta": 0.7891,
+    "beta_odd_half": 0.7725,
+    "beta_even_half": 0.8073
+   },
+   "iastate": {
+    "beta": 0.7543,
+    "beta_odd_half": 0.7302,
+    "beta_even_half": 0.7799
+   },
+   "iub": {
+    "beta": 0.8423,
+    "beta_odd_half": 0.8591,
+    "beta_even_half": 0.8298
+   },
+   "kansas": {
+    "beta": 0.7653,
+    "beta_odd_half": 0.745,
+    "beta_even_half": 0.7799
+   },
+   "miami": {
+    "beta": 0.9223,
+    "beta_odd_half": 0.945,
+    "beta_even_half": 0.8962
+   },
+   "mit": {
+    "beta": 0.5827,
+    "beta_odd_half": 0.6282,
+    "beta_even_half": 0.5065
+   },
+   "mizzou": {
+    "beta": 0.7858,
+    "beta_odd_half": 0.792,
+    "beta_even_half": 0.7783
+   },
+   "msu": {
+    "beta": 0.7746,
+    "beta_odd_half": 0.7911,
+    "beta_even_half": 0.7602
+   },
+   "northeastern": {
+    "beta": 0.9292,
+    "beta_odd_half": 0.9534,
+    "beta_even_half": 0.9054
+   },
+   "northwestern": {
+    "beta": 0.1095,
+    "beta_odd_half": -0.0551,
+    "beta_even_half": 0.6741
+   },
+   "nyu": {
+    "beta": 1.087,
+    "beta_odd_half": 1.0734,
+    "beta_even_half": 1.1049
+   },
+   "osu": {
+    "beta": 0.8259,
+    "beta_odd_half": 0.8364,
+    "beta_even_half": 0.8153
+   },
+   "princeton": {
+    "beta": 0.4479,
+    "beta_odd_half": 0.6668,
+    "beta_even_half": 0.2652
+   },
+   "psu": {
+    "beta": 0.8306,
+    "beta_odd_half": 0.853,
+    "beta_even_half": 0.808
+   },
+   "purdue": {
+    "beta": 0.6525,
+    "beta_odd_half": 0.6586,
+    "beta_even_half": 0.646
+   },
+   "rice": {
+    "beta": 0.4619,
+    "beta_odd_half": 0.7279,
+    "beta_even_half": 0.4427
+   },
+   "rpi": {
+    "beta": 0.6172,
+    "beta_odd_half": 0.6046,
+    "beta_even_half": 0.6282
+   },
+   "smu": {
+    "beta": 1.0578,
+    "beta_odd_half": 1.0245,
+    "beta_even_half": 1.098
+   },
+   "stanford": {
+    "beta": 0.3693,
+    "beta_odd_half": 0.2747,
+    "beta_even_half": 0.4549
+   },
+   "tamu": {
+    "beta": 0.7266,
+    "beta_odd_half": 0.7348,
+    "beta_even_half": 0.7171
+   },
+   "tcu": {
+    "beta": 0.9355,
+    "beta_odd_half": 0.9781,
+    "beta_even_half": 0.8958
+   },
+   "ucdavis": {
+    "beta": 0.7048,
+    "beta_odd_half": 0.7359,
+    "beta_even_half": 0.6702
+   },
+   "ucf": {
+    "beta": 0.7502,
+    "beta_odd_half": 0.7803,
+    "beta_even_half": 0.7182
+   },
+   "uci": {
+    "beta": 0.7478,
+    "beta_odd_half": 0.7491,
+    "beta_even_half": 0.7467
+   },
+   "ucla": {
+    "beta": 0.7041,
+    "beta_odd_half": 0.6457,
+    "beta_even_half": 0.7669
+   },
+   "ucr": {
+    "beta": 0.7393,
+    "beta_odd_half": 0.7503,
+    "beta_even_half": 0.732
+   },
+   "ucsb": {
+    "beta": 0.7564,
+    "beta_odd_half": 0.7534,
+    "beta_even_half": 0.7598
+   },
+   "ucsd": {
+    "beta": 0.7926,
+    "beta_odd_half": 0.7883,
+    "beta_even_half": 0.797
+   },
+   "uf": {
+    "beta": 0.8549,
+    "beta_odd_half": 0.7746,
+    "beta_even_half": 0.9675
+   },
+   "uga": {
+    "beta": 0.9304,
+    "beta_odd_half": 0.8992,
+    "beta_even_half": 0.9637
+   },
+   "uic": {
+    "beta": 0.8092,
+    "beta_odd_half": 0.8627,
+    "beta_even_half": 0.7596
+   },
+   "uiuc": {
+    "beta": 0.7588,
+    "beta_odd_half": 0.7352,
+    "beta_even_half": 0.7831
+   },
+   "uky": {
+    "beta": 0.7517,
+    "beta_odd_half": 0.8004,
+    "beta_even_half": 0.7059
+   },
+   "umass": {
+    "beta": 0.7773,
+    "beta_odd_half": 0.7521,
+    "beta_even_half": 0.801
+   },
+   "umbc": {
+    "beta": 0.7848,
+    "beta_odd_half": 0.7582,
+    "beta_even_half": 0.8148
+   },
+   "umd": {
+    "beta": 0.7444,
+    "beta_odd_half": 0.7648,
+    "beta_even_half": 0.7236
+   },
+   "umich": {
+    "beta": 0.7617,
+    "beta_odd_half": 0.7649,
+    "beta_even_half": 0.7597
+   },
+   "unc": {
+    "beta": 0.8569,
+    "beta_odd_half": 0.8374,
+    "beta_even_half": 0.8711
+   },
+   "uoregon": {
+    "beta": 0.7581,
+    "beta_odd_half": 0.7729,
+    "beta_even_half": 0.7411
+   },
+   "upenn": {
+    "beta": 0.6939,
+    "beta_odd_half": 0.3427,
+    "beta_even_half": 1.0477
+   },
+   "usc": {
+    "beta": 0.8888,
+    "beta_odd_half": 0.9073,
+    "beta_even_half": 0.8711
+   },
+   "uta": {
+    "beta": 0.7771,
+    "beta_odd_half": 0.7683,
+    "beta_even_half": 0.7856
+   },
+   "utah": {
+    "beta": 0.7926,
+    "beta_odd_half": 0.8085,
+    "beta_even_half": 0.7792
+   },
+   "utaustin": {
+    "beta": 0.8742,
+    "beta_odd_half": 0.859,
+    "beta_even_half": 0.8935
+   },
+   "utdallas": {
+    "beta": 0.8043,
+    "beta_odd_half": 0.8336,
+    "beta_even_half": 0.7797
+   },
+   "uva": {
+    "beta": 0.8446,
+    "beta_odd_half": 0.8233,
+    "beta_even_half": 0.8684
+   },
+   "uw": {
+    "beta": 0.8441,
+    "beta_odd_half": 0.8299,
+    "beta_even_half": 0.8602
+   },
+   "vanderbilt": {
+    "beta": 0.7921,
+    "beta_odd_half": 0.7711,
+    "beta_even_half": 0.8122
+   },
+   "vt": {
+    "beta": 0.719,
+    "beta_odd_half": 0.7719,
+    "beta_even_half": 0.6752
+   },
+   "wisc": {
+    "beta": 0.8083,
+    "beta_odd_half": 0.8036,
+    "beta_even_half": 0.8131
+   },
+   "wpi": {
+    "beta": 0.6803,
+    "beta_odd_half": 0.6611,
+    "beta_even_half": 0.6985
+   },
+   "wustl": {
+    "beta": 0.8924,
+    "beta_odd_half": 0.8619,
+    "beta_even_half": 0.9214
+   },
+   "yale": {
+    "beta": 0.6213,
+    "beta_odd_half": 0.694,
+    "beta_even_half": 0.5111
+   }
+  }
+ },
+ "total_seconds": 71.7
+}

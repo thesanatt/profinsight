@@ -19,6 +19,10 @@ on:
         description: 'Cap on professors scraped (0 = all, default 1500)'
         required: false
         default: '1500'
+      school_id:
+        description: 'RMP school id (base64, e.g. U2Nob29sLTEwNzQ=). Pin it whenever the name search is ambiguous; see docs/DATA.md'
+        required: false
+        default: ''
 
 concurrency:
   group: data-refresh   # same group as nightly to avoid commit races
@@ -44,17 +48,22 @@ jobs:
           SLUG: ${{ github.event.inputs.slug }}
           NAME: ${{ github.event.inputs.school_name }}
           MAX:  ${{ github.event.inputs.max_professors }}
+          SID:  ${{ github.event.inputs.school_id }}
         run: |
           set -euo pipefail
           mkdir -p data
           RAW="data/${SLUG}.json"
-          ANALYZED="data/${SLUG}_analyzed.json"
+          ANALYZED="data/${SLUG}_analyzed.json.gz"
           CAP_FLAG=""
           if [ "$MAX" != "0" ]; then
             CAP_FLAG="--max-professors $MAX"
           fi
+          ID_FLAG=""
+          if [ -n "$SID" ]; then
+            ID_FLAG="--school-id $SID"
+          fi
           echo "Scraping $NAME -> $RAW"
-          python rmp_scraper.py --school "$NAME" --output "$RAW" $CAP_FLAG
+          python rmp_scraper.py --school "$NAME" --output "$RAW" $CAP_FLAG $ID_FLAG
           echo "Analyzing -> $ANALYZED"
           python bayesian_pipeline.py --input "$RAW" --output "$ANALYZED"
 
@@ -63,8 +72,9 @@ jobs:
           python - <<PY
           import json, sys, os
           slug = "${{ github.event.inputs.slug }}"
-          f = f"data/{slug}_analyzed.json"
-          d = json.load(open(f))
+          from datafiles import load_json
+          f = f"data/{slug}_analyzed.json.gz"
+          d = load_json(f)
           if not d.get("calibration") or not d.get("analysis"):
               print(f"FAIL: {f} missing calibration or analysis"); sys.exit(1)
           print(f"OK: {slug} -> {d['metadata'].get('total_professors')} profs, "
@@ -78,14 +88,16 @@ jobs:
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull --rebase --autostash origin main
-          git add "data/${SLUG}.json" "data/${SLUG}_analyzed.json"
+          git add "data/${SLUG}.json" "data/${SLUG}_analyzed.json.gz"
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
           git commit -m "data: scrape ${SLUG} (on-demand)"
+          pushed=0
           for i in 1 2 3; do
-            git push && break
+            if git push; then pushed=1; break; fi
             git pull --rebase --autostash origin main
             sleep 5
           done
+          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }

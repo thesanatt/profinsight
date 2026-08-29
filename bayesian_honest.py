@@ -3,15 +3,16 @@ ProfInsight — Honest Signals layer
 ===================================
 
 Two primitives that directly address the strongest signals from the student
-research audit (LIVE_GUIDE/08_USER_RESEARCH.md):
+research audit (docs/USER_RESEARCH.md):
 
 1. `fit_grade_inflation_beta(...)` + `grade_adjusted_quality(...)`
    The "rating ↔ easiness" confound is documented with correlation -0.63 to
    -0.89 in peer-reviewed studies. Students pick profs because they're easy,
-   not because they're good. We fit a pooled Bayesian linear regression
-   `rating_i = α_prof + β · grade_gp_i + ε`  across every review in a
-   school's dataset, then report each prof's α (quality at a fixed grade
-   level) separately from their raw rating. Concept: Lecture 6-7.
+   not because they're good. We fit a pooled fixed-effects regression
+   `rating_i = α_prof + β · grade_gp_i + ε` by within-professor OLS across
+   every review in a school's dataset (no prior on β; it is a point estimate
+   with tens of thousands of observations), then report each prof's rating
+   at a fixed grade level separately from their raw rating.
 
 2. `extract_teaching_attributes(...)`
    Student research finding #9: "What I like to use RateMyProfessor for is
@@ -145,7 +146,7 @@ def fit_grade_inflation_beta(professors: Iterable[dict]) -> float:
 
 @dataclass
 class AdjustedQuality:
-    raw_mean: float                  # unadjusted avg rating across this prof's reviews
+    raw_mean: float                  # avg rating over the reviews that report a letter grade
     adjusted_rating: float           # rating an average B student would give them
     grade_inflation_effect: float    # raw_mean - adjusted_rating; how much grade-inflation inflated the raw
     n_reviews_used: int
@@ -240,18 +241,24 @@ ATTRIBUTES = {
         "label": "Slides / recordings available",
         "polarity": "good",
         "patterns": [
-            r"\bposts?\s+(?:lecture|slide|notes?)",
-            r"\b(?:slides?|notes?|lectures?)\s+(?:are|were|online|posted|available|recorded)",
-            r"\brecords?\s+(?:the\s+)?lectures?\b",
+            r"\bposts?\s+(?:the\s+|his\s+|her\s+|their\s+)?(?:lecture|slide|notes?|recording)",
+            r"\b(?:slides?|notes?|lectures?)\s+(?:are|were)\s+(?:online|posted|available|recorded|uploaded)",
+            r"\b(?:slides?|notes?|lectures?)\s+(?:online|posted|available\s+online|recorded|uploaded)",
+            r"\brecords?\s+(?:the\s+|his\s+|her\s+|their\s+|every\s+|all\s+)?lectures?\b",
             r"\blecture\s+(?:recordings?|videos?)\b",
             r"\brecorded\s+lectures?\b",
             r"\bpanopto\b",
             r"\bzoom recording\b",
         ],
     },
+    # Attendance uses the structured RMP field on each review
+    # (attendance_mandatory: 'mandatory' / 'non mandatory' / 'Y' / 'N'); the
+    # regexes are only a fallback when no review carries the field.
     "attendance_mandatory": {
         "label": "Attendance mandatory",
         "polarity": "neutral",
+        "structured": lambda r: {"mandatory": True, "y": True, "non mandatory": False, "n": False}.get(
+            str(r.get("attendance_mandatory") or "").strip().lower()),
         "patterns": [
             r"\battendance\s+(?:is\s+)?(?:mandatory|required|matters|counts|graded)",
             r"\btakes\s+attendance\b",
@@ -263,12 +270,13 @@ ATTRIBUTES = {
     "attendance_optional": {
         "label": "Attendance optional",
         "polarity": "good",
+        "structured": lambda r: {"mandatory": False, "y": False, "non mandatory": True, "n": True}.get(
+            str(r.get("attendance_mandatory") or "").strip().lower()),
         "patterns": [
-            r"\b(?:didn'?t|don'?t)\s+(?:have\s+to\s+)?(?:go|attend|come)",
-            r"\bskip(?:ped)?\s+(?:lecture|class)",
-            r"\battendance\s+(?:is\s+)?(?:not\s+required|optional|not\s+taken|not\s+mandatory)",
+            r"\b(?:didn'?t|don'?t|never)\s+(?:have\s+to\s+|need\s+to\s+)?(?:go\s+to\s+(?:class|lecture)|attend|show\s+up)",
+            r"\bskip(?:ped|ping)?\s+(?:lecture|class)",
+            r"\battendance\s+(?:is\s+|was\s+)?(?:not\s+required|optional|not\s+taken|not\s+mandatory)",
             r"\bno\s+attendance\b",
-            r"\bdon'?t\s+need\s+to\s+go\b",
         ],
     },
     "multiple_choice": {
@@ -303,8 +311,9 @@ ATTRIBUTES = {
     "graded_on_curve": {
         "label": "Graded on a curve",
         "polarity": "good",
+        # Negations ("no curve", "doesn't curve") are rejected by _negated().
         "patterns": [
-            r"\bcurve[ds]?\b",
+            r"\bcurve[ds]?\b(?!\s*ball)",
             r"\bcurving\b",
             r"\bon\s+a\s+curve\b",
             r"\bgraded?\s+generously\b",
@@ -327,7 +336,7 @@ ATTRIBUTES = {
             r"\ba\s+lot\s+of\s+reading",
             r"\breadings?\s+(?:are|is)\s+(?:heavy|long|dense)",
             r"\bheavy\s+readings?\b",
-            r"\b\d{2,4}\s+pages?\b",  # "100 pages", "500 pages"
+            r"\b\d{2,4}\s+pages?\s+(?:of\s+reading|(?:a|per|each|every)\s+(?:week|night|class))",
         ],
     },
     "problem_sets": {
@@ -399,12 +408,40 @@ class AttributeSignal:
 _ATTR_PRIOR_ALPHA = 1.0
 _ATTR_PRIOR_BETA = 9.0
 
+_NEGATION = re.compile(
+    r"\b(?:no|not|never|without|isn'?t|wasn'?t|doesn'?t|didn'?t|don'?t|won'?t|hardly|rarely)\b[^.!?]{0,20}$",
+    re.IGNORECASE,
+)
+
+
+def _negated(text: str, start: int) -> bool:
+    """True if a negation word appears within ~20 characters before `start`
+    with no sentence boundary in between ("there is no curve", "doesn't curve").
+
+    >>> _negated("there is no curve in this class", 12)
+    True
+    >>> _negated("he curves the final", 3)
+    False
+    """
+    window = text[max(0, start - 30):start]
+    return bool(_NEGATION.search(window))
+
+
+def _pattern_hit(name: str, comment: str) -> bool:
+    for p in _COMPILED[name]:
+        m = p.search(comment)
+        if m and not _negated(comment, m.start()):
+            return True
+    return False
+
 
 def extract_teaching_attributes(reviews: list) -> list[AttributeSignal]:
     """
-    Scan each review's comment for each attribute's pattern list. Return one
-    AttributeSignal per attribute that has at least one hit; attributes with
-    zero hits are omitted so the UI only shows present signals.
+    For each attribute, count reviews that show it. Attributes with a
+    `structured` extractor (attendance) read the review's structured RMP field
+    when any review carries it; everything else scans the comment text with
+    the attribute's regex list, rejecting negated mentions. One AttributeSignal
+    per attribute with at least one hit.
 
     >>> reviews = [
     ...     {"comment": "Posts slides online and records lectures. Super helpful."},
@@ -423,32 +460,55 @@ def extract_teaching_attributes(reviews: list) -> list[AttributeSignal]:
     >>> # All three found; none for "group_projects" since we didn't mention it.
     >>> "group_projects" in names
     False
+    >>> # Negations and near-misses do not count
+    >>> sigs = extract_teaching_attributes([
+    ...     {"comment": "There is no curve. The lectures are boring. He throws curve balls."},
+    ...     {"comment": "Final paper of 10 pages. I didn't go over the notes much."},
+    ... ])
+    >>> {s.name for s in sigs} & {"graded_on_curve", "slides_online", "heavy_reading", "attendance_optional"}
+    set()
+    >>> # Structured attendance field wins over text
+    >>> sigs = extract_teaching_attributes([
+    ...     {"comment": "fine", "attendance_mandatory": "mandatory"},
+    ...     {"comment": "fine", "attendance_mandatory": "mandatory"},
+    ...     {"comment": "fine", "attendance_mandatory": "non mandatory"},
+    ... ])
+    >>> {s.name: s.hits for s in sigs}
+    {'attendance_mandatory': 2, 'attendance_optional': 1}
     """
     # Gather just the comment strings, one per review (skip empty).
-    comments = [r.get("comment", "") or "" for r in reviews]
+    comments = [(r.get("comment") or "") for r in reviews]
     comments = [c for c in comments if c.strip()]
-    n = len(comments)
-    if n == 0:
-        return []
+    n_comments = len(comments)
 
     results = []
     for name, spec in ATTRIBUTES.items():
         hit_count = 0
-        for c in comments:
-            lowered = c  # regexes carry IGNORECASE
-            if any(p.search(lowered) for p in _COMPILED[name]):
-                hit_count += 1
-        if hit_count == 0:
+        n = n_comments
+        structured = spec.get("structured")
+        if structured is not None:
+            flags = [structured(r) for r in reviews]
+            flags = [f for f in flags if f is not None]
+            if flags:
+                n = len(flags)
+                hit_count = sum(1 for f in flags if f)
+            elif n_comments:
+                hit_count = sum(1 for c in comments if _pattern_hit(name, c))
+        elif n_comments:
+            hit_count = sum(1 for c in comments if _pattern_hit(name, c))
+        if hit_count == 0 or n == 0:
             continue
 
         alpha = _ATTR_PRIOR_ALPHA + hit_count
         beta  = _ATTR_PRIOR_BETA + (n - hit_count)
         mean  = alpha / (alpha + beta)
 
-        # Plain-English confidence tag.
-        if mean >= 0.4 or hit_count >= 8:
+        # Plain-English confidence tag: the posterior mean carries the
+        # evidence; a floor on raw hits stops one mention from reading as
+        # "likely" in a tiny sample.
+        if (mean >= 0.4 and hit_count >= 2) or (hit_count >= 6 and mean >= 0.15):
             conf = "likely"
-        elif mean >= 0.2 or hit_count >= 3:
+        elif (mean >= 0.2 and hit_count >= 2) or (hit_count >= 3 and mean >= 0.08):
             conf = "probably"
         else:
             conf = "maybe"

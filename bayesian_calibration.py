@@ -197,7 +197,61 @@ def beta_credible_interval(a: float, b: float, level: float = 0.95) -> tuple[flo
 
 DEFAULT_PRIOR_ALPHA = 2.0
 DEFAULT_PRIOR_BETA = 2.0
-MIN_CONCENTRATION = 2.0  # keep α+β ≥ 2 so the prior doesn't dominate big-n data
+MIN_CONCENTRATION = 2.0   # keep α+β ≥ 2 so the prior is unimodal and never U-shaped
+MAX_CONCENTRATION = 500.0  # cap so a tiny, homogeneous department can't freeze every posterior
+MIN_GROUPS_FOR_FIT = 3
+
+
+def beta_binomial_log_marginal(pairs: Sequence[tuple[int, int]], alpha: float, beta: float) -> float:
+    """
+    Log marginal likelihood of (successes, trials) pairs under a Beta(alpha, beta)
+    population prior, i.e. the Beta-Binomial evidence summed over groups, without
+    the binomial coefficient (constant in alpha, beta).
+
+    >>> # More concentration fits identical proportions better
+    >>> pairs = [(5, 10), (50, 100), (25, 50)]
+    >>> beta_binomial_log_marginal(pairs, 50, 50) > beta_binomial_log_marginal(pairs, 1, 1)
+    True
+    """
+    lb = _log_beta(alpha, beta)
+    return sum(_log_beta(alpha + x, beta + n - x) - lb for x, n in pairs)
+
+
+def _nelder_mead(f, x0: Sequence[float], step: float = 0.5, tol: float = 1e-7, max_iter: int = 500):
+    """Minimal Nelder-Mead simplex minimizer for 2-3 parameters. Returns (x_best, f_best)."""
+    n = len(x0)
+    pts = [list(x0)]
+    for i in range(n):
+        p = list(x0)
+        p[i] += step
+        pts.append(p)
+    vals = [f(p) for p in pts]
+    for _ in range(max_iter):
+        order = sorted(range(n + 1), key=lambda i: vals[i])
+        pts = [pts[i] for i in order]
+        vals = [vals[i] for i in order]
+        if abs(vals[-1] - vals[0]) < tol:
+            break
+        centroid = [sum(p[i] for p in pts[:-1]) / n for i in range(n)]
+        xr = [centroid[i] + (centroid[i] - pts[-1][i]) for i in range(n)]
+        fr = f(xr)
+        if fr < vals[0]:
+            xe = [centroid[i] + 2.0 * (centroid[i] - pts[-1][i]) for i in range(n)]
+            fe = f(xe)
+            pts[-1], vals[-1] = (xe, fe) if fe < fr else (xr, fr)
+        elif fr < vals[-2]:
+            pts[-1], vals[-1] = xr, fr
+        else:
+            xc = [centroid[i] + 0.5 * (pts[-1][i] - centroid[i]) for i in range(n)]
+            fc = f(xc)
+            if fc < vals[-1]:
+                pts[-1], vals[-1] = xc, fc
+            else:
+                for j in range(1, n + 1):
+                    pts[j] = [pts[0][i] + 0.5 * (pts[j][i] - pts[0][i]) for i in range(n)]
+                    vals[j] = f(pts[j])
+    i = min(range(n + 1), key=lambda i: vals[i])
+    return pts[i], vals[i]
 
 
 @dataclass
@@ -224,48 +278,97 @@ class BetaPrior:
         }
 
 
-def fit_empirical_bayes_beta(pairs: Iterable[tuple[int, int]]) -> BetaPrior:
+def _clamp_concentration(mu: float, concentration: float, source: str) -> BetaPrior:
+    concentration = min(max(concentration, MIN_CONCENTRATION), MAX_CONCENTRATION)
+    return BetaPrior(alpha=concentration * mu, beta=concentration * (1.0 - mu), source=source)
+
+
+def fit_empirical_bayes_beta_mom(pairs: Iterable[tuple[int, int]]) -> BetaPrior:
     """
-    Fit Beta(alpha, beta) by method of moments from (successes, total) pairs.
+    Naive method-of-moments fit: match the mean and raw variance of p_hat_i.
 
-    The observed p_hat_i = x_i / n_i has mean mu and weighted variance v.
-    For a Beta(alpha, beta) population, mu = alpha / (alpha + beta)
-    and var = mu*(1-mu) / (alpha + beta + 1). Solve for (alpha, beta).
+    Kept for comparison in the evaluation harness. Its flaw: the raw variance
+    of p_hat_i includes binomial sampling noise (p(1-p)/n_i), so it over-states
+    the between-group spread and almost always collapses to MIN_CONCENTRATION.
+    On the production data 80% of department priors hit the floor this way.
 
-    Only groups with n_i >= 1 contribute. Groups with n_i = 0 are skipped.
-
-    >>> p = fit_empirical_bayes_beta([(8, 10), (90, 100), (450, 500)])
+    >>> p = fit_empirical_bayes_beta_mom([(8, 10), (90, 100), (450, 500)])
     >>> p.source
     'empirical_bayes_mom'
-    >>> 0.8 < p.mean < 0.95
-    True
-
-    >>> # Degenerate: all identical proportions -> fallback
-    >>> p = fit_empirical_bayes_beta([(5, 10), (50, 100), (500, 1000)])
+    >>> p = fit_empirical_bayes_beta_mom([(5, 10), (50, 100), (500, 1000)])
     >>> p.source
     'fallback_weak'
     """
     filtered = [(x, n) for (x, n) in pairs if n and n > 0 and 0 <= x <= n]
-    if len(filtered) < 3:
+    if len(filtered) < MIN_GROUPS_FOR_FIT:
         return BetaPrior(DEFAULT_PRIOR_ALPHA, DEFAULT_PRIOR_BETA, source="fallback_weak")
-
     phats = [x / n for (x, n) in filtered]
     mu = sum(phats) / len(phats)
     if mu <= 0.0 or mu >= 1.0:
         return BetaPrior(DEFAULT_PRIOR_ALPHA, DEFAULT_PRIOR_BETA, source="fallback_weak")
-
     var = sum((p - mu) ** 2 for p in phats) / len(phats)
     denom_term = mu * (1.0 - mu)
     if var <= 0.0 or var >= denom_term:
-        # var too small (no spread) or too large (over-dispersed beyond Beta)
+        return BetaPrior(DEFAULT_PRIOR_ALPHA, DEFAULT_PRIOR_BETA, source="fallback_weak")
+    return _clamp_concentration(mu, denom_term / var - 1.0, "empirical_bayes_mom")
+
+
+def fit_empirical_bayes_beta(pairs: Iterable[tuple[int, int]], method: str = "ml") -> BetaPrior:
+    """
+    Fit a population prior Beta(alpha, beta) from (successes, total) pairs.
+
+    method="ml" (default): type-II maximum likelihood. Maximize the Beta-Binomial
+    marginal likelihood over (logit mu, log kappa) with Nelder-Mead, where
+    mu = alpha/(alpha+beta) and kappa = alpha+beta. Unlike the raw-variance
+    moment match this accounts for each group's binomial sampling noise, so a
+    department of small-n professors is not mistaken for a heterogeneous one.
+
+    method="mom": the naive moment estimator, see fit_empirical_bayes_beta_mom.
+
+    Only groups with n_i >= 1 contribute. Concentration is clamped to
+    [MIN_CONCENTRATION, MAX_CONCENTRATION].
+
+    >>> p = fit_empirical_bayes_beta([(8, 10), (90, 100), (450, 500), (40, 50), (7, 10)])
+    >>> p.source
+    'empirical_bayes_ml'
+    >>> 0.8 < p.mean < 0.95
+    True
+
+    >>> # Recovers a strong prior when groups are homogeneous
+    >>> p = fit_empirical_bayes_beta([(50, 100), (52, 100), (48, 100), (49, 100), (51, 100)])
+    >>> p.concentration > 20
+    True
+
+    >>> # Degenerate: too few groups -> fallback
+    >>> fit_empirical_bayes_beta([(5, 10), (50, 100)]).source
+    'fallback_weak'
+    """
+    if method == "mom":
+        return fit_empirical_bayes_beta_mom(pairs)
+    filtered = [(int(x), int(n)) for (x, n) in pairs if n and n > 0 and 0 <= x <= n]
+    if len(filtered) < MIN_GROUPS_FOR_FIT:
+        return BetaPrior(DEFAULT_PRIOR_ALPHA, DEFAULT_PRIOR_BETA, source="fallback_weak")
+    total_n = sum(n for _, n in filtered)
+    pbar = sum(x for x, _ in filtered) / total_n
+    if pbar <= 0.0 or pbar >= 1.0:
         return BetaPrior(DEFAULT_PRIOR_ALPHA, DEFAULT_PRIOR_BETA, source="fallback_weak")
 
-    concentration = denom_term / var - 1.0  # alpha + beta
-    if concentration < MIN_CONCENTRATION:
-        concentration = MIN_CONCENTRATION
-    alpha = concentration * mu
-    beta = concentration * (1.0 - mu)
-    return BetaPrior(alpha=alpha, beta=beta, source="empirical_bayes_mom")
+    def _unpack(v):
+        z = max(min(v[0], 30.0), -30.0)
+        mu = 1.0 / (1.0 + math.exp(-z))
+        mu = min(max(mu, 1e-6), 1.0 - 1e-6)
+        kappa = math.exp(max(min(v[1], math.log(MAX_CONCENTRATION * 4)), -6.0))
+        return mu, kappa
+
+    def _neg_log_marginal(v):
+        mu, kappa = _unpack(v)
+        return -beta_binomial_log_marginal(filtered, mu * kappa, (1.0 - mu) * kappa)
+
+    pb = min(max(pbar, 0.01), 0.99)
+    x0 = [math.log(pb / (1.0 - pb)), math.log(5.0)]
+    best, _ = _nelder_mead(_neg_log_marginal, x0)
+    mu, kappa = _unpack(best)
+    return _clamp_concentration(mu, kappa, "empirical_bayes_ml")
 
 
 # ═════════════════════════════════════════════════════════════════════════════
