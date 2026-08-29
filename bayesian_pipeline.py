@@ -46,7 +46,7 @@ from bayesian_honest import (
     fit_grade_inflation_beta,
     grade_adjusted_quality,
 )
-from datafiles import dump_json
+from datafiles import dump_json, load_json
 
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -1393,8 +1393,7 @@ DEFAULT_NB_MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)),
 def run_pipeline(input_path: str, output_path: str, nb_model_path: str = DEFAULT_NB_MODEL_PATH):
     """Run the full Bayesian analysis pipeline."""
     print(f"Loading data from {input_path}...")
-    with open(input_path, "r") as f:
-        data = json.load(f)
+    data = load_json(input_path)
 
     professors = data.get("professors", [])
     print(f"Found {len(professors)} professors.")

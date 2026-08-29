@@ -4,13 +4,14 @@ name: Scrape One School (on-demand)
 #   - add a brand-new school to the site
 #   - force-refresh a single school before its nightly slot
 #   - do a full deep-scrape of one school with no professor cap
-# Triggers a commit to main, which auto-redeploys Vercel + Render.
+# The result is published to the rolling data release and the API is
+# redeployed; nothing is committed to git.
 
 on:
   workflow_dispatch:
     inputs:
       slug:
-        description: 'Short slug used for the JSON filenames (e.g. "harvard")'
+        description: 'Short slug used for the data files (e.g. "harvard")'
         required: true
       school_name:
         description: 'Full school name as RMP knows it (e.g. "Harvard University")'
@@ -25,13 +26,18 @@ on:
         default: ''
 
 concurrency:
-  group: data-refresh   # same group as nightly to avoid commit races
+  group: data-refresh   # same group as nightly so uploads never race
   cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     timeout-minutes: 340
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - uses: actions/checkout@v4
@@ -69,42 +75,22 @@ jobs:
 
       - name: Sanity check
         run: |
-          python - <<PY
-          import json, sys, os
-          slug = "${{ github.event.inputs.slug }}"
+          python - <<'PY'
+          import sys
           from datafiles import load_json
+          slug = "${{ github.event.inputs.slug }}"
           f = f"data/{slug}_analyzed.json.gz"
           d = load_json(f)
-          if not d.get("calibration") or not d.get("analysis"):
+          if 'calibration' not in d or 'analysis' not in d:
               print(f"FAIL: {f} missing calibration or analysis"); sys.exit(1)
           print(f"OK: {slug} -> {d['metadata'].get('total_professors')} profs, "
                 f"{d['metadata'].get('total_reviews')} reviews")
           PY
 
-      - name: Commit + push
-        env:
-          SLUG: ${{ github.event.inputs.slug }}
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase --autostash origin main
-          git add "data/${SLUG}.json" "data/${SLUG}_analyzed.json.gz"
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "data: scrape ${SLUG} (on-demand)"
-          pushed=0
-          for i in 1 2 3; do
-            if git push; then pushed=1; break; fi
-            git pull --rebase --autostash origin main
-            sleep 5
-          done
-          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }
+      - name: Publish to the data release
+        run: python publish_data.py --create --schools "${{ github.event.inputs.slug }}"
 
       - name: Trigger Render deploy
-        # Render's GitHub auto-deploy stopped firing in April 2026; the deploy
-        # hook is the reliable path. Skipped when the secret is not set.
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |

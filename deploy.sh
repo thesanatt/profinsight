@@ -3,6 +3,7 @@
 #
 # Usage:
 #   ./deploy.sh setup         # one-time: install backend + frontend deps
+#   ./deploy.sh fetch [--raw] # pull the data snapshot from the GitHub release into data/
 #   ./deploy.sh analyze       # (re)run the Bayesian pipeline on every data/<school>.json
 #   ./deploy.sh train-classifier  # rebuild models/nb_topic_model.json from tag weak labels
 #   ./deploy.sh evaluate [args]   # run the evaluation harness -> metrics/latest.{json,md}
@@ -75,6 +76,12 @@ cmd_setup() {
   (cd frontend && npm install --silent)
 
   log "Setup complete."
+}
+
+cmd_fetch() {
+  activate_venv
+  log "Fetching data snapshot from the GitHub release (pass --raw for raw scrapes too)"
+  "$PYTHON" fetch_data.py "$@"
 }
 
 cmd_analyze() {
@@ -196,13 +203,14 @@ cmd_deploy() {
 }
 
 cmd_help() {
-  sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 main() {
   local sub="${1:-help}"; shift || true
   case "$sub" in
     setup)    cmd_setup "$@";;
+    fetch)    cmd_fetch "$@";;
     analyze)  cmd_analyze "$@";;
     train-classifier) cmd_train_classifier "$@";;
     evaluate) cmd_evaluate "$@";;

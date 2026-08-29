@@ -61,6 +61,7 @@ from bayesian_calibration import (  # noqa: E402
 )
 from bayesian_honest import fit_grade_inflation_beta  # noqa: E402
 from bayesian_pipeline import GaussianProcessRegression, NaiveBayesClassifier, letter_grade, summarize_trend  # noqa: E402
+from datafiles import load_json, slug_from_raw  # noqa: E402
 from train_classifier import raw_school_files, weak_label  # noqa: E402
 
 DATA_DIR = os.path.join(ROOT, "data")
@@ -121,12 +122,7 @@ def bb_interval(m: int, a: float, b: float, level: float) -> tuple[int, int]:
 
 
 def load_schools(files: list[str]) -> dict[str, dict]:
-    out = {}
-    for f in files:
-        slug = os.path.basename(f).replace(".json", "")
-        with open(f) as fh:
-            out[slug] = json.load(fh)
-    return out
+    return {slug_from_raw(f): load_json(f) for f in files}
 
 
 # ───────────────────────────── 1. dataset ─────────────────────────────
@@ -604,7 +600,7 @@ def main() -> int:
     files = raw_school_files(args.data_dir)
     keep = set(QUICK_SCHOOLS) if args.quick else {s.strip() for s in args.schools.split(",") if s.strip()}
     if keep:
-        files = [f for f in files if os.path.basename(f).replace(".json", "") in keep]
+        files = [f for f in files if slug_from_raw(f) in keep]
     t0 = time.time()
     schools = load_schools(files)
     print(f"Loaded {len(schools)} schools in {time.time() - t0:.1f}s")

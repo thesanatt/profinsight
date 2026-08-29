@@ -1,9 +1,9 @@
 name: UMD Schedule — nightly refresh
 
-# Scrapes UMD's Testudo Schedule of Classes for the current term and commits
-# data/umd_schedule.json + the updated instructor→professor join. The commit
-# triggers Vercel + Render auto-deploys so the live site picks up "Teaching
-# now" data the next morning.
+# Scrapes UMD's Testudo Schedule of Classes for the current term, joins
+# instructors to professor IDs, and publishes data/umd_schedule.json to the
+# rolling data release. The Render deploy hook then restarts the API so the
+# "Teaching now" cards pick up the new term data.
 
 on:
   schedule:
@@ -21,10 +21,15 @@ concurrency:
   group: umd-schedule
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - uses: actions/checkout@v4
@@ -36,9 +41,12 @@ jobs:
           cache: pip
 
       - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Pull UMD analyzed data and the current schedule
         run: |
-          pip install -r requirements.txt
-          pip install curl_cffi beautifulsoup4 rapidfuzz
+          python fetch_data.py --schools umd
+          cp data/umd_schedule.json /tmp/umd_schedule_before.json 2>/dev/null || true
 
       - name: Scrape Testudo + join instructors
         env:
@@ -66,13 +74,13 @@ jobs:
       - name: Detect changes
         id: check
         run: |
-          # scraped_at changes every run; only commit when sections or
+          # scraped_at changes every run; only publish when sections or
           # matches actually changed.
           python - <<'PY'
-          import json, os, subprocess
+          import json, os
           new = json.load(open('data/umd_schedule.json'))
           try:
-              old = json.loads(subprocess.check_output(['git', 'show', 'HEAD:data/umd_schedule.json']))
+              old = json.load(open('/tmp/umd_schedule_before.json'))
           except Exception:
               old = None
           def strip(d):
@@ -84,25 +92,11 @@ jobs:
           print('changed' if changed else 'no change beyond scraped_at')
           PY
 
-      - name: Commit + push
+      - name: Publish schedule to the data release
         if: steps.check.outputs.changed == 'true'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git pull --rebase --autostash origin main
-          git add data/umd_schedule.json
-          git commit -m "data: refresh UMD Testudo schedule $(date -u +%Y-%m-%d)"
-          pushed=0
-          for i in 1 2 3; do
-            if git push; then pushed=1; break; fi
-            git pull --rebase --autostash origin main
-            sleep 5
-          done
-          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }
+        run: python publish_data.py --schedule-only umd
 
       - name: Trigger Render deploy
-        # Render's GitHub auto-deploy stopped firing in April 2026; the deploy
-        # hook is the reliable path. Skipped when the secret is not set.
         if: steps.check.outputs.changed == 'true'
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}

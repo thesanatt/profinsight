@@ -74,6 +74,41 @@ def list_analyzed(data_dir: str) -> list[str]:
     return [by_slug[k] for k in sorted(by_slug)]
 
 
+def raw_path(data_dir: str, slug: str, prefer_existing: bool = True) -> str:
+    """Path of a school's raw scrape. Plain `.json` is what the scraper writes;
+    `.json.gz` is what the data release stores. Existing files win (plain first
+    because it is the fresher one right after a scrape)."""
+    plain = os.path.join(data_dir, f"{slug}.json")
+    gz = plain + ".gz"
+    if prefer_existing:
+        if os.path.exists(plain):
+            return plain
+        if os.path.exists(gz):
+            return gz
+    return plain
+
+
+def slug_from_raw(path: str) -> str:
+    base = os.path.basename(path)
+    for suf in (".json.gz", ".json"):
+        if base.endswith(suf):
+            return base[: -len(suf)]
+    return base
+
+
+def list_raw(data_dir: str) -> list[str]:
+    """All raw scrape files, one per slug (plain shadows gz), excluding
+    analyzed and schedule files."""
+    by_slug: dict[str, str] = {}
+    for pattern in ("*.json.gz", "*.json"):
+        for path in sorted(glob.glob(os.path.join(data_dir, pattern))):
+            base = os.path.basename(path)
+            if "_analyzed.json" in base or base.endswith("_schedule.json"):
+                continue
+            by_slug[slug_from_raw(path)] = path
+    return [by_slug[k] for k in sorted(by_slug)]
+
+
 def read_metadata(path: str, max_chars: int = 8000) -> dict:
     """Parse just the leading metadata block without loading the whole file."""
     with open_text(path, "rt") as f:

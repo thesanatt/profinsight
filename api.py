@@ -136,6 +136,18 @@ app.add_middleware(
 # Multi-School Data Loading
 
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+
+# The repository does not carry data; a fresh instance (Render's ephemeral
+# disk, a new clone) pulls the analyzed snapshot from the data release.
+if not list_analyzed(DATA_DIR) and os.environ.get("PROFINSIGHT_SKIP_FETCH") != "1":
+    try:
+        import fetch_data
+        _t0 = _time.time()
+        _got = fetch_data.fetch_analyzed(DATA_DIR)
+        print(f"[data] fetched {len(_got)} files from release {fetch_data.TAG} in {_time.time() - _t0:.0f}s")
+    except Exception as _e:  # serve whatever is on disk; /api/schools will be empty
+        print(f"[data] fetch failed: {_e!r}")
+
 _cache = {}
 _schools_cache = None
 _schools_cache_time = 0

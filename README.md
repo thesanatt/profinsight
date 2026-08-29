@@ -68,6 +68,10 @@ rmp_scraper.py ──► data/<slug>.json ──► bayesian_pipeline.py ──�
                                               ▲                                                    ▲
                         train_classifier.py ──┘ models/nb_topic_model.json      umd_scheduler.py ──┘ data/umd_schedule.json
                                                                                 evaluate.py ──► metrics/latest.{json,md}
+
+Data is not in git. publish_data.py uploads data/ to the GitHub release `data-latest`
+(131 assets, 311 MB gzipped); fetch_data.py pulls it, and api.py does so by itself on
+a machine whose data/ is empty.
 ```
 
 | File | Role |
@@ -81,13 +85,14 @@ rmp_scraper.py ──► data/<slug>.json ──► bayesian_pipeline.py ──�
 | `train_classifier.py` | Builds the topic classifier from tag weak labels |
 | `evaluate.py` | The evaluation harness |
 | `api.py` | 16 GET routes, per-file LRU cache with mtime reload, rate limiting, cache and security headers |
-| `datafiles.py` | Gzip-aware IO for analyzed files (the deploy payload is 118 MB gzipped vs 844 MB plain) |
+| `datafiles.py` | Gzip-aware IO for raw and analyzed files (the deploy payload is 118 MB gzipped vs 844 MB plain) |
+| `fetch_data.py`, `publish_data.py` | Pull from / push to the rolling `data-latest` GitHub release; the nightly workflows publish instead of committing, and a publish refuses to replace a school with fewer than half its published professors |
 | `umd_scheduler.py` | Testudo schedule scraper and instructor-to-professor matcher |
 | `frontend/` | React 18, Vite, Tailwind, Recharts; 6 components |
 | `.github/workflows/` | `test.yml` (pytest + doctests + harness smoke test), `update-data.yml` (nightly refresh), `umd-schedule.yml`, `scrape-school.yml` (on demand) |
 | `docs/` | `DATA.md` (data files and the school-ID rule), `INTERVIEW.md` (how to talk about the project), `BAYESIAN_CONCEPTS.md`, `USER_RESEARCH.md`, `UMD_SCHEDULE.md` |
 
-Deployment: API on Render (`uvicorn api:app`, `MAX_CACHED_SCHOOLS=2` on the free tier), frontend on Vercel, analyzed data committed gzipped to the repo and refreshed by GitHub Actions.
+Deployment: API on Render (`uvicorn api:app`, `MAX_CACHED_SCHOOLS=2` on the free tier; it fetches the data release at boot), frontend on Vercel, data refreshed nightly by GitHub Actions into the release and the API redeployed through Render's deploy hook.
 
 ## Running locally
 
@@ -97,11 +102,12 @@ Prerequisites: Python 3.10+, Node 18+.
 git clone https://github.com/thesanatt/profinsight.git
 cd profinsight
 ./deploy.sh setup     # venv + pip + npm
+./deploy.sh fetch     # data snapshot from the GitHub release (add --raw for scrapes, ~310 MB)
 ./deploy.sh test      # pytest + doctests
 ./deploy.sh dev       # API on :8000, frontend on :5173
 ```
 
-Other subcommands: `analyze`, `train-classifier`, `evaluate`, `build`, `serve`, `scrape <slug> "<Name>"`, `refresh`, `status`.
+Other subcommands: `analyze`, `train-classifier`, `evaluate`, `build`, `serve`, `scrape <slug> "<Name>"`, `refresh`, `status`. Publishing a local scrape: `python publish_data.py --schools <slug>` (needs `gh auth login`).
 
 ## Adding a school
 

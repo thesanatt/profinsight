@@ -25,6 +25,7 @@ import os
 import time
 
 from bayesian_pipeline import NaiveBayesClassifier
+from datafiles import list_raw, load_json
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(ROOT, "data")
@@ -73,17 +74,14 @@ def weak_label(review: dict) -> str | None:
 
 
 def raw_school_files(data_dir: str = DATA_DIR) -> list[str]:
-    return sorted(
-        f for f in glob.glob(os.path.join(data_dir, "*.json"))
-        if not f.endswith("_analyzed.json") and not f.endswith("_schedule.json")
-    )
+    """Raw scrape files (plain or gzipped), one per school."""
+    return list_raw(data_dir)
 
 
 def collect_weak_labels(files: list[str]) -> tuple[list[str], list[str]]:
     texts, labels = [], []
     for path in files:
-        with open(path) as f:
-            data = json.load(f)
+        data = load_json(path)
         for prof in data.get("professors", []):
             for r in prof.get("reviews", []):
                 lab = weak_label(r)
@@ -110,8 +108,8 @@ def main() -> int:
     args = ap.parse_args()
 
     exclude = {s.strip() for s in args.exclude.split(",") if s.strip()}
-    files = [f for f in raw_school_files(args.data_dir)
-             if os.path.basename(f).replace(".json", "") not in exclude]
+    from datafiles import slug_from_raw
+    files = [f for f in raw_school_files(args.data_dir) if slug_from_raw(f) not in exclude]
     t0 = time.time()
     model = train(files, uniform_prior=args.uniform_prior)
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)

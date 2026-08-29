@@ -1,13 +1,27 @@
 # Data: what is in `data/`, where it comes from, and the school-ID rule
 
+## Where the data lives
+
+Not in git. Every data file is an asset of the rolling GitHub release
+[`data-latest`](https://github.com/thesanatt/profinsight/releases/tag/data-latest):
+65 raw scrapes (`<slug>.json.gz`, 193 MB), 65 analyzed files
+(`<slug>_analyzed.json.gz`, 118 MB), `umd_schedule.json`, and the nightly
+retrained `nb_topic_model.json`. `fetch_data.py` downloads what a machine
+needs; `publish_data.py` uploads with `--clobber`. `api.py` fetches the
+analyzed set by itself when `data/` is empty, which is how a fresh Render
+instance starts. Until August 2026 every nightly refresh committed ~700 MB of
+plain JSON to git, which grew the repository to 6.7 GB and broke Render's
+clone; the history was rewritten to drop `data/` and the repository is now a
+few megabytes.
+
 ## Files
 
 | File | Producer | Consumer |
 |---|---|---|
-| `data/<slug>.json` | `rmp_scraper.py` | `bayesian_pipeline.py`, `train_classifier.py`, `evaluate.py` |
+| `data/<slug>.json` (plain, written by the scraper) or `.json.gz` (as stored in the release) | `rmp_scraper.py` | `bayesian_pipeline.py`, `train_classifier.py`, `evaluate.py` |
 | `data/<slug>_analyzed.json.gz` | `bayesian_pipeline.py` | `api.py` (the only file the API reads); gzipped because the 65-school set is 844 MB plain and 118 MB compressed, and it is the whole deploy payload. Readers accept a plain `.json` too |
 | `data/umd_schedule.json` | `umd_scheduler.py` | `api.py` (`teaching_now`, `schedule_status`) |
-| `models/nb_topic_model.json` | `train_classifier.py` | `bayesian_pipeline.py` |
+| `models/nb_topic_model.json` | `train_classifier.py` (nightly in CI; a copy is committed for local runs) | `bayesian_pipeline.py` |
 | `metrics/latest.{json,md}` | `evaluate.py` | README, docs |
 
 Raw files hold every review (text, sub-ratings, tags, grade, date). Analyzed
@@ -70,7 +84,18 @@ point for adding a school.
 ## Regenerating everything locally
 
 ```bash
+./deploy.sh fetch --raw        # data/ from the release (raw + analyzed + schedule)
 ./deploy.sh train-classifier   # models/nb_topic_model.json from tag weak labels
 ./deploy.sh analyze            # every data/<slug>.json -> data/<slug>_analyzed.json.gz
 ./deploy.sh evaluate           # metrics/latest.json + metrics/latest.md
+python publish_data.py         # upload the result (guarded; needs gh auth)
 ```
+
+## Nightly flow
+
+`update-data.yml`: fetch the snapshot, scrape one of three batches, analyze,
+retrain the classifier, publish the batch's assets plus the model, POST
+Render's deploy hook. `umd-schedule.yml`: fetch UMD's analyzed file, scrape
+Testudo, publish the schedule only if sections or matches changed, deploy.
+`scrape-school.yml`: on-demand single school with an optional pinned ID. No
+workflow commits to git.

@@ -130,6 +130,17 @@ SCRAPER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "rmp_scraper.
 PIPELINE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "bayesian_pipeline.py")
 
 
+def batch_slugs(spec):
+    """Slugs in rotation slice 'i/N' of DEFAULT_SCHOOLS (sorted by slug), the
+    same slicing --batch applies. Used by the nightly workflow to publish only
+    the schools it refreshed."""
+    i_str, n_str = spec.split("/")
+    i, n = int(i_str), int(n_str)
+    if n <= 0 or not 0 <= i < n:
+        raise ValueError(f"--batch must be 'i/N' with 0 <= i < N; got {spec!r}")
+    return [slug for idx, slug in enumerate(sorted(DEFAULT_SCHOOLS)) if idx % n == i]
+
+
 def _scraped_at_epoch(analyzed_path):
     """Epoch seconds of metadata.scraped_at in an analyzed file; 0 if missing
     or unparseable so the school counts as stale."""

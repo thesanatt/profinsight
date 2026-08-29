@@ -1,11 +1,16 @@
 name: Nightly Data Refresh
 
 # Rotation strategy:
-# The full school list is ~80 entries. Scraping all of them in one run would
-# blow the 6-hour GitHub Actions budget and would also be uncourteous to
-# RateMyProfessors' servers. Instead we split into 3 deterministic batches
-# by slug. Each night we run one batch (batch index = day-of-year mod 3),
-# so every school refreshes about every 3 days.
+# The school list is ~80 entries. Scraping all of them in one run would blow
+# the 6-hour GitHub Actions budget and would be uncourteous to
+# RateMyProfessors' servers. Instead we split into 3 deterministic batches by
+# slug. Each night we run one batch (batch index = day-of-year mod 3), so
+# every school refreshes about every 3 days.
+#
+# Data never touches git. The job pulls the current snapshot from the rolling
+# GitHub release `data-latest`, refreshes one batch, retrains the topic
+# classifier, uploads the changed assets back to the release, and pokes
+# Render's deploy hook so the API restarts on the new snapshot.
 
 on:
   schedule:
@@ -30,10 +35,15 @@ concurrency:
   group: data-refresh
   cancel-in-progress: false
 
+permissions:
+  contents: write   # release asset uploads
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 340   # 5h40m; leaves a buffer under the 6h ceiling
+    env:
+      GH_TOKEN: ${{ github.token }}
 
     steps:
       - name: Checkout
@@ -50,20 +60,23 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Pull current data snapshot
+        run: python fetch_data.py --raw
+
       - name: Pick batch
         id: batch
         run: |
           # If the user passed a batch override via workflow_dispatch, use it.
           # Otherwise rotate by day-of-year mod 3.
           if [ -n "${{ github.event.inputs.batch_override }}" ]; then
-            echo "batch=${{ github.event.inputs.batch_override }}" >> "$GITHUB_OUTPUT"
+            BATCH="${{ github.event.inputs.batch_override }}"
           else
             DOY=$(date -u +%j)
-            echo "batch=$(( DOY % 3 ))/3" >> "$GITHUB_OUTPUT"
+            BATCH="$(( 10#$DOY % 3 ))/3"
           fi
-
-      - name: Retrain topic classifier on the current corpus
-        run: python train_classifier.py
+          echo "batch=$BATCH" >> "$GITHUB_OUTPUT"
+          echo "slugs=$(python -c "import bulk_update as b; print(','.join(b.batch_slugs('$BATCH')))")" >> "$GITHUB_OUTPUT"
+          echo "Batch $BATCH"
 
       - name: Refresh batch
         run: |
@@ -72,7 +85,7 @@ jobs:
           if [ -n "${{ github.event.inputs.stale_days }}" ]; then
             STALE_FLAG="--stale-days ${{ github.event.inputs.stale_days }}"
           fi
-          echo "Batch: ${{ steps.batch.outputs.batch }}"
+          echo "Batch: ${{ steps.batch.outputs.batch }}  (${{ steps.batch.outputs.slugs }})"
           echo "Max professors: $MAX"
           python bulk_update.py \
             --all \
@@ -80,12 +93,15 @@ jobs:
             --max-professors "$MAX" \
             $STALE_FLAG
 
+      - name: Retrain topic classifier on the current corpus
+        run: python train_classifier.py
+
       - name: Quick sanity checks on output
         run: |
           # Fail fast if the refresh destroyed anything: every analyzed file
-          # must still be valid JSON and still have the calibration block.
+          # must be valid and carry the calibration block.
           python - <<'PY'
-          import glob, json, sys
+          import sys
           from datafiles import list_analyzed, load_json
           bad = []
           for f in list_analyzed('data'):
@@ -105,40 +121,13 @@ jobs:
           print(f'OK: {len(list_analyzed("data"))} analyzed files valid.')
           PY
 
-      - name: Detect changes
-        id: check
+      - name: Publish refreshed assets to the data release
         run: |
-          # --porcelain sees untracked files too, so a brand-new school commits.
-          if [ -z "$(git status --porcelain data/ models/)" ]; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            git status --short data/ | tail -5
-          fi
-
-      - name: Commit + push
-        if: steps.check.outputs.changed == 'true'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          # Pull first so a concurrent manual push doesn't cause rejection.
-          git pull --rebase --autostash origin main
-          git add data/ models/
-          git commit -m "data: refresh batch ${{ steps.batch.outputs.batch }} $(date -u +%Y-%m-%d)"
-          # Retry the push once if somebody else pushed between rebase and push.
-          pushed=0
-          for i in 1 2 3; do
-            if git push; then pushed=1; break; fi
-            echo "push attempt $i failed; pulling + retrying"
-            git pull --rebase --autostash origin main
-            sleep 5
-          done
-          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }
+          python publish_data.py --schools "${{ steps.batch.outputs.slugs }}" --model
 
       - name: Trigger Render deploy
-        # Render's GitHub auto-deploy stopped firing in April 2026; the deploy
-        # hook is the reliable path. Skipped when the secret is not set.
-        if: steps.check.outputs.changed == 'true'
+        # Render's GitHub auto-deploy only fires on commits; data lives in the
+        # release now, so the API is restarted through the deploy hook.
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
