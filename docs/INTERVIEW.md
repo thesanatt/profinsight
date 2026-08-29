@@ -8,7 +8,7 @@ I built ProfInsight, a site that turns RateMyProfessors reviews into calibrated 
 
 ## One paragraph on architecture
 
-A scraper hits RMP's GraphQL endpoint, discovers professors with two-letter search terms, pages through every review, and writes one JSON per school. The pipeline reads that file, fits school and department priors, runs the three models per professor and writes an analyzed JSON. The API loads analyzed files on demand into a small LRU cache and serves 16 routes. The React frontend is a hash-routed single page. A separate scraper pulls UMD's public course schedule and matches instructors to professors with rapidfuzz. Nothing in the modeling path imports NumPy, SciPy or scikit-learn; the Beta CDF is a continued fraction, the GP solve is a hand-written Cholesky, the prior fit is Nelder-Mead over the Beta-Binomial marginal likelihood.
+A scraper hits RMP's GraphQL endpoint, discovers professors with two-letter search terms, pages through every review, and writes one JSON per school. The pipeline reads that file, fits school and department priors, runs the three models per professor and writes an analyzed JSON. Data is not in git: the nightly workflows publish gzipped raw and analyzed files to a rolling GitHub release, and the API downloads the analyzed set at boot when its data directory is empty (about 25 seconds for 65 schools), then loads files on demand into a small LRU cache and serves 16 routes. The React frontend is a hash-routed single page. A separate scraper pulls UMD's public course schedule and matches instructors to professors with rapidfuzz. Nothing in the modeling path imports NumPy, SciPy or scikit-learn; the Beta CDF is a continued fraction, the GP solve is a hand-written Cholesky, the prior fit is Nelder-Mead over the Beta-Binomial marginal likelihood.
 
 ## Six stories, each with a number
 
@@ -60,6 +60,7 @@ BYU has a professor with 6,626 reviews. The GP solve is O(n cubed) in pure Pytho
 | API routes | 16 | api.py |
 | Pipeline speed | 65 schools in about 10 minutes on 10 cores; BYU (65K reviews) in 22 s | reanalysis log |
 | UMD schedule join | 2,232 instructor assignments, 455 professors, 2,643 unmatched names | data/umd_schedule.json match_stats |
+| Repository size, before vs after moving data to a release | 6.7 GB on GitHub vs under 2 MB tracked; deploy payload 118 MB gzipped | git count-objects, gh api repos/... size |
 
 ## Questions to expect
 
