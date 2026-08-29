@@ -66,11 +66,23 @@ jobs:
       - name: Detect changes
         id: check
         run: |
-          if git diff --quiet data/umd_schedule.json; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
+          # scraped_at changes every run; only commit when sections or
+          # matches actually changed.
+          python - <<'PY'
+          import json, os, subprocess
+          new = json.load(open('data/umd_schedule.json'))
+          try:
+              old = json.loads(subprocess.check_output(['git', 'show', 'HEAD:data/umd_schedule.json']))
+          except Exception:
+              old = None
+          def strip(d):
+              if d is None: return None
+              d = dict(d); d.pop('scraped_at', None); return d
+          changed = strip(old) != strip(new)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"changed={'true' if changed else 'false'}\n")
+          print('changed' if changed else 'no change beyond scraped_at')
+          PY
 
       - name: Commit + push
         if: steps.check.outputs.changed == 'true'
@@ -80,8 +92,10 @@ jobs:
           git pull --rebase --autostash origin main
           git add data/umd_schedule.json
           git commit -m "data: refresh UMD Testudo schedule $(date -u +%Y-%m-%d)"
+          pushed=0
           for i in 1 2 3; do
-            git push && break
+            if git push; then pushed=1; break; fi
             git pull --rebase --autostash origin main
             sleep 5
           done
+          [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }

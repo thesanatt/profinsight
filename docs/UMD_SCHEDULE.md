@@ -30,9 +30,9 @@ Our `umd` slug was actually **UMBC** (University of Maryland, Baltimore County),
 ### Match quality — before / after
 |           | before (UMBC mismatch) | after (College Park) |
 |-----------|------------------------|----------------------|
-| matched instructor assignments | 15 | **1,834** |
-| distinct profs teaching this term | 2 | **428** |
-| unmatched instructors | 2,777 | 2,417 |
+| matched instructor assignments | 15 | **1,834** (2,232 after the Aug 2026 matcher rewrite) |
+| distinct profs teaching this term | 2 | **428** (455 after the rewrite) |
+| unmatched instructors | 2,777 | 2,417 (2,643 distinct names on the Aug 2026 schedule, 8,465 sections) |
 
 Highly-reviewed profs now matching (spot check):
 - Bonnie Dixon (Chemistry, 193 reviews) → BCHM462, CHEM231, CHEM241
@@ -46,7 +46,7 @@ Highly-reviewed profs now matching (spot check):
 ## Remaining limitations
 
 ### Department scoping is strict
-Fuzzy matcher requires RMP department to match the Testudo course prefix at ratio ≥55. Trade-off: department aliases sometimes miss. Manual override file (`data/umd_name_overrides.json`) handles the long tail.
+The matcher accepts an exact full-name match with a relaxed department gate (RMP department labels and Testudo subject names often disagree), and a last-name plus first-initial match only when it is unique and the department gate passes at a strict threshold. An optional manual override file (`data/umd_name_overrides.json`, instructor name to professor_id) is read if present; none is shipped.
 
 ### TBA instructor rows not surfaced to UI
 Sections with unassigned instructors are counted but not shown. Worth a "TBA — check back" tag in a follow-up.

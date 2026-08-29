@@ -40,6 +40,8 @@ from curl_cffi import requests as cf
 from bs4 import BeautifulSoup
 from rapidfuzz import fuzz, process
 
+from datafiles import analyzed_path, load_json
+
 TESTUDO_ROOT = "https://app.testudo.umd.edu/soc"
 DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 
@@ -59,13 +61,32 @@ def term_label(term_code: str) -> str:
 
 # ─── subject + term discovery ──────────────────────────────────────────────
 
+def _get_with_retry(url: str, attempts: int = 3, timeout: int = 30):
+    """GET with exponential backoff. Testudo drops a few requests per run;
+    one timeout used to abort the whole nightly scrape."""
+    last = None
+    for i in range(attempts):
+        try:
+            r = cf.get(url, impersonate="chrome", timeout=timeout)
+            if r.status_code < 500:
+                return r
+            last = f"HTTP {r.status_code}"
+        except Exception as e:  # curl_cffi raises its own error types
+            last = repr(e)
+        time.sleep(2 ** i)
+    print(f"  request failed after {attempts} attempts: {url[:80]} ({last})", file=sys.stderr)
+    return None
+
+
 def discover_subjects_and_current_term() -> tuple[list[tuple[str, str]], str]:
     """Fetch the Testudo root and return (subjects, current_term).
 
     subjects is a list of (code, name) pairs.
     current_term is the default-selected term code (e.g. '202608').
     """
-    r = cf.get(f"{TESTUDO_ROOT}/", impersonate="chrome", timeout=25)
+    r = _get_with_retry(f"{TESTUDO_ROOT}/", timeout=25)
+    if r is None:
+        raise RuntimeError("Testudo unreachable")
     r.raise_for_status()
     soup = BeautifulSoup(r.text, "html.parser")
 
@@ -113,7 +134,9 @@ def _guess_current_term() -> str:
 def list_course_ids_for_subject(term: str, subject: str) -> list[str]:
     """Fetch the per-subject course-listing page; return all course IDs."""
     url = f"{TESTUDO_ROOT}/{term}/{subject}"
-    r = cf.get(url, impersonate="chrome", timeout=25)
+    r = _get_with_retry(url, timeout=25)
+    if r is None:
+        return []
     if r.status_code != 200:
         return []
     soup = BeautifulSoup(r.text, "html.parser")
@@ -169,8 +192,8 @@ def fetch_sections_for_courses(term: str, course_ids: list[str]) -> list[Section
     for i in range(0, len(course_ids), BATCH):
         batch = course_ids[i:i + BATCH]
         url = f"{TESTUDO_ROOT}/{term}/sections?courseIds={','.join(batch)}"
-        r = cf.get(url, impersonate="chrome", timeout=30)
-        if r.status_code != 200:
+        r = _get_with_retry(url)
+        if r is None or r.status_code != 200:
             continue
         soup = BeautifulSoup(r.text, "html.parser")
 
@@ -282,7 +305,7 @@ def scrape_full_term(term: str) -> dict:
 # ─── instructor-name → professor-id join ───────────────────────────────────
 
 _NAME_NORMALIZERS = (
-    (re.compile(r"\b(Dr|Prof|Professor|Mr|Mrs|Ms|Miss|PhD|Ph\.D)\.?\b", re.IGNORECASE), ""),
+    (re.compile(r"\b(Dr|Prof|Professor|Mr|Mrs|Ms|Miss|PhD|Ph\.D)\.?(?=\s|,|$)", re.IGNORECASE), ""),
     (re.compile(r"\s+"), " "),
 )
 
@@ -297,16 +320,17 @@ def _normalize_name(name: str) -> str:
 def _build_prof_index(analyzed_path: str) -> tuple[list[dict], dict]:
     """Load the UMD analyzed JSON and build a fast lookup from normalized
     'first last' → professor record."""
-    with open(analyzed_path) as f:
-        data = json.load(f)
+    data = load_json(analyzed_path)
     profs = data.get("analysis", [])
 
-    index = {}
+    # norm name -> list of professors (two profs can share a name; the
+    # department gate in match_instructor_to_prof picks between them).
+    index: dict = {}
     for p in profs:
         name = p.get("name", "")
         norm = _normalize_name(name)
         if norm:
-            index.setdefault(norm, p)
+            index.setdefault(norm, []).append(p)
     return profs, index
 
 
@@ -323,67 +347,98 @@ def match_instructor_to_prof(
 
     Strategy (in order):
       1. Exact normalized first-last AND department plausibility check.
-      2. Last-name + first-initial within the expected department.
+         An exact full-name match is accepted with a relaxed department gate
+         (RMP department labels and Testudo subject names often disagree:
+         "Accounting" vs "Accounting and Information Assurance").
+      2. Last-name + first-initial, only when exactly one professor fits AND
+         the department gate passes at a strict threshold. Initial-only
+         matching is where cross-department false positives came from
+         ("S. Lee" in a partially matching department).
       3. rapidfuzz token_set_ratio ≥ threshold, department-scoped when possible.
 
+    `profs_by_name` maps a normalized name to a LIST of professors.
     `expected_department` comes from the course prefix (e.g. MATH → Mathematics).
-    When provided, a match is only accepted if the candidate prof's department
-    fuzzy-matches the expected subject ≥ `dept_threshold`. This is the fix for
-    same-name collisions across departments (e.g. two Michael Abramses).
     """
     norm = _normalize_name(instructor_name)
     if not norm:
         return None
 
-    def dept_ok(prof: dict) -> bool:
+    def dept_score(prof: dict) -> int:
         if not expected_department:
-            return True  # no signal — accept
+            return 100  # no signal — accept
         rmp_dept = (prof.get("department") or "").strip().lower()
         if not rmp_dept:
-            return False
-        score = fuzz.partial_ratio(rmp_dept, expected_department.lower())
-        return score >= dept_threshold
+            return 0
+        return fuzz.partial_ratio(rmp_dept, expected_department.lower())
 
-    # Step 1: exact normalized match, dept-gated
-    if norm in profs_by_name:
-        cand = profs_by_name[norm]
-        if dept_ok(cand):
-            return cand
+    def dept_ok(prof: dict, threshold_override: Optional[int] = None) -> bool:
+        return dept_score(prof) >= (threshold_override if threshold_override is not None else dept_threshold)
+
+    def pick(cands: list[dict], relaxed: int) -> Optional[dict]:
+        """Among exact-name candidates prefer the best department fit."""
+        if not cands:
+            return None
+        ok = [p for p in cands if dept_ok(p, relaxed)]
+        if len(ok) == 1:
+            return ok[0]
+        if len(ok) > 1:
+            return max(ok, key=dept_score)
+        return None
+
+    relaxed_gate = max(35, dept_threshold - 20)
+    strict_gate = min(100, dept_threshold + 20)
+
+    # Step 1: exact normalized match, relaxed dept gate
+    found = pick(profs_by_name.get(norm, []), relaxed_gate)
+    if found:
+        return found
 
     # Handle "Last, First" → "First Last"
     if "," in norm:
         last, first = [s.strip() for s in norm.split(",", 1)]
         candidate = f"{first} {last}"
-        if candidate in profs_by_name:
-            cand = profs_by_name[candidate]
-            if dept_ok(cand):
-                return cand
+        found = pick(profs_by_name.get(candidate, []), relaxed_gate)
+        if found:
+            return found
         norm_for_fuzz = candidate
     else:
         norm_for_fuzz = norm
 
-    # Step 2: last-name exact + first-initial, dept-gated
+    # Step 2: last-name exact + compatible first name, strict dept gate,
+    # unique only. "Compatible" means the instructor's first name is an
+    # initial ("S. Lee") or one first name is a prefix of the other
+    # ("Sam"/"Samantha"). "Seong-Ho Lee" vs "Sung Lee" are different people.
     parts = norm_for_fuzz.split()
     if len(parts) >= 2:
-        first_initial, last = parts[0][0], parts[-1]
-        hits = [p for k, p in profs_by_name.items()
-                if k.split() and k.split()[-1] == last and k.split()[0][0] == first_initial]
-        dept_hits = [p for p in hits if dept_ok(p)]
-        if len(dept_hits) == 1:
-            return dept_hits[0]
-        if len(hits) == 1 and not expected_department:
+        first, last = parts[0].rstrip("."), parts[-1]
+
+        def first_ok(cand_first: str) -> bool:
+            if not cand_first or cand_first[0] != first[0]:
+                return False
+            if len(first) == 1 or len(cand_first) == 1:
+                return True
+            return first.startswith(cand_first) or cand_first.startswith(first)
+
+        hits = [p for k, plist in profs_by_name.items() for p in plist
+                if k.split() and k.split()[-1] == last and first_ok(k.split()[0])]
+        if expected_department:
+            dept_hits = [p for p in hits if dept_ok(p, strict_gate)]
+            if len(dept_hits) == 1:
+                return dept_hits[0]
+        elif len(hits) == 1:
             return hits[0]
 
-    # Step 3: fuzzy within dept-matching candidates
+    # Step 3: fuzzy within dept-matching candidates (full-name similarity)
     if expected_department:
-        candidates = {k: p for k, p in profs_by_name.items() if dept_ok(p)}
+        candidates = {k: plist for k, plist in profs_by_name.items() if any(dept_ok(p) for p in plist)}
     else:
         candidates = profs_by_name
     if candidates:
         names = list(candidates.keys())
         match = process.extractOne(norm_for_fuzz, names, scorer=fuzz.token_set_ratio)
         if match and match[1] >= threshold:
-            return candidates[match[0]]
+            return pick(candidates[match[0]], dept_threshold) or (
+                candidates[match[0]][0] if not expected_department else None)
 
     return None
 
@@ -418,6 +473,7 @@ def build_joined_schedule(
 
         for s in sections:
             matched_ids: list[str] = []
+            unmatched_names: list[str] = []
             for instr_name in s.get("instructors", []):
                 if _is_junk_instructor(instr_name):
                     continue
@@ -435,7 +491,11 @@ def build_joined_schedule(
                     prof_teaching.setdefault(pid, set()).add(course_id)
                 else:
                     unmatched[instr_name] = unmatched.get(instr_name, 0) + 1
+                    unmatched_names.append(instr_name)
             s["matched_professor_ids"] = matched_ids
+            # Co-instructors without an RMP record, so a mixed section still
+            # lists everyone teaching it.
+            s["unmatched_instructors"] = unmatched_names
 
     schedule["match_stats"] = {
         "matched_instructor_assignments": matched,
@@ -454,7 +514,7 @@ def main() -> int:
     ap.add_argument("--term", type=str, default=None,
                     help="Term code like 202608 (Fall 2026). Omit to use Testudo's current term.")
     ap.add_argument("--output", type=str, default=os.path.join(DATA_DIR, "umd_schedule.json"))
-    ap.add_argument("--analyzed", type=str, default=os.path.join(DATA_DIR, "umd_analyzed.json"))
+    ap.add_argument("--analyzed", type=str, default=analyzed_path(DATA_DIR, "umd"))
     ap.add_argument("--overrides", type=str, default=os.path.join(DATA_DIR, "umd_name_overrides.json"))
     ap.add_argument("--only-match", action="store_true",
                     help="Skip scraping; re-run the join against an existing umd_schedule.json.")

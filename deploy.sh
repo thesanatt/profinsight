@@ -4,6 +4,9 @@
 # Usage:
 #   ./deploy.sh setup         # one-time: install backend + frontend deps
 #   ./deploy.sh analyze       # (re)run the Bayesian pipeline on every data/<school>.json
+#   ./deploy.sh train-classifier  # rebuild models/nb_topic_model.json from tag weak labels
+#   ./deploy.sh evaluate [args]   # run the evaluation harness -> metrics/latest.{json,md}
+#   ./deploy.sh test          # pytest + doctests
 #   ./deploy.sh build         # build the frontend for production
 #   ./deploy.sh dev           # run API + frontend locally (foreground, two processes)
 #   ./deploy.sh serve         # serve API + built frontend on :8000 (prod-like)
@@ -80,15 +83,35 @@ cmd_analyze() {
   local raw analyzed slug count=0
   for raw in data/*.json; do
     # skip already-analyzed files
-    [[ "$raw" == *_analyzed.json ]] && continue
+    [[ "$raw" == *_analyzed.json* || "$raw" == *_schedule.json ]] && continue
     slug="$(basename "$raw" .json)"
-    analyzed="data/${slug}_analyzed.json"
+    analyzed="data/${slug}_analyzed.json.gz"
     log "Analyzing $slug"
     "$PYTHON" bayesian_pipeline.py --input "$raw" --output "$analyzed"
     count=$((count + 1))
   done
   shopt -u nullglob
   log "Analyzed $count school file(s)."
+}
+
+cmd_train_classifier() {
+  activate_venv
+  log "Training topic classifier from tag weak labels"
+  "$PYTHON" train_classifier.py
+}
+
+cmd_evaluate() {
+  activate_venv
+  log "Running evaluation harness (pass --quick for a 6-school run)"
+  "$PYTHON" evaluate.py "$@"
+}
+
+cmd_test() {
+  activate_venv
+  log "pytest"
+  "$PYTHON" -m pytest -q
+  "$PYTHON" -m doctest bayesian_calibration.py bayesian_advanced.py bayesian_honest.py bayesian_pipeline.py
+  log "doctests ok"
 }
 
 cmd_build() {
@@ -124,7 +147,7 @@ cmd_scrape() {
   activate_venv
   local slug="${1:-}" name="${2:-}"
   [[ -z "$slug" || -z "$name" ]] && { err "usage: deploy.sh scrape <slug> \"<School Name>\""; exit 1; }
-  local raw="data/${slug}.json" analyzed="data/${slug}_analyzed.json"
+  local raw="data/${slug}.json" analyzed="data/${slug}_analyzed.json.gz"
   log "Scraping $name -> $raw (max $MAX_PROFESSORS professors)"
   "$PYTHON" rmp_scraper.py --school "$name" --max-professors "$MAX_PROFESSORS" --output "$raw"
   log "Analyzing -> $analyzed"
@@ -159,7 +182,7 @@ cmd_status() {
   log "Node:         $(node --version 2>&1 || echo missing)"
   log "venv:         $([[ -d $VENV ]] && echo present || echo missing)"
   log "frontend/dist: $([[ -d frontend/dist ]] && echo present || echo missing)"
-  log "Analyzed schools: $(ls data/*_analyzed.json 2>/dev/null | wc -l | tr -d ' ')"
+  log "Analyzed schools: $(ls data/*_analyzed.json.gz data/*_analyzed.json 2>/dev/null | wc -l | tr -d ' ')"
   log "Raw schools:      $(ls data/*.json 2>/dev/null | grep -v _analyzed | wc -l | tr -d ' ')"
 }
 
@@ -173,7 +196,7 @@ cmd_deploy() {
 }
 
 cmd_help() {
-  sed -n '2,20p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,23p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 main() {
@@ -181,6 +204,9 @@ main() {
   case "$sub" in
     setup)    cmd_setup "$@";;
     analyze)  cmd_analyze "$@";;
+    train-classifier) cmd_train_classifier "$@";;
+    evaluate) cmd_evaluate "$@";;
+    test)     cmd_test "$@";;
     build)    cmd_build "$@";;
     dev)      cmd_dev "$@";;
     serve)    cmd_serve "$@";;

@@ -89,8 +89,8 @@ export default function ProfessorList({ professors, loading, onSelect }) {
                   <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Get an A</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-sm font-semibold" style={{ color: wta >= 60 ? 'var(--green)' : wta >= 40 ? 'var(--yellow)' : wta >= 0 ? 'var(--red)' : 'var(--text-3)' }}>
-                    {wta >= 0 ? `${wta?.toFixed(0)}%` : '?'}
+                  <div className="text-sm font-semibold" style={{ color: wta != null && wta >= 60 ? 'var(--green)' : wta != null && wta >= 40 ? 'var(--yellow)' : wta != null && wta >= 0 ? 'var(--red)' : 'var(--text-3)' }}>
+                    {wta != null && wta >= 0 ? `${wta.toFixed(0)}%` : '?'}
                   </div>
                   <div className="text-[10px]" style={{ color: 'var(--text-3)' }}>Would retake</div>
                 </div>

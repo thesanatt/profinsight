@@ -102,13 +102,13 @@ export default function CompareMode({ school, professors, onSelect, onClose }) {
             <span key={id} className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm"
               style={{ background: 'var(--accent-bg)', color: 'var(--accent)', border: '1px solid var(--accent-border)' }}>
               {info.name || 'Loading...'}
-              <button onClick={() => removeProf(id)} className="ml-1 opacity-60 hover:opacity-100">×</button>
+              <button onClick={() => removeProf(id)} aria-label="Remove professor" className="ml-1 opacity-60 hover:opacity-100">×</button>
             </span>
           )
         })}
         {selected.length < 4 && (
           <div className="relative">
-            <input type="text" placeholder="Search professor..." value={search} onChange={e => setSearch(e.target.value)}
+            <input type="text" aria-label="Search professor" placeholder="Search professor..." value={search} onChange={e => setSearch(e.target.value)}
               className="input-dark w-48 text-sm py-1.5" />
             {search.length >= 2 && searchResults.length > 0 && (
               <div className="absolute top-full left-0 mt-1 w-72 rounded-xl shadow-lg z-10 max-h-60 overflow-y-auto"

@@ -265,7 +265,7 @@ def outlier_probabilities(
     ratings: list,
     *,
     prior_outlier: float = 0.10,
-    min_std: float = 0.3,
+    min_std: float = 0.75,
     min_reviews: int = 4,
 ) -> list[float]:
     """
