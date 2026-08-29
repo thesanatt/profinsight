@@ -101,3 +101,15 @@ jobs:
             sleep 5
           done
           [ "$pushed" = "1" ] || { echo "push failed after 3 attempts"; exit 1; }
+
+      - name: Trigger Render deploy
+        # Render's GitHub auto-deploy stopped firing in April 2026; the deploy
+        # hook is the reliable path. Skipped when the secret is not set.
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          if [ -n "$HOOK" ]; then
+            curl -fsS -X POST "$HOOK" > /dev/null && echo "Render deploy triggered"
+          else
+            echo "RENDER_DEPLOY_HOOK not set; skipping deploy trigger"
+          fi
