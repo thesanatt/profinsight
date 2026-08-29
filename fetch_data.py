@@ -32,6 +32,8 @@ DATA_DIR = os.path.join(ROOT, "data")
 REPO = os.environ.get("PROFINSIGHT_DATA_REPO", "thesanatt/profinsight")
 TAG = os.environ.get("PROFINSIGHT_DATA_TAG", "data-latest")
 API = f"https://api.github.com/repos/{REPO}/releases/tags/{TAG}"
+# Direct download URLs need no API call, so they carry no rate limit and no token.
+DOWNLOAD = f"https://github.com/{REPO}/releases/download/{TAG}"
 
 
 def _get(url: str, headers: dict | None = None, retries: int = 3):
@@ -51,16 +53,30 @@ def _get(url: str, headers: dict | None = None, retries: int = 3):
     raise RuntimeError(f"GET {url} failed: {last}")
 
 
+def load_manifest() -> dict[str, dict]:
+    """name -> {size} from the manifest asset publish_data.py maintains."""
+    with _get(f"{DOWNLOAD}/manifest.json", headers={"Accept": "application/octet-stream"}) as r:
+        m = json.load(r)
+    return m.get("assets", {})
+
+
 def list_assets() -> dict[str, dict]:
-    """name -> {url, size} for every asset on the release."""
+    """name -> {url, size} for every asset on the release. Prefers the
+    manifest (direct URL, no API); falls back to the releases API."""
+    try:
+        manifest = load_manifest()
+        if manifest:
+            return {name: {"url": f"{DOWNLOAD}/{name}", "size": meta["size"]} for name, meta in manifest.items()}
+    except Exception as e:
+        print(f"[data] manifest unavailable ({e!r}); using the releases API", flush=True)
     with _get(API) as r:
         rel = json.load(r)
     return {a["name"]: {"url": a["browser_download_url"], "size": a["size"]} for a in rel.get("assets", [])}
 
 
 def _want(name: str, raw: bool, analyzed: bool, schedule: bool, schools: set[str] | None) -> bool:
-    if name == "nb_topic_model.json":
-        return False  # fetched explicitly by fetch_model()
+    if name in ("nb_topic_model.json", "manifest.json"):
+        return False  # model is fetched by fetch_model(); the manifest is metadata
     if name.endswith("_schedule.json"):
         return schedule
     if name.endswith("_analyzed.json.gz"):
@@ -89,16 +105,29 @@ def fetch(raw: bool = False, analyzed: bool = True, schedule: bool = True,
         if os.path.exists(dest) and os.path.getsize(dest) == meta["size"]:
             continue
         tmp = dest + ".part"
-        with _get(meta["url"], headers={"Accept": "application/octet-stream"}) as r, open(tmp, "wb") as f:
-            while True:
-                chunk = r.read(1 << 20)
-                if not chunk:
-                    break
-                f.write(chunk)
+        got = _download(meta["url"], tmp)
+        if got != meta["size"]:
+            os.remove(tmp)
+            raise RuntimeError(f"{name}: downloaded {got} bytes, expected {meta['size']}")
         os.replace(tmp, dest)
         written.append(dest)
         if not quiet:
             print(f"  {name}  {meta['size'] / 1e6:.1f} MB", flush=True)
+    return written
+
+
+def _download(url: str, tmp: str) -> int:
+    """Stream url to tmp; return bytes written. http.client returns b'' on a
+    server-side close before Content-Length is reached, so callers compare
+    the count against the expected size."""
+    written = 0
+    with _get(url, headers={"Accept": "application/octet-stream"}) as r, open(tmp, "wb") as f:
+        while True:
+            chunk = r.read(1 << 20)
+            if not chunk:
+                break
+            f.write(chunk)
+            written += len(chunk)
     return written
 
 
@@ -108,8 +137,10 @@ def fetch_model(dest: str = os.path.join(ROOT, "models", "nb_topic_model.json"))
     if not meta:
         return False
     os.makedirs(os.path.dirname(dest), exist_ok=True)
-    with _get(meta["url"], headers={"Accept": "application/octet-stream"}) as r, open(dest + ".part", "wb") as f:
-        f.write(r.read())
+    got = _download(meta["url"], dest + ".part")
+    if got != meta["size"]:
+        os.remove(dest + ".part")
+        raise RuntimeError(f"nb_topic_model.json: downloaded {got} bytes, expected {meta['size']}")
     os.replace(dest + ".part", dest)
     return True
 

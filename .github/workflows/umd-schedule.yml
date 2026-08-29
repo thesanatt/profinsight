@@ -7,8 +7,8 @@ name: UMD Schedule — nightly refresh
 
 on:
   schedule:
-    # 04:30 UTC nightly — 30 min after the main data refresh so the analyzed
-    # JSON is already up to date when the matcher runs.
+    # 04:30 UTC nightly. Shares the data-refresh concurrency group, so it
+    # queues behind a running nightly refresh instead of racing it.
     - cron: '30 4 * * *'
   workflow_dispatch:
     inputs:
@@ -18,7 +18,7 @@ on:
         default: ''
 
 concurrency:
-  group: umd-schedule
+  group: data-refresh
   cancel-in-progress: false
 
 permissions:

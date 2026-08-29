@@ -145,8 +145,12 @@ if not list_analyzed(DATA_DIR) and os.environ.get("PROFINSIGHT_SKIP_FETCH") != "
         _t0 = _time.time()
         _got = fetch_data.fetch_analyzed(DATA_DIR)
         print(f"[data] fetched {len(_got)} files from release {fetch_data.TAG} in {_time.time() - _t0:.0f}s")
-    except Exception as _e:  # serve whatever is on disk; /api/schools will be empty
+    except Exception as _e:
         print(f"[data] fetch failed: {_e!r}")
+    if not list_analyzed(DATA_DIR) and os.environ.get("RENDER"):
+        # A deploy that would serve zero schools must fail so Render keeps
+        # the previous instance running instead of swapping to an empty one.
+        raise SystemExit("[data] no analyzed files after fetch; refusing to start with an empty catalog")
 
 _cache = {}
 _schools_cache = None
@@ -157,6 +161,7 @@ SCHOOLS_CACHE_TTL = 300  # refresh school list every 5 min
 # 512 MB Render free tier with room for request handling.
 MAX_CACHED_SCHOOLS = int(os.environ.get("MAX_CACHED_SCHOOLS", "4"))
 _cache_lock = threading.Lock()
+_parse_lock = threading.Lock()
 
 
 def discover_schools() -> list:
@@ -201,7 +206,16 @@ def load_school(slug: str) -> dict:
             _cache[slug] = _cache.pop(slug)
             return entry[1]
 
-    data = load_json(filepath)
+    # One parse at a time: N concurrent cold requests for N schools would
+    # otherwise hold N decompressed files in memory at once (the 512 MB tier's
+    # OOM path right after a deploy). Re-check the cache once inside.
+    with _parse_lock:
+        with _cache_lock:
+            entry = _cache.get(slug)
+            if entry is not None and entry[0] == mtime:
+                _cache[slug] = _cache.pop(slug)
+                return entry[1]
+        data = load_json(filepath)
 
     with _cache_lock:
         _cache.pop(slug, None)

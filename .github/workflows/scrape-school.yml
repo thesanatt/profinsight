@@ -49,6 +49,15 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Validate slug and pull the latest classifier
+        env:
+          SLUG: ${{ github.event.inputs.slug }}
+        run: |
+          case "$SLUG" in
+            *_schedule|*_analyzed|*.*|*/*|"") echo "invalid slug: $SLUG"; exit 1;;
+          esac
+          python fetch_data.py --no-analyzed --no-schedule --model || echo "no published model yet; using the committed one"
+
       - name: Scrape + analyze
         env:
           SLUG: ${{ github.event.inputs.slug }}

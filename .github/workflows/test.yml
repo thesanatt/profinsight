@@ -18,6 +18,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      PROFINSIGHT_SKIP_FETCH: "1"   # api.py must not download the data release during tests
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5

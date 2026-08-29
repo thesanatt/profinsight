@@ -213,6 +213,11 @@ def scrape_school(slug, name, max_profs, school_id=None):
             print(f"  {line.strip()}")
     print(f"  Analysis time: {time.time() - t1:.0f}s")
 
+    # Record the slug for the publish step (only successfully refreshed schools
+    # get re-uploaded).
+    with open(os.path.join(DATA_DIR, ".refreshed"), "a") as f:
+        f.write(slug + "\n")
+
     # Show summary
     try:
         data = load_json(analyzed_path_)

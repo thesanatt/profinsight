@@ -61,7 +61,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Pull current data snapshot
-        run: python fetch_data.py --raw
+        # Raw + analyzed for every school (the classifier retrains on the full
+        # corpus) and last night's classifier. Not the schedule: that asset
+        # belongs to the UMD workflow and must never be re-uploaded from here.
+        run: python fetch_data.py --raw --no-schedule --model
 
       - name: Pick batch
         id: batch
@@ -87,11 +90,13 @@ jobs:
           fi
           echo "Batch: ${{ steps.batch.outputs.batch }}  (${{ steps.batch.outputs.slugs }})"
           echo "Max professors: $MAX"
+          rm -f data/.refreshed
           python bulk_update.py \
             --all \
             --batch "${{ steps.batch.outputs.batch }}" \
             --max-professors "$MAX" \
             $STALE_FLAG
+          echo "Refreshed: $(paste -sd, data/.refreshed 2>/dev/null || echo none)"
 
       - name: Retrain topic classifier on the current corpus
         run: python train_classifier.py
@@ -122,8 +127,16 @@ jobs:
           PY
 
       - name: Publish refreshed assets to the data release
+        # Only schools bulk_update actually refreshed, plus the retrained
+        # classifier (consumed by tomorrow's run via --model).
         run: |
-          python publish_data.py --schools "${{ steps.batch.outputs.slugs }}" --model
+          SLUGS=$(paste -sd, data/.refreshed 2>/dev/null || true)
+          if [ -z "$SLUGS" ]; then
+            echo "No school refreshed; publishing the classifier only"
+            python publish_data.py --schools __none__ --model
+          else
+            python publish_data.py --schools "$SLUGS" --model
+          fi
 
       - name: Trigger Render deploy
         # Render's GitHub auto-deploy only fires on commits; data lives in the
